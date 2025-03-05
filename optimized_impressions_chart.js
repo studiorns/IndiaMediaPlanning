@@ -1,33 +1,33 @@
 // Define the 2025 Planned Impressions (Monthly) data
 const plannedImpressions2025 = [
     308059995,    // Jan
-    2131473746,   // Feb
-    1117210447,   // Mar
-    1392363112,   // Apr
-    1401655407,   // May
-    834194144,    // Jun
-    756077983,    // Jul
-    756077983,    // Aug
-    1348533349,   // Sep
-    1900038690,   // Oct
-    1322237773,   // Nov
-    1970481360    // Dec
+    834140150,    // Feb
+    1031750574,   // Mar
+    2052809431,   // Apr (updated)
+    2064921296,   // May (updated)
+    865852843,    // Jun (updated)
+    774169937,    // Jul (updated)
+    774169937,    // Aug (updated)
+    1377372477,   // Sep
+    1961987179,   // Oct
+    1491941387,   // Nov (updated)
+    2101915441    // Dec (updated)
 ];
 
 // Define the 2025 Optimized Impressions (Monthly) data
 const optimizedImpressions2025 = [
     385074994,    // Jan: +25% to support March-April secondary peak
-    1385457935,   // Feb: -35% reduction as currently over-allocated
-    1117210447,   // Mar: unchanged
-    1183508645,   // Apr: -15% reduction
-    1121324326,   // May: -20% reduction
-    834194144,    // Jun: unchanged
-    869489680,    // Jul: +15% increase for September shoulder season
-    907293580,    // Aug: +20% increase for September shoulder season
-    1860976022,   // Sep: +38% increase to capture November-December peak
-    2565052232,   // Oct: +35% increase to capture November-December peak
-    1322237773,   // Nov: unchanged
-    1477861020    // Dec: -25% reduction as too late for high-season travel
+    542191098,    // Feb: -35% reduction as currently over-allocated
+    1031750574,   // Mar: unchanged
+    1744888016,   // Apr: -15% reduction (updated)
+    1651937037,   // May: -20% reduction (updated)
+    865852843,    // Jun: unchanged (updated)
+    890295428,    // Jul: +15% increase for September shoulder season (updated)
+    929003924,    // Aug: +20% increase for September shoulder season (updated)
+    1900774018,   // Sep: +38% increase to capture November-December peak
+    2648682692,   // Oct: +35% increase to capture November-December peak
+    1491941387,   // Nov: unchanged (updated)
+    1576436581    // Dec: -25% reduction as too late for high-season travel (updated)
 ];
 
 // Update the campaign data with the new impression values
