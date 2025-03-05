@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -577,6 +578,13 @@
     </header>
     
     <div class="container">
+        <div style="background-color: var(--primary-light); border-radius: var(--radius); padding: 20px; margin-bottom: 28px; border-left: 4px solid var(--primary); text-align: center;">
+            <h3 style="color: var(--primary-dark); margin-bottom: 12px;"><i class="fas fa-chart-line"></i> Enhanced Dashboard Available</h3>
+            <p style="margin-bottom: 16px;">We've created an enhanced version of this dashboard with additional visualizations and interactive features.</p>
+            <a href="enhanced_dashboard_optimized.html" style="display: inline-block; background-color: var(--primary); color: white; padding: 10px 20px; border-radius: var(--radius-sm); text-decoration: none; font-weight: 600; transition: var(--transition);">
+                <i class="fas fa-external-link-alt" style="margin-right: 8px;"></i> View Enhanced Dashboard
+            </a>
+        </div>
         <div class="insight-summary">
             <h3><i class="fas fa-lightbulb"></i> Key Insights</h3>
             <p>India represents a high-potential market with excellent brand health metrics (94.5% awareness, 74.4% consideration, 64.6% intent) and strong response to media investments (0.68 elasticity). The current campaign plan has strong elements but requires strategic refinements to address key barriers and capitalize on market preferences.</p>
@@ -966,40 +974,46 @@
         // Data for charts
         const campaignData = {
             campaigns: [
-                { name: 'Global Brand Ambassador', type: 'Strategic', budget: 7598745, weeks: 14, 
-                  objectives: { awareness: 5, consideration: 4, intent: 2, familiarity: 4 },
-                  barrierFocus: { badExperiences: 2, alreadyVisited: 0, weatherConcerns: 0, tooExpensive: 0, notMuchToDo: 3 } },
-                { name: 'Summer Campaign', type: 'Strategic', budget: 12061500, weeks: 20, 
+                { name: 'Summer', type: 'Strategic', budget: 2270012, weeks: 20, 
                   objectives: { awareness: 5, consideration: 5, intent: 4, familiarity: 5 },
                   barrierFocus: { badExperiences: 1, alreadyVisited: 0, weatherConcerns: 5, tooExpensive: 3, notMuchToDo: 4 } },
-                { name: 'Abu Dhabi Calendar Launch', type: 'Strategic', budget: 3980295, weeks: 6, 
-                  objectives: { awareness: 5, consideration: 4, intent: 5, familiarity: 5 },
-                  barrierFocus: { badExperiences: 0, alreadyVisited: 2, weatherConcerns: 0, tooExpensive: 0, notMuchToDo: 5 } },
-                { name: 'Saadiyat Culture District', type: 'Strategic', budget: 2457450, weeks: 10, 
-                  objectives: { awareness: 5, consideration: 3, intent: 2, familiarity: 5 },
-                  barrierFocus: { badExperiences: 0, alreadyVisited: 4, weatherConcerns: 0, tooExpensive: 0, notMuchToDo: 5 } },
-                { name: 'Ramadan', type: 'Tactical', budget: 2631600, weeks: 6, 
-                  objectives: { awareness: 4, consideration: 4, intent: 4, familiarity: 5 },
-                  barrierFocus: { badExperiences: 0, alreadyVisited: 3, weatherConcerns: 0, tooExpensive: 4, notMuchToDo: 0 } },
-                { name: 'Diwali', type: 'Tactical', budget: 1532950, weeks: 4, 
-                  objectives: { awareness: 3, consideration: 2, intent: 5, familiarity: 4 },
-                  barrierFocus: { badExperiences: 0, alreadyVisited: 5, weatherConcerns: 0, tooExpensive: 3, notMuchToDo: 0 } },
-                { name: 'Family Vacation with Ranveer Singh', type: 'Tactical', budget: 3289500, weeks: 6, 
-                  objectives: { awareness: 5, consideration: 2, intent: 5, familiarity: 5 },
-                  barrierFocus: { badExperiences: 4, alreadyVisited: 0, weatherConcerns: 2, tooExpensive: 3, notMuchToDo: 4 } },
-                { name: 'F1', type: 'Tactical', budget: 576200, weeks: 4, 
-                  objectives: { awareness: 4, consideration: 2, intent: 3, familiarity: 4 },
-                  barrierFocus: { badExperiences: 0, alreadyVisited: 0, weatherConcerns: 0, tooExpensive: 0, notMuchToDo: 5 } },
-                { name: 'Abu Dhabi Calendar Always On', type: 'Strategic', budget: 3421080, weeks: 52, 
-                  objectives: { awareness: 5, consideration: 4, intent: 5, familiarity: 5 },
-                  barrierFocus: { badExperiences: 0, alreadyVisited: 0, weatherConcerns: 0, tooExpensive: 0, notMuchToDo: 5 } },
-                { name: 'Visit Abu Dhabi Always On', type: 'Strategic', budget: 3421080, weeks: 52, 
-                  objectives: { awareness: 5, consideration: 4, intent: 5, familiarity: 5 },
-                  barrierFocus: { badExperiences: 2, alreadyVisited: 3, weatherConcerns: 2, tooExpensive: 3, notMuchToDo: 4 } },
-                { name: 'NBA Campaign', type: 'Tactical', budget: 432150, weeks: 3, 
+                { name: 'NBA', type: 'Tactical', budget: 115270, weeks: 3, 
                   objectives: { awareness: 3, consideration: 3, intent: 5, familiarity: 3 },
                   barrierFocus: { badExperiences: 0, alreadyVisited: 0, weatherConcerns: 0, tooExpensive: 0, notMuchToDo: 5 } },
-                { name: 'Comedy Week', type: 'Tactical', budget: 699825, weeks: 3, 
+                { name: 'Visit Abu Dhabi Always On', type: 'Strategic', budget: 420514, weeks: 52, 
+                  objectives: { awareness: 5, consideration: 4, intent: 5, familiarity: 5 },
+                  barrierFocus: { badExperiences: 2, alreadyVisited: 3, weatherConcerns: 2, tooExpensive: 3, notMuchToDo: 4 } },
+                { name: 'Abu Dhabi Calendar Always On', type: 'Strategic', budget: 547514, weeks: 52, 
+                  objectives: { awareness: 5, consideration: 4, intent: 5, familiarity: 5 },
+                  barrierFocus: { badExperiences: 0, alreadyVisited: 0, weatherConcerns: 0, tooExpensive: 0, notMuchToDo: 5 } },
+                { name: 'F1', type: 'Tactical', budget: 153678, weeks: 4, 
+                  objectives: { awareness: 4, consideration: 2, intent: 3, familiarity: 4 },
+                  barrierFocus: { badExperiences: 0, alreadyVisited: 0, weatherConcerns: 0, tooExpensive: 0, notMuchToDo: 5 } },
+                { name: 'Family Vacation with Ranveer Singh', type: 'Tactical', budget: 877197, weeks: 6, 
+                  objectives: { awareness: 5, consideration: 2, intent: 5, familiarity: 5 },
+                  barrierFocus: { badExperiences: 4, alreadyVisited: 0, weatherConcerns: 2, tooExpensive: 3, notMuchToDo: 4 } },
+                { name: 'Diwali', type: 'Tactical', budget: 408785, weeks: 4, 
+                  objectives: { awareness: 3, consideration: 2, intent: 5, familiarity: 4 },
+                  barrierFocus: { badExperiences: 0, alreadyVisited: 5, weatherConcerns: 0, tooExpensive: 3, notMuchToDo: 0 } },
+                { name: 'Ramadan', type: 'Tactical', budget: 542464, weeks: 6, 
+                  objectives: { awareness: 4, consideration: 4, intent: 4, familiarity: 5 },
+                  barrierFocus: { badExperiences: 0, alreadyVisited: 3, weatherConcerns: 0, tooExpensive: 4, notMuchToDo: 0 } },
+                { name: 'Saadiyat Cultural District', type: 'Strategic', budget: 438552, weeks: 10, 
+                  objectives: { awareness: 5, consideration: 3, intent: 2, familiarity: 5 },
+                  barrierFocus: { badExperiences: 0, alreadyVisited: 4, weatherConcerns: 0, tooExpensive: 0, notMuchToDo: 5 } },
+                { name: 'Abu Dhabi Calendar Launch', type: 'Strategic', budget: 805099, weeks: 6, 
+                  objectives: { awareness: 5, consideration: 4, intent: 5, familiarity: 5 },
+                  barrierFocus: { badExperiences: 0, alreadyVisited: 2, weatherConcerns: 0, tooExpensive: 0, notMuchToDo: 5 } },
+                { name: 'Global Brand Ambassador Q1', type: 'Strategic', budget: 346457, weeks: 7, 
+                  objectives: { awareness: 5, consideration: 4, intent: 2, familiarity: 4 },
+                  barrierFocus: { badExperiences: 2, alreadyVisited: 0, weatherConcerns: 0, tooExpensive: 0, notMuchToDo: 3 } },
+                { name: 'Search Always On', type: 'Strategic', budget: 277449, weeks: 52, 
+                  objectives: { awareness: 4, consideration: 4, intent: 4, familiarity: 4 },
+                  barrierFocus: { badExperiences: 1, alreadyVisited: 1, weatherConcerns: 1, tooExpensive: 1, notMuchToDo: 2 } },
+                { name: 'Global Brand Ambassador Q4', type: 'Strategic', budget: 1300910, weeks: 7, 
+                  objectives: { awareness: 5, consideration: 4, intent: 2, familiarity: 4 },
+                  barrierFocus: { badExperiences: 2, alreadyVisited: 0, weatherConcerns: 0, tooExpensive: 0, notMuchToDo: 3 } },
+                { name: 'Comedy Week', type: 'Tactical', budget: 186668, weeks: 3, 
                   objectives: { awareness: 3, consideration: 3, intent: 5, familiarity: 3 },
                   barrierFocus: { badExperiences: 0, alreadyVisited: 0, weatherConcerns: 0, tooExpensive: 0, notMuchToDo: 5 } }
             ],
@@ -1526,6 +1540,12 @@
                                 weight: 'bold'
                             },
                             padding: {
+                                top: 10,
+                                bottom: 20
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
                                 label: function(context) {
                                     const label = context.label || '';
                                     const value = context.raw || 0;
@@ -1571,14 +1591,18 @@
             
             // 3. Campaign Budget Chart
             const campaignBudgetCtx = document.getElementById('campaignBudgetChart').getContext('2d');
+            
+            // Sort campaigns by budget (highest to lowest)
+            const sortedCampaigns = [...campaignData.campaigns].sort((a, b) => b.budget - a.budget);
+            
             new Chart(campaignBudgetCtx, {
                 type: 'bar',
                 data: {
-                    labels: campaignData.campaigns.map(c => c.name),
+                    labels: sortedCampaigns.map(c => c.name),
                     datasets: [{
                         label: 'Budget (AED)',
-                        data: campaignData.campaigns.map(c => c.budget),
-                        backgroundColor: campaignData.campaigns.map(c => c.type === 'Strategic' ? '#4285f4' : '#34a853'),
+                        data: sortedCampaigns.map(c => c.budget),
+                        backgroundColor: sortedCampaigns.map(c => c.type === 'Strategic' ? '#4285f4' : '#34a853'),
                         borderWidth: 1
                     }]
                 },
@@ -1602,7 +1626,9 @@
                             callbacks: {
                                 label: function(context) {
                                     const value = context.raw || 0;
-                                    return `Budget: ${value.toLocaleString()} AED`;
+                                    const total = campaignData.campaigns.reduce((sum, c) => sum + c.budget, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `Budget: ${value.toLocaleString()} AED (${percentage}%)`;
                                 }
                             }
                         }
@@ -1631,7 +1657,7 @@
                                     size: 12
                                 }
                             },
-                            max: 13000000 // Set maximum value to 13M AED
+                            max: 2500000 // Set maximum value to 2.5M AED
                         },
                         y: {
                             grid: {
@@ -1844,14 +1870,18 @@
             
             // 7. Campaign Timing Chart
             const campaignTimingCtx = document.getElementById('campaignTimingChart').getContext('2d');
+            
+            // Sort campaigns by duration (longest to shortest)
+            const durationSortedCampaigns = [...campaignData.campaigns].sort((a, b) => b.weeks - a.weeks);
+            
             new Chart(campaignTimingCtx, {
                 type: 'bar',
                 data: {
-                    labels: campaignData.campaigns.map(c => c.name),
+                    labels: durationSortedCampaigns.map(c => c.name),
                     datasets: [{
                         label: 'Campaign Duration (Weeks)',
-                        data: campaignData.campaigns.map(c => c.weeks),
-                        backgroundColor: campaignData.campaigns.map(c => c.type === 'Strategic' ? '#4285f4' : '#34a853'),
+                        data: durationSortedCampaigns.map(c => c.weeks),
+                        backgroundColor: durationSortedCampaigns.map(c => c.type === 'Strategic' ? '#4285f4' : '#34a853'),
                         borderWidth: 1
                     }]
                 },
