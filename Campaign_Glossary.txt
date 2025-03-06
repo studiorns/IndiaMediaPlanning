@@ -1,0 +1,38 @@
+
+Glossary Overview
+- Campaigns: Defined activities that support specific communications.
+  
+Campaign Types
+1. Strategic:
+   - Duration: Requires promotion for two months or more.
+   - Focus: Involves significant brand building and positioning efforts for Abu Dhabi.
+   - Planning: Necessitates long-term planning.
+   
+2. Tactical:
+   - Duration: Activities promoted for less than two months.
+   - Focus: Concentrates on immediate travel to Abu Dhabi.
+   - Example: Short-term events like Eid are tactical due to their brief duration compared to longer periods like summer.
+
+3. Cultural
+   - Refers to campaigns specific to Culture related campaigns
+
+Campaign Metrics
+- Campaign Active Weeks: Duration the campaign is expected to be active.
+- Business Priority: Impact level of the campaign in relation to Abu Dhabi's 2030 Tourism Goals, such as GDP contribution, visitor volume, cultural awareness, promoting cultural sites, and job creation.
+
+Marketing KPIs (1=low, 5=high)
+- Builds Awareness: Increase general awareness of Abu Dhabi.
+- Builds Consideration: Enhance the likelihood of visits within the next three years.
+- Builds Intent: Improve the probability of visits within the next twelve months.
+- Builds Familiarity: Help the target audience understand Abu Dhabi's core offerings including culture, natural and urban environments, family entertainment, and sports.
+
+Campaign Planning and Execution
+- Priority %: Importance level assigned to the campaign, determining its prioritization within marketing efforts.
+- Decision: Determine whether to activate or not activate the campaign for the year based on priority, budget, and impact on key marketing objectives.
+- Audience Size: Total number of individuals the campaign aims to engage.
+
+Budgeting and Reach
+- Optimal Reach: Target percentage of the audience the campaign intends to reach over its duration, ideally 50% but not less than 40%.
+- Total Frequency/Week: Number of exposures per week to the target audience throughout the campaign.
+- Avg CPM (AED): Cost per 1,000 impressions or exposures.
+- Final Campaign Budget: The adjusted budget after discussions and manual amendments for executing the campaign.

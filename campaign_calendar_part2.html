@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>India Campaign Calendar - Part 2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4285f4;
+            --primary-light: #1a2233;
+            --primary-dark: #8ab4f8;
+            --secondary: #34a853;
+            --secondary-light: #1a2a1e;
+            --warning: #fbbc04;
+            --warning-light: #332a1a;
+            --danger: #ea4335;
+            --danger-light: #331f1e;
+            --gray-100: #1e1e1e;
+            --gray-200: #2d2d2d;
+            --gray-300: #3d3d3d;
+            --gray-400: #4d4d4d;
+            --gray-500: #777777;
+            --gray-600: #a0a0a0;
+            --gray-700: #c0c0c0;
+            --gray-800: #e0e0e0;
+            --gray-900: #f0f0f0;
+            --bg-color: #000000;
+            --card-bg: #121212;
+            --section-bg: #181818;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--gray-800);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+        
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: var(--gray-900);
+            text-align: center;
+        }
+        
+        .dashboard-section {
+            background-color: var(--section-bg);
+            border-radius: var(--radius-md);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            padding: 28px;
+            margin-bottom: 32px;
+            border: 1px solid var(--gray-300);
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            margin-bottom: 28px;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--gray-300);
+        }
+        
+        .campaign-calendar {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 28px;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--gray-300);
+        }
+        
+        .campaign-calendar th {
+            background-color: var(--gray-200);
+            color: var(--gray-900);
+            font-weight: 600;
+            text-align: center;
+            padding: 12px 8px;
+            border: 1px solid var(--gray-300);
+        }
+        
+        .campaign-calendar td {
+            padding: 0;
+            border: 1px solid var(--gray-300);
+            height: 40px;
+            position: relative;
+        }
+        
+        .campaign-calendar .campaign-name {
+            padding: 10px 15px;
+            font-weight: 500;
+            text-align: left;
+            background-color: var(--gray-200);
+            color: var(--gray-900);
+        }
+        
+        .campaign-calendar .campaign-cell {
+            width: 8.33%; /* 100% / 12 months */
+            position: relative;
+        }
+        
+        .campaign-calendar .campaign-allocation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+        }
+        
+        .campaign-calendar .campaign-type-strategic {
+            background-color: rgba(66, 133, 244, 0.7);
+        }
+        
+        .campaign-calendar .campaign-type-tactical {
+            background-color: rgba(52, 168, 83, 0.7);
+        }
+        
+        .campaign-calendar .campaign-type-culture {
+            background-color: rgba(251, 188, 4, 0.7);
+        }
+        
+        .campaign-calendar .campaign-type-brand {
+            background-color: rgba(234, 67, 53, 0.7);
+        }
+        
+        .campaign-calendar .allocation-0 {
+            opacity: 0.1;
+        }
+        
+        .campaign-calendar .allocation-1-10 {
+            opacity: 0.2;
+        }
+        
+        .campaign-calendar .allocation-11-20 {
+            opacity: 0.4;
+        }
+        
+        .campaign-calendar .allocation-21-30 {
+            opacity: 0.6;
+        }
+        
+        .campaign-calendar .allocation-31-40 {
+            opacity: 0.7;
+        }
+        
+        .campaign-calendar .allocation-41-50 {
+            opacity: 0.8;
+        }
+        
+        .campaign-calendar .allocation-51-60 {
+            opacity: 0.9;
+        }
+        
+        .campaign-calendar .allocation-61-100 {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Remaining India Campaigns</h1>
+        
+        <div class="dashboard-section">
+            <div class="table-container">
+                <table class="campaign-calendar">
+                    <thead>
+                        <tr>
+                            <th>Campaign</th>
+                            <th>Jan</th>
+                            <th>Feb</th>
+                            <th>Mar</th>
+                            <th>Apr</th>
+                            <th>May</th>
+                            <th>Jun</th>
+                            <th>Jul</th>
+                            <th>Aug</th>
+                            <th>Sep</th>
+                            <th>Oct</th>
+                            <th>Nov</th>
+                            <th>Dec</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- ADC Launch (Abu Dhabi Calendar Launch): Sep (35%), Oct (30%), Nov (20%), Dec (15%) -->
+                        <tr>
+                            <td class="campaign-name">Abu Dhabi Calendar Launch</td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-0"></div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-0"></div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-0"></div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-0"></div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-0"></div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-0"></div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-0"></div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-0"></div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-31-40">35%</div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-21-30">30%</div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-11-20">20%</div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-11-20">15%</div>
+                            </td>
+                        </tr>
+                        
+                        <!-- GBA Q1 (Global Brand Ambassador Q1): Jan (45%), Feb (28%) -->
+                        <tr>
+                            <td class="campaign-name">Global Brand Ambassador Q1</td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-41-50">45%</div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-21-30">28%</div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-0"></div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-0"></div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-0"></div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-0"></div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-0"></div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-0"></div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-0"></div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-0"></div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-0"></div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-0"></div>
+                            </td>
+                        </tr>
+                        
+                        <!-- Search AON: Mar (9%), Apr (8%), May (8%), Jun (8%), Jul (8%), Aug (8%), Sep (8%), Oct (13%), Nov (12%), Dec (20%) -->
+                        <tr>
+                            <td class="campaign-name">Search Always On</td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-0"></div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-0"></div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-1-10">9%</div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-1-10">8%</div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-1-10">8%</div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-1-10">8%</div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-1-10">8%</div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-1-10">8%</div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-1-10">8%</div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-11-20">13%</div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-11-20">12%</div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-11-20">20%</div>
+                            </td>
+                        </tr>
+                        
+                        <!-- GBA Q4 (Global Brand Ambassador Q4): Nov (60%), Dec (40%) -->
+                        <tr>
+                            <td class="campaign-name">Global Brand Ambassador Q4</td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-0"></div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-0"></div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-0"></div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-0"></div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-0"></div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-0"></div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-0"></div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-0"></div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-0"></div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-0"></div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-51-60">60%</div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-brand allocation-41-50">40%</div>
+                            </td>
+                        </tr>
+                        
+                        <!-- Comedy Week: Apr (25%), May (60%), Jun (15%) -->
+                        <tr>
+                            <td class="campaign-name">Comedy Week</td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-tactical allocation-0"></div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-tactical allocation-0"></div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-tactical allocation-0"></div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-tactical allocation-21-30">25%</div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-tactical allocation-51-60">60%</div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-tactical allocation-11-20">15%</div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-tactical allocation-0"></div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-tactical allocation-0"></div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-tactical allocation-0"></div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-tactical allocation-0"></div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-tactical allocation-0"></div>
+                            </td>
+                            <td class="campaign-cell">
+                                <div class="campaign-allocation campaign-type-tactical allocation-0"></div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

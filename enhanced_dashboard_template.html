@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced India Campaign Planning Visualization</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="campaign_distribution_chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4285f4;
+            --primary-light: #1a2233;
+            --primary-dark: #8ab4f8;
+            --secondary: #34a853;
+            --secondary-light: #1a2a1e;
+            --warning: #fbbc04;
+            --warning-light: #332a1a;
+            --danger: #ea4335;
+            --danger-light: #331f1e;
+            --gray-100: #1e1e1e;
+            --gray-200: #2d2d2d;
+            --gray-300: #3d3d3d;
+            --gray-400: #4d4d4d;
+            --gray-500: #777777;
+            --gray-600: #a0a0a0;
+            --gray-700: #c0c0c0;
+            --gray-800: #e0e0e0;
+            --gray-900: #f0f0f0;
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            --shadow-md: 0 6px 12px rgba(0, 0, 0, 0.5);
+            --shadow-lg: 0 15px 25px rgba(0, 0, 0, 0.6);
+            --radius-sm: 4px;
+            --radius: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --transition: all 0.3s ease;
+            --bg-color: #000000;
+            --card-bg: #121212;
+            --section-bg: #181818;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--gray-800);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1a73e8 0%, #174ea6 100%);
+            color: white;
+            padding: 32px 0;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQ0MCIgaGVpZ2h0PSI0MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IHgxPSIxMDAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiIGlkPSJhIj48c3RvcCBzdG9wLWNvbG9yPSIjRkZGIiBzdG9wLW9wYWNpdHk9Ii4wNSIgb2Zmc2V0PSIwJSIvPjxzdG9wIHN0b3AtY29sb3I9IiNGRkYiIHN0b3Atb3BhY2l0eT0iLjAyIiBvZmZzZXQ9IjEwMCUiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cGF0aCBkPSJNMTQ0MCAyMDBjLTEzMS44LTEyLjktMjY3LjgtMTkuNC00MDgtMTkuNC0xNDAuMiAwLTI3Ni4yIDYuNS00MDggMTkuNFYwaDgxNnYyMDB6IiBmaWxsPSJ1cmwoI2EpIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiLz48L3N2Zz4=');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.1;
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            position: relative;
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 0;
+            font-weight: 600;
+            line-height: 1.3;
+            color: var(--gray-900);
+        }
+        
+        h2 {
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        h3 {
+            font-size: 1.35rem;
+            margin-bottom: 1rem;
+        }
+        
+        h4 {
+            font-size: 1.15rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        .dashboard-section {
+            background-color: var(--section-bg);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow);
+            padding: 28px;
+            margin-bottom: 32px;
+            transition: var(--transition);
+            border: 1px solid var(--gray-300);
+        }
+        
+        .dashboard-section:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+        
+        .dashboard-section h2 {
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid var(--gray-200);
+            padding-bottom: 16px;
+            margin-bottom: 28px;
+            color: var(--gray-900);
+            font-size: 1.5rem;
+        }
+        
+        .dashboard-section h2 i {
+            margin-right: 12px;
+            color: var(--primary);
+            font-size: 1.25rem;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+            margin-bottom: 28px;
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            border: 1px solid var(--gray-300);
+            transition: var(--transition);
+        }
+        
+        .chart-container:hover {
+            box-shadow: var(--shadow-md);
+        }
+        
+        .chart-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 28px;
+            margin-bottom: 28px;
+        }
+        
+        .chart-column {
+            flex: 1 1 400px;
+            min-width: 0; /* Allows flex items to shrink below content size */
+        }
+        
+        .chart-container-half {
+            height: 350px;
+        }
+        
+        /* Metric cards styles */
+        .metrics-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+        
+        .metric-card {
+            flex: 1;
+            min-width: 180px;
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-300);
+            transition: var(--transition);
+            text-align: center;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .metric-card:nth-child(1) {
+            border-left: 4px solid var(--primary);
+        }
+        
+        .metric-card:nth-child(2) {
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .metric-card:nth-child(3) {
+            border-left: 4px solid var(--warning);
+        }
+        
+        .metric-card:nth-child(4) {
+            border-left: 4px solid #ea4335;
+        }
+        
+        .metric-card:nth-child(5) {
+            border-left: 4px solid #9c27b0;
+        }
+        
+        .metric-card:nth-child(6) {
+            border-left: 4px solid #00bcd4;
+        }
+        
+        .metric-title {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--gray-700);
+            margin-bottom: 8px;
+        }
+        
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 4px;
+        }
+        
+        .metric-description {
+            font-size: 0.85rem;
+            color: var(--gray-600);
+            line-height: 1.4;
+        }
+        
+        .insight-summary {
+            background-color: var(--primary-light);
+            border-left: 4px solid var(--primary);
+            padding: 20px 24px;
+            margin-bottom: 28px;
+            border-radius: 0 var(--radius) var(--radius) 0;
+            position: relative;
+        }
+        
+        .insight-summary::before {
+            content: '\f0eb';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 20px;
+            right: 24px;
+            font-size: 1.5rem;
+            color: var(--primary);
+            opacity: 0.2;
+        }
+        
+        .insight-summary h3 {
+            color: var(--primary-dark);
+            margin-bottom: 12px;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .insight-summary h3 i {
+            margin-right: 10px;
+        }
+        
+        .insight-summary p {
+            margin: 0;
+            color: var(--gray-800);
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+        
+        .recommendation-card {
+            background-color: var(--gray-100);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 24px;
+            border-left: 4px solid var(--primary);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .recommendation-card::after {
+            content: '\f0eb';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2rem;
+            color: var(--primary);
+            opacity: 0.05;
+        }
+        
+        .recommendation-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .recommendation-card h4 {
+            color: var(--primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .recommendation-card h4 i {
+            margin-right: 10px;
+        }
+        
+        .recommendation-card p {
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+        
+        .recommendation-card p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .footer {
+            background-color: var(--gray-100);
+            color: white;
+            padding: 20px 0;
+            margin-top: 40px;
+            text-align: center;
+            border-top: 1px solid var(--gray-300);
+        }
+        
+        .footer p {
+            color: var(--gray-700);
+            margin-bottom: 0;
+            font-size: 0.9rem;
+        }
+        
+        /* Campaign selector styles */
+        .campaign-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .campaign-filter-btn {
+            background-color: var(--gray-300);
+            color: var(--gray-800);
+            border: none;
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        
+        .campaign-filter-btn.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .campaign-filter-btn:hover:not(.active) {
+            background-color: var(--gray-400);
+        }
+        
+        /* Campaign type filter */
+        .campaign-type-filter {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .campaign-type-btn {
+            flex: 1;
+            background-color: var(--gray-300);
+            color: var(--gray-800);
+            border: none;
+            padding: 10px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            text-align: center;
+        }
+        
+        .campaign-type-btn.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .campaign-type-btn:hover:not(.active) {
+            background-color: var(--gray-400);
+        }
+        
+        /* Table styles for campaign details */
+        .campaign-details-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 28px;
+        }
+        
+        .campaign-details-table th,
+        .campaign-details-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--gray-300);
+        }
+        
+        .campaign-details-table th {
+            background-color: var(--gray-200);
+            color: var(--gray-900);
+            font-weight: 600;
+        }
+        
+        .campaign-details-table tr:hover {
+            background-color: rgba(66, 133, 244, 0.05);
+        }
+        
+        .campaign-details-table .metric-name {
+            font-weight: 600;
+        }
+        
+        .campaign-details-table .positive {
+            color: #34a853;
+        }
+        
+        .campaign-details-table .negative {
+            color: #ea4335;
+        }
+        
+        .campaign-details-table .warning {
+            color: #fbbc04;
+        }
+        
+        @media (max-width: 768px) {
+            .chart-row {
+                flex-direction: column;
+            }
+            
+            .chart-container {
+                height: 350px;
+            }
+            
+            .container {
+                padding: 0 16px;
+            }
+            
+            .dashboard-section {
+                padding: 20px;
+                margin-bottom: 24px;
+            }
+            
+            .campaign-selector {
+                overflow-x: auto;
+                white-space: nowrap;
+                padding-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Enhanced India Campaign Planning Dashboard</h1>
+            <p>Detailed Campaign Analysis with Performance Metrics and Optimization Insights</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="insight-summary">
+            <h3><i class="fas fa-lightbulb"></i> Key Insights</h3>
+            <p>India represents a high-potential market with excellent brand health metrics (94.5% awareness, 74.4% consideration, 64.6% intent) and strong response to media investments (0.68 elasticity). The detailed campaign analysis reveals opportunities to optimize budget allocation and timing to better align with the 44-day booking window and seasonal travel patterns.</p>
+        </div>
+        
+        <!-- New section: Campaign Performance Comparison -->
+        <div class="dashboard-section">
+            <h2><i class="fas fa-chart-bar"></i> Campaign Performance Comparison</h2>
+            
+            <!-- Campaign type filter -->
+            <div class="campaign-type-filter">
+                <button class="campaign-type-btn active" data-type="all">All Campaigns</button>
+                <button class="campaign-type-btn" data-type="brand-awareness">Brand Awareness</button>
+                <button class="campaign-type-btn" data-type="strategic-leavers">Strategic Leavers</button>
+                <button class="campaign-type-btn" data-type="culture">Culture</button>
+            </div>
+            
+            <div class="chart-container">
+                <canvas id="campaignPerformanceChart"></canvas>
+            </div>
+            
+            <div class="chart-container">
+                <canvas id="campaignEfficiencyChart"></canvas>
+            </div>
+            
+            <div class="insight-summary">
+                <h3><i class="fas fa-chart-line"></i> Performance Insights</h3>
+                <p>The campaign performance analysis reveals significant variations in efficiency metrics across campaigns. The Ramadan campaign has the highest CPM ($3.61) but also delivers strong engagement. The VAD AO (Visit Abu Dhabi Always On) campaign shows excellent cost efficiency with a CPM of only $0.24, while maintaining high engagement levels. The Summer campaign delivers the highest volume of impressions (3.36B) and strong engagement (382.9M) at a moderate CPM of $0.68.</p>
+            </div>
+            
+            <div class="metrics-row">
+                <div class="metric-card">
+                    <div class="metric-title">Most Efficient Campaign</div>
+                    <div class="metric-value">VAD AO</div>
+                    <div class="metric-description">$0.24 CPM with 422.8M engagements</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-title">Highest Engagement</div>
+                    <div class="metric-value">VAD AO</div>
+                    <div class="metric-description">422.8M engagements (23.8% engagement rate)</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-title">Highest Volume</div>
+                    <div class="metric-value">Summer</div>
+                    <div class="metric-description">3.36B impressions ($0.68 CPM)</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-title">Best CTS</div>
+                    <div class="metric-value">VAD AO</div>
+                    <div class="metric-description">100% click-to-session rate</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- New section: Monthly Campaign Distribution -->
+        <div class="dashboard-section">
+            <h2><i class="fas fa-calendar-alt"></i> Monthly Campaign Distribution</h2>
+            
+            <div class="chart-container">
+                <canvas id="campaignDistributionChart"></canvas>
+            </div>
+            
+            <div class="insight-summary">
+                <h3><i class="fas fa-chart-line"></i> Distribution Insights</h3>
+                <p>The monthly campaign distribution reveals significant variations in media pressure throughout the year. April and May show the highest concentration of campaigns with over 2B impressions each, primarily driven by the Summer campaign and Family Vacation with Ranveer Singh. September-December also show strong campaign activity with the ADC Launch and GBA Q4 campaigns adding significant impression volume. January shows the lowest campaign activity, presenting an opportunity to increase media pressure to support the March-April secondary peak travel period.</p>
+            </div>
+            
+            <div class="recommendation-card">
+                <h4><i class="fas fa-calendar-check"></i> Campaign Timing Optimization</h4>
+                <p>Based on the detailed campaign distribution analysis and the 44-day booking window, we recommend the following timing adjustments:</p>
+                <ul style="margin-left: 20px; margin-bottom: 16px;">
+                    <li>Increase January impressions by 25% to better support the March-April secondary peak travel period</li>
+                    <li>Reduce February impressions by 35% as this month is currently over-allocated</li>
+                    <li>Increase September-October impressions by 35-40% to better capture the November-December peak travel season</li>
+                    <li>Reduce December impressions by 25% as these are too late to influence high-season travel due to the booking window</li>
+                </ul>
+                <p>These adjustments will better align campaign timing with the 44-day booking window while maintaining the same total annual impressions.</p>
+            </div>
+        </div>
+        
+        <!-- New section: Campaign Details -->
+        <div class="dashboard-section">
+            <h2><i class="fas fa-list-alt"></i> Campaign Details</h2>
+            
+            <!-- Campaign selector -->
+            <div class="campaign-selector">
+                <button class="campaign-filter-btn active" data-campaign="all">All Campaigns</button>
+                <button class="campaign-filter-btn" data-campaign="summer">Summer</button>
+                <button class="campaign-filter-btn" data-campaign="vad-ao">VAD AO</button>
+                <button class="campaign-filter-btn" data-campaign="adc-ao">ADC AO</button>
+                <button class="campaign-filter-btn" data-campaign="family-vacation">Family Vacation</button>
+                <button class="campaign-filter-btn" data-campaign="adc-launch">ADC Launch</button>
+                <button class="campaign-filter-btn" data-campaign="gba-q4">GBA Q4</button>
+            </div>
+            
+            <div class="table-container">
+                <table class="campaign-details-table">
+                    <thead>
+                        <tr>
+                            <th>Campaign</th>
+                            <th>Type</th>
+                            <th>Budget (USD)</th>
+                            <th>Impressions</th>
+                            <th>Engagements</th>
+                            <th>Sessions</th>
+                            <th>CPM</th>
+                            <th>CPC</th>
+                            <th>CPE</th>
+                            <th>CTS %</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Summer</td>
+                            <td>Brand Awareness</td>
+                            <td>2,270,012</td>
+                            <td>3,359,323,522</td>
+                            <td>382,892,889</td>
+                            <td>8,003,398</td>
+                            <td>$0.68</td>
+                            <td>$0.04</td>
+                            <td>$0.01</td>
+                            <td>14.15%</td>
+                        </tr>
+                        <tr>
+                            <td>NBA</td>
+                            <td>Strategic Leavers</td>
+                            <td>115,270</td>
+                            <td>317,715,044</td>
+                            <td>50,743,169</td>
+                            <td>-</td>
+                            <td>$0.36</td>
+                            <td>$0.04</td>
+                            <td>$0.00</td>
+                            <td>0.00%</td>
+                        </tr>
+                        <tr>
+                            <td>VAD AO</td>
+                            <td>Strategic Leavers</td>
+                            <td>420,514</td>
+                            <td>1,776,916,099</td>
+                            <td>422,831,167</td>
+                            <td>1,313,318</td>
+                            <td>$0.24</td>
+                            <td>$0.32</td>
+                            <td>$0.00</td>
+                            <td>100.00%</td>
+                        </tr>
+                        <tr>
+                            <td>ADC AO</td>
+                            <td>Strategic Leavers</td>
+                            <td>547,514</td>
+                            <td>1,509,099,039</td>
+                            <td>241,022,478</td>
+                            <td>3,299,569</td>
+                            <td>$0.36</td>
+                            <td>$0.04</td>
+                            <td>$0.00</td>
+                            <td>24.74%</td>
+                        </tr>
+                        <tr>
+                            <td>F1</td>
+                            <td>Strategic Leavers</td>
+                            <td>153,678</td>
+                            <td>869,162,940</td>
+                            <td>197,013,704</td>
+                            <td>112,234</td>
+                            <td>$0.18</td>
+                            <td>$0.04</td>
+                            <td>$0.00</td>
+                            <td>3.26%</td>
+                        </tr>
+                        <tr>
+                            <td>Family Vacation with Ranveer</td>
+                            <td>Brand Awareness</td>
+                            <td>877,197</td>
+                            <td>2,099,968,752</td>
+                            <td>140,187,698</td>
+                            <td>6,920,825</td>
+                            <td>$0.42</td>
+                            <td>$0.02</td>
+                            <td>$0.01</td>
+                            <td>13.06%</td>
+                        </tr>
+                        <tr>
+                            <td>Diwali</td>
+                            <td>Strategic Leavers</td>
+                            <td>408,785</td>
+                            <td>789,795,506</td>
+                            <td>73,580,846</td>
+                            <td>1,226,982</td>
+                            <td>$0.52</td>
+                            <td>$0.04</td>
+                            <td>$0.01</td>
+                            <td>10.69%</td>
+                        </tr>
+                        <tr>
+                            <td>Ramadan</td>
+                            <td>Strategic Leavers</td>
+                            <td>542,464</td>
+                            <td>150,409,678</td>
+                            <td>31,927,423</td>
+                            <td>452,549</td>
+                            <td>$3.61</td>
+                            <td>$0.36</td>
+                            <td>$0.02</td>
+                            <td>29.83%</td>
+                        </tr>
+                        <tr>
+                            <td>Saadiyat Cultural District</td>
+                            <td>Culture</td>
+                            <td>438,552</td>
+                            <td>483,553,385</td>
+                            <td>69,231,433</td>
+                            <td>376,094</td>
+                            <td>$0.91</td>
+                            <td>$0.09</td>
+                            <td>$0.01</td>
+                            <td>7.42%</td>
+                        </tr>
+                        <tr>
+                            <td>ADC Launch</td>
+                            <td>Brand Awareness</td>
+                            <td>805,099</td>
+                            <td>2,219,075,038</td>
+                            <td>354,414,755</td>
+                            <td>4,851,896</td>
+                            <td>$0.36</td>
+                            <td>$0.04</td>
+                            <td>$0.00</td>
+                            <td>24.74%</td>
+                        </tr>
+                        <tr>
+                            <td>GBA Q1</td>
+                            <td>Brand Awareness</td>
+                            <td>346,457</td>
+                            <td>215,895,343</td>
+                            <td>76,085,066</td>
+                            <td>927,802</td>
+                            <td>$1.60</td>
+                            <td>$0.07</td>
+                            <td>$0.00</td>
+                            <td>17.67%</td>
+                        </tr>
+                        <tr>
+                            <td>Search AON</td>
+                            <td>Brand Awareness</td>
+                            <td>277,449</td>
+                            <td>423,208,526</td>
+                            <td>18,671,714</t

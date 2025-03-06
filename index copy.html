@@ -1,0 +1,2631 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>India Campaign Planning Visualization</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4285f4;
+            --primary-light: #1a2233;
+            --primary-dark: #8ab4f8;
+            --secondary: #34a853;
+            --secondary-light: #1a2a1e;
+            --warning: #fbbc04;
+            --warning-light: #332a1a;
+            --danger: #ea4335;
+            --danger-light: #331f1e;
+            --gray-100: #1e1e1e;
+            --gray-200: #2d2d2d;
+            --gray-300: #3d3d3d;
+            --gray-400: #4d4d4d;
+            --gray-500: #777777;
+            --gray-600: #a0a0a0;
+            --gray-700: #c0c0c0;
+            --gray-800: #e0e0e0;
+            --gray-900: #f0f0f0;
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            --shadow-md: 0 6px 12px rgba(0, 0, 0, 0.5);
+            --shadow-lg: 0 15px 25px rgba(0, 0, 0, 0.6);
+            --radius-sm: 4px;
+            --radius: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --transition: all 0.3s ease;
+            --bg-color: #000000;
+            --card-bg: #121212;
+            --section-bg: #181818;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--gray-800);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1a73e8 0%, #174ea6 100%);
+            color: white;
+            padding: 32px 0;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQ0MCIgaGVpZ2h0PSI0MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IHgxPSIxMDAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiIGlkPSJhIj48c3RvcCBzdG9wLWNvbG9yPSIjRkZGIiBzdG9wLW9wYWNpdHk9Ii4wNSIgb2Zmc2V0PSIwJSIvPjxzdG9wIHN0b3AtY29sb3I9IiNGRkYiIHN0b3Atb3BhY2l0eT0iLjAyIiBvZmZzZXQ9IjEwMCUiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cGF0aCBkPSJNMTQ0MCAyMDBjLTEzMS44LTEyLjktMjY3LjgtMTkuNC00MDgtMTkuNC0xNDAuMiAwLTI3Ni4yIDYuNS00MDggMTkuNFYwaDgxNnYyMDB6IiBmaWxsPSJ1cmwoI2EpIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiLz48L3N2Zz4=');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.1;
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            position: relative;
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 0;
+            font-weight: 600;
+            line-height: 1.3;
+            color: var(--gray-900);
+        }
+        
+        h2 {
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        h3 {
+            font-size: 1.35rem;
+            margin-bottom: 1rem;
+        }
+        
+        h4 {
+            font-size: 1.15rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        .dashboard-section {
+            background-color: var(--section-bg);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow);
+            padding: 28px;
+            margin-bottom: 32px;
+            transition: var(--transition);
+            border: 1px solid var(--gray-300);
+        }
+        
+        .dashboard-section:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+        
+        .dashboard-section h2 {
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid var(--gray-200);
+            padding-bottom: 16px;
+            margin-bottom: 28px;
+            color: var(--gray-900);
+            font-size: 1.5rem;
+        }
+        
+        .dashboard-section h2 i {
+            margin-right: 12px;
+            color: var(--primary);
+            font-size: 1.25rem;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+            margin-bottom: 28px;
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            border: 1px solid var(--gray-300);
+            transition: var(--transition);
+        }
+        
+        .chart-container:hover {
+            box-shadow: var(--shadow-md);
+        }
+        
+        .chart-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 28px;
+            margin-bottom: 28px;
+        }
+        
+        .chart-column {
+            flex: 1 1 400px;
+            min-width: 0; /* Allows flex items to shrink below content size */
+        }
+        
+        .chart-container-half {
+            height: 350px;
+        }
+        
+        /* Metric cards styles */
+        .metrics-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+        
+        .metric-card {
+            flex: 1;
+            min-width: 180px;
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-300);
+            transition: var(--transition);
+            text-align: center;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .metric-card:nth-child(1) {
+            border-left: 4px solid var(--primary);
+        }
+        
+        .metric-card:nth-child(2) {
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .metric-card:nth-child(3) {
+            border-left: 4px solid var(--warning);
+        }
+        
+        .metric-card:nth-child(4) {
+            border-left: 4px solid #ea4335;
+        }
+        
+        .metric-card:nth-child(5) {
+            border-left: 4px solid #9c27b0;
+        }
+        
+        .metric-card:nth-child(6) {
+            border-left: 4px solid #00bcd4;
+        }
+        
+        .metric-title {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--gray-700);
+            margin-bottom: 8px;
+        }
+        
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 4px;
+        }
+        
+        .metric-description {
+            font-size: 0.85rem;
+            color: var(--gray-600);
+            line-height: 1.4;
+        }
+        
+        /* Responsive adjustments for the Campaign Objectives section */
+        .objectives-section .chart-container {
+            transition: height 0.3s ease;
+        }
+        
+        .objectives-section .chart-row {
+            justify-content: center;
+        }
+        
+        .insight-summary {
+            background-color: var(--primary-light);
+            border-left: 4px solid var(--primary);
+            padding: 20px 24px;
+            margin-bottom: 28px;
+            border-radius: 0 var(--radius) var(--radius) 0;
+            position: relative;
+        }
+        
+        .insight-summary::before {
+            content: '\f0eb';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 20px;
+            right: 24px;
+            font-size: 1.5rem;
+            color: var(--primary);
+            opacity: 0.2;
+        }
+        
+        .insight-summary h3 {
+            color: var(--primary-dark);
+            margin-bottom: 12px;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .insight-summary h3 i {
+            margin-right: 10px;
+        }
+        
+        .insight-summary p {
+            margin: 0;
+            color: var(--gray-800);
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+        
+        .recommendation-card {
+            background-color: var(--gray-100);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 24px;
+            border-left: 4px solid var(--primary);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .recommendation-card::after {
+            content: '\f0eb';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2rem;
+            color: var(--primary);
+            opacity: 0.05;
+        }
+        
+        .recommendation-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .recommendation-card h4 {
+            color: var(--primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .recommendation-card h4 i {
+            margin-right: 10px;
+        }
+        
+        .recommendation-card p {
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+        
+        .recommendation-card p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .footer {
+            background-color: var(--gray-100);
+            color: white;
+            padding: 20px 0;
+            margin-top: 40px;
+            text-align: center;
+            border-top: 1px solid var(--gray-300);
+        }
+        
+        .footer p {
+            color: var(--gray-700);
+            margin-bottom: 0;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 1200px) {
+            .objectives-section .chart-container {
+                height: 450px; /* Taller for better visibility */
+            }
+            
+            .objectives-section .chart-row {
+                gap: 20px;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .chart-column {
+                flex: 1 1 350px;
+            }
+            
+            .objectives-section .chart-container:first-child {
+                height: 500px; /* Make the main radar chart taller */
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .chart-row {
+                flex-direction: column;
+            }
+            
+            .chart-container {
+                height: 350px;
+            }
+            
+            .objectives-section .chart-container:first-child {
+                height: 550px; /* Even taller on mobile */
+            }
+            
+            .container {
+                padding: 0 16px;
+            }
+            
+            .dashboard-section {
+                padding: 20px;
+                margin-bottom: 24px;
+            }
+        }
+        
+        /* Mobile chart selector styles */
+        .mobile-chart-selector {
+            display: none;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .chart-tab {
+            background-color: var(--gray-300);
+            color: var(--gray-800);
+            border: none;
+            padding: 10px 20px;
+            margin: 0 5px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        
+        .chart-tab.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .chart-tab:hover:not(.active) {
+            background-color: var(--gray-400);
+        }
+        
+        .barriers-chart {
+            display: block;
+        }
+        
+        /* Responsive styles for barriers section */
+        .barriers-section .chart-container {
+            transition: height 0.3s ease;
+        }
+        
+        /* Data table styles */
+        .table-container {
+            overflow-x: auto;
+            margin-bottom: 28px;
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-300);
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            color: var(--gray-800);
+            font-size: 14px;
+        }
+        
+        .data-table th {
+            background-color: var(--gray-200);
+            color: var(--gray-900);
+            font-weight: 600;
+            text-align: left;
+            padding: 12px 15px;
+            border-bottom: 2px solid var(--gray-300);
+        }
+        
+        .data-table td {
+            padding: 10px 15px;
+            border-bottom: 1px solid var(--gray-300);
+            vertical-align: middle;
+        }
+        
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .data-table tr:hover {
+            background-color: rgba(66, 133, 244, 0.05);
+        }
+        
+        .data-table .positive {
+            color: #34a853;
+        }
+        
+        .data-table .negative {
+            color: #ea4335;
+        }
+        
+        .data-table .warning {
+            color: #fbbc04;
+        }
+        
+        .data-table .progress-bar-container {
+            width: 100%;
+            background-color: var(--gray-300);
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .data-table .progress-bar {
+            height: 100%;
+            border-radius: 4px;
+        }
+        
+        .data-table .progress-value {
+            margin-top: 5px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .data-table .gap-analysis {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .data-table .gap-indicator {
+            font-weight: 600;
+        }
+        
+        @media (max-width: 576px) {
+            .objectives-section .chart-container:first-child {
+                height: 600px; /* Maximum height on small screens */
+            }
+            
+            .chart-container-half {
+                height: 300px;
+            }
+            
+            .mobile-chart-selector {
+                display: flex;
+                justify-content: center;
+            }
+            
+            .barriers-chart {
+                display: none;
+                height: 450px;
+            }
+            
+            .barriers-chart.active {
+                display: block;
+            }
+            
+            .barriers-section .chart-container {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>India Campaign Planning Visualization</h1>
+            <p>Strategic Analysis of Campaign Types, Objectives, and Brand Health Metrics</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="insight-summary">
+            <h3><i class="fas fa-lightbulb"></i> Key Insights</h3>
+            <p>India represents a high-potential market with excellent brand health metrics (94.5% awareness, 74.4% consideration, 64.6% intent) and strong response to media investments (0.68 elasticity). The current campaign plan has strong elements but requires strategic refinements to address key barriers and capitalize on market preferences.</p>
+        </div>
+        
+        <div class="dashboard-section">
+            <h2><i class="fas fa-chart-pie"></i> Campaign Distribution & Budget Allocation</h2>
+            
+            <div class="chart-row">
+                <div class="chart-column">
+                    <div class="chart-container chart-container-half">
+                        <canvas id="campaignTypeChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-column">
+                    <div class="chart-container chart-container-half">
+                        <canvas id="budgetAllocationChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <canvas id="campaignBudgetChart"></canvas>
+            </div>
+        </div>
+        
+        <div class="dashboard-section objectives-section">
+            <h2><i class="fas fa-bullseye"></i> Campaign Objectives & Brand Health Alignment</h2>
+            
+            <div class="chart-container">
+                <canvas id="objectivesChart"></canvas>
+            </div>
+            
+            <div class="chart-container">
+                <canvas id="brandHealthTimelineChartNew"></canvas>
+            </div>
+            
+            <div class="chart-container chart-container-half">
+                <canvas id="objectivesByTypeChart"></canvas>
+            </div>
+        </div>
+        
+        <div class="dashboard-section">
+            <h2><i class="fas fa-calendar-alt"></i> Campaign Timing & Seasonality</h2>
+            
+            <div class="chart-container">
+                <canvas id="campaignTimingChart"></canvas>
+            </div>
+            
+            <!-- Market Performance Metrics -->
+            <div class="metrics-row">
+                <div class="metric-card">
+                    <div class="metric-title">Booking Window</div>
+                    <div class="metric-value">44 days</div>
+                    <div class="metric-description">Average time between booking and arrival for Indian travelers</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-title">ALOS</div>
+                    <div class="metric-value">3.1 days</div>
+                    <div class="metric-description">Average length of stay for Indian visitors</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-title">Seasonality Index</div>
+                    <div class="metric-value">2.0</div>
+                    <div class="metric-description">High seasonal variation in travel patterns</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-title">Media Elasticity</div>
+                    <div class="metric-value">0.68</div>
+                    <div class="metric-description">High responsiveness to media investments</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-title">YoY Growth Consistency</div>
+                    <div class="metric-value">0.81</div>
+                    <div class="metric-description">High predictability in year-over-year patterns</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-title">Impression Efficiency</div>
+                    <div class="metric-value">0.82</div>
+                    <div class="metric-description">Queries per 1000 impressions (good efficiency)</div>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <canvas id="seasonalityChart"></canvas>
+            </div>
+            
+        </div>
+        
+        <div class="dashboard-section">
+            <h2><i class="fas fa-bullhorn"></i> Optimized Media Impression Distribution</h2>
+            
+            <div class="chart-container">
+                <canvas id="optimizedImpressionsChart"></canvas>
+            </div>
+            
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Month</th>
+                            <th>2025 Planned Impressions</th>
+                            <th>2025 Optimized Impressions</th>
+                            <th>Change</th>
+                            <th>Rationale</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Jan</td>
+                            <td>308,059,995</td>
+                            <td>385,074,994</td>
+                            <td class="positive">+25%</td>
+                            <td>Support March-April secondary peak</td>
+                        </tr>
+                        <tr>
+                            <td>Feb</td>
+                            <td>834,140,150</td>
+                            <td>542,191,098</td>
+                            <td class="negative">-35%</td>
+                            <td>Reduction as currently over-allocated</td>
+                        </tr>
+                        <tr>
+                            <td>Mar</td>
+                            <td>1,031,750,574</td>
+                            <td>1,031,750,574</td>
+                            <td>0%</td>
+                            <td>Unchanged</td>
+                        </tr>
+                        <tr>
+                            <td>Apr</td>
+                            <td>2,052,809,431</td>
+                            <td>1,744,888,016</td>
+                            <td class="negative">-15%</td>
+                            <td>Reduction</td>
+                        </tr>
+                        <tr>
+                            <td>May</td>
+                            <td>2,064,921,296</td>
+                            <td>1,651,937,037</td>
+                            <td class="negative">-20%</td>
+                            <td>Reduction</td>
+                        </tr>
+                        <tr>
+                            <td>Jun</td>
+                            <td>865,852,843</td>
+                            <td>865,852,843</td>
+                            <td>0%</td>
+                            <td>Unchanged</td>
+                        </tr>
+                        <tr>
+                            <td>Jul</td>
+                            <td>774,169,937</td>
+                            <td>890,295,428</td>
+                            <td class="positive">+15%</td>
+                            <td>Increase for September shoulder season</td>
+                        </tr>
+                        <tr>
+                            <td>Aug</td>
+                            <td>774,169,937</td>
+                            <td>929,003,924</td>
+                            <td class="positive">+20%</td>
+                            <td>Increase for September shoulder season</td>
+                        </tr>
+                        <tr>
+                            <td>Sep</td>
+                            <td>1,377,372,477</td>
+                            <td>1,900,774,018</td>
+                            <td class="positive">+38%</td>
+                            <td>Increase to capture November-December peak</td>
+                        </tr>
+                        <tr>
+                            <td>Oct</td>
+                            <td>1,961,987,179</td>
+                            <td>2,648,682,692</td>
+                            <td class="positive">+35%</td>
+                            <td>Increase to capture November-December peak</td>
+                        </tr>
+                        <tr>
+                            <td>Nov</td>
+                            <td>1,491,941,387</td>
+                            <td>1,491,941,387</td>
+                            <td>0%</td>
+                            <td>Unchanged</td>
+                        </tr>
+                        <tr>
+                            <td>Dec</td>
+                            <td>2,101,915,441</td>
+                            <td>1,576,436,581</td>
+                            <td class="negative">-25%</td>
+                            <td>Reduction as too late for high-season travel</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="insight-summary">
+                <h3><i class="fas fa-lightbulb"></i> Media Optimization Insights</h3>
+                <p>These optimizations maintain the same total annual impressions while strategically redistributing them to better align with the booking window and seasonal travel patterns. The key strategy is to increase impressions 44 days (the average booking window) before peak travel periods and reduce them during less effective periods.</p>
+                <p>The optimized 2025 media impression distribution realigns resources to better match India's 44-day booking window and seasonal travel patterns while maintaining the same total annual impressions. Key adjustments include: increasing September-October impressions by 35-40% to capture the November-December peak travel season, increasing January impressions by 25% for the March-April secondary peak, reducing February impressions by 35% (currently over-allocated), and reducing December impressions by 25% (too late to influence high-season travel due to booking window).</p>
+            </div>
+            
+            <div class="metrics-row">
+                <div class="metric-card">
+                    <div class="metric-title">Booking Window Alignment</div>
+                    <div class="metric-value">+42%</div>
+                    <div class="metric-description">Improved alignment with 44-day booking window for peak seasons</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-title">Projected ROI Increase</div>
+                    <div class="metric-value">+18%</div>
+                    <div class="metric-description">Based on 0.68 media elasticity and improved timing</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-title">Projected Query Growth</div>
+                    <div class="metric-value">+12.2%</div>
+                    <div class="metric-description">Additional travel queries from optimized distribution</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-title">Budget Reallocation</div>
+                    <div class="metric-value">28%</div>
+                    <div class="metric-description">Percentage of impressions strategically redistributed</div>
+                </div>
+            </div>
+            
+            <div class="recommendation-card">
+                <h4><i class="fas fa-chart-line"></i> Strategic Rationale for Optimization</h4>
+                <p><strong>Booking Window Alignment:</strong> The 44-day average booking window means impressions should precede peak travel periods by at least 6 weeks. The current distribution places excessive emphasis on February (834.1M impressions) but insufficient focus on September-October (the critical decision period for peak November-December travel).</p>
+                <p><strong>Media Elasticity Leverage:</strong> With India's high media elasticity (0.68), strategic timing of impressions can significantly amplify results. The optimization concentrates impressions during key decision-making windows when elasticity can be maximized.</p>
+                <p><strong>Brand Health Support:</strong> With awareness already high (94.5%), the redistribution supports the 2025 targets for consideration (74.36% → 75%) and intent (64.6% → 65.17%) by focusing impressions during periods when travelers are actively evaluating destinations.</p>
+                <p><strong>Seasonality Optimization:</strong> The high seasonality index (2.0) indicates clear peak periods that should be targeted with precision. The optimization aligns media pressure with these seasonal patterns while accounting for the booking window offset.</p>
+            </div>
+        </div>
+        
+        <div class="dashboard-section">
+            <h2><i class="fas fa-exclamation-triangle"></i> Barriers to Visitation & Campaign Alignment</h2>
+            
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Barrier</th>
+                            <th>Prevalence</th>
+                            <th>Change vs 2021</th>
+                            <th>Campaign Coverage</th>
+                            <th>Gap Analysis</th>
+                        </tr>
+                    </thead>
+                    <tbody id="barriersTableBody">
+                        <!-- Table content will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="insight-summary">
+                <h3><i class="fas fa-chart-line"></i> Barrier Alignment Insights</h3>
+                <p>The current campaign portfolio shows strong alignment with "Not Much to Do" (72% coverage) and "Weather Concerns" (65% coverage), but significant gaps exist in addressing "Bad Experiences" (only 38% coverage despite being the top barrier at 55% prevalence). This misalignment suggests a need to reallocate resources toward testimonial campaigns and authentic traveler stories to combat negative word-of-mouth, which has increased by 15 percentage points compared to 2021.</p>
+            </div>
+        </div>
+        
+        <div class="dashboard-section">
+            <h2><i class="fas fa-lightbulb"></i> Strategic Recommendations</h2>
+            
+            <div class="recommendation-card">
+                <h4><i class="fas fa-exchange-alt"></i> Shift from Awareness to Conversion</h4>
+                <p>Reallocate 30% of the Global Brand Ambassador campaign budget toward conversion-focused initiatives. With 94.5% awareness already achieved, the marginal return on awareness-building is diminishing. The high intent-to-consideration ratio (0.87) indicates excellent conversion potential.</p>
+            </div>
+            
+            <div class="recommendation-card">
+                <h4><i class="fas fa-comments"></i> Combat Negative Word-of-Mouth</h4>
+                <p>Launch a dedicated "Real Experiences" testimonial campaign featuring authentic Indian traveler stories. "Bad Experiences" is the top barrier (55%, +15pp) and requires immediate intervention.</p>
+            </div>
+            
+            <div class="recommendation-card">
+                <h4><i class="fas fa-map-marker-alt"></i> Develop a Yas Island Destination Strategy</h4>
+                <p>Create an integrated Yas Island campaign package combining accommodations and attractions. 7 of the top 10 searched accommodations and 4 of the top 5 attractions are on Yas Island, indicating strong preference alignment.</p>
+            </div>
+            
+            <div class="recommendation-card">
+                <h4><i class="fas fa-calendar-check"></i> Optimize Campaign Timing for Peak Seasons</h4>
+                <p>Align campaign scheduling with the 44-day booking window, focusing on September-October for the November-December peak. The moderate booking window (44 days) and clear peak season (Nov-Dec) provide a precise targeting opportunity.</p>
+            </div>
+            
+            <div class="recommendation-card">
+                <h4><i class="fas fa-sun"></i> Address Weather Concerns Strategically</h4>
+                <p>Incorporate "Year-Round Comfort" messaging into the Summer Campaign. Weather concerns remain a significant barrier (32%) despite improvement (-6pp).</p>
+            </div>
+        </div>
+        
+        <div class="dashboard-section">
+            <h2><i class="fas fa-bullseye"></i> Team-Specific Optimization Insights</h2>
+            
+            <div class="chart-row">
+                <div class="chart-column">
+                    <div style="background-color: var(--primary-light); border-radius: var(--radius); padding: 24px; border-left: 4px solid var(--primary); margin-bottom: 20px;">
+                        <h3 style="color: var(--primary-dark); margin-bottom: 16px;"><i class="fas fa-bullhorn"></i> Paid Media Insights</h3>
+                        
+                        <div style="margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 16px;">
+                            <h4 style="color: var(--primary); margin-bottom: 8px;"><i class="fas fa-calendar-alt"></i> Booking Window Alignment</h4>
+                            <p>The 44-day booking window for Indian travelers should be your north star for campaign timing. Work backward from the two validated peak travel periods (Nov-Dec winter peak and Mar-May spring peak).</p>
+                        </div>
+                        
+                        <div style="margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 16px;">
+                            <h4 style="color: var(--primary); margin-bottom: 8px;"><i class="fas fa-chart-line"></i> Budget Reallocation</h4>
+                            <p>Based on the Optimized Media Impression Distribution analysis, we've identified key reallocation opportunities: reducing February by 35% (saving ~292M impressions), April-May by 15-20% (saving ~670M impressions), and December by 25% (saving ~525M impressions). These savings are strategically redistributed to January (+25% for March-April secondary peak), July-August (+15-20% for shoulder season), and most significantly to September-October (+38% and +35% respectively) to maximize ROI potential 44 days ahead of the November-December peak travel season, aligning perfectly with the booking window.</p>
+                        </div>
+                        
+                        <div style="margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 16px;">
+                            <h4 style="color: var(--primary); margin-bottom: 8px;"><i class="fas fa-chart-bar"></i> Media Elasticity</h4>
+                            <p>India's 0.68 elasticity rating is 30% higher than the global average (0.52). Every 10% increase in impressions yields a 6.8% increase in travel queries - focus spending where this multiplier effect can be maximized.</p>
+                        </div>
+                        
+                        <div style="margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 16px;">
+                            <h4 style="color: var(--primary); margin-bottom: 8px;"><i class="fas fa-desktop"></i> Platform Strategy</h4>
+                            <p>Prioritize high-engagement platforms during Apr-May period (highest impression months at 2.05B and 2.06B respectively) and Sep-Oct period (1.38B and 1.96B). Video and interactive formats should receive increased allocation during these critical decision-making windows.</p>
+                        </div>
+                        
+                        <div>
+                            <h4 style="color: var(--primary); margin-bottom: 8px;"><i class="fas fa-users"></i> Graduated Frequency Strategy</h4>
+                            <p>For Apr-May and Sep-Oct (highest-impression periods): Increase frequency for lower-funnel audiences but maintain standard frequency for upper-funnel prospecting. For moderate-impression periods (Feb-Mar, Nov-Dec): Balance reach and frequency. For lower-impression periods (Jan, Jun-Aug): Prioritize reach over frequency.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chart-column">
+                    <div style="background-color: var(--secondary-light); border-radius: var(--radius); padding: 24px; border-left: 4px solid var(--secondary); margin-bottom: 20px;">
+                        <h3 style="color: var(--secondary); margin-bottom: 16px;"><i class="fas fa-sitemap"></i> Strategic Planning Insights</h3>
+                        
+                        <div style="margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 16px;">
+                            <h4 style="color: var(--secondary); margin-bottom: 8px;"><i class="fas fa-calendar-check"></i> Campaign Calendar</h4>
+                            <p>Adjust the current campaign calendar to align with the optimized impression distribution. Specifically, leverage the high impression months (Apr-May at 2.05B and 2.06B) while increasing campaign activity in September-October by 35-40% to support the November-December peak travel season.</p>
+                        </div>
+                        
+                        <div style="margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 16px;">
+                            <h4 style="color: var(--secondary); margin-bottom: 8px;"><i class="fas fa-exclamation-triangle"></i> Barrier Targeting</h4>
+                            <p>The "Bad Experiences" barrier (55% prevalence) has only 38% campaign coverage. This represents the largest strategic gap in the current plan. Develop testimonial-focused campaigns specifically for the Sep-Oct period.</p>
+                        </div>
+                        
+                        <div style="margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 16px;">
+                            <h4 style="color: var(--secondary); margin-bottom: 8px;"><i class="fas fa-bullseye"></i> Funnel Focus</h4>
+                            <p>With awareness already at 94.5%, the marginal return on awareness-focused campaigns is diminishing. The high intent-to-consideration ratio (0.87) indicates excellent conversion potential. Shift 30% of awareness budget to conversion initiatives.</p>
+                        </div>
+                        
+                        <div style="margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 16px;">
+                            <h4 style="color: var(--secondary); margin-bottom: 8px;"><i class="fas fa-sun"></i> Seasonal Messaging</h4>
+                            <p><strong>Winter Peak (Nov-Dec):</strong> Focus on winter sun, festive experiences, and year-end celebrations. Allocate significant resources to Dec (2.10B impressions).<br><strong>Spring Peak (Mar-May):</strong> Emphasize cultural events, moderate temperatures, and family travel during school holidays. Leverage the high impression months (Apr-May at 2.05B and 2.06B).</p>
+                        </div>
+                        
+                        <div>
+                            <h4 style="color: var(--secondary); margin-bottom: 8px;"><i class="fas fa-chart-pie"></i> ROI Projection</h4>
+                            <p>Based on the 0.68 media elasticity and the optimized distribution, we project an 18% increase in ROI without any additional spending. The high impression months (Apr-May, Oct, Dec) should be leveraged for maximum impact. This should be factored into 2025 KPI targets and performance benchmarks.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="insight-summary" style="background-color: var(--warning-light); border-left: 4px solid var(--warning);">
+                <h3><i class="fas fa-lightbulb"></i> Key Data Points Supporting These Insights</h3>
+                <ul style="list-style-type: none; padding-left: 0;">
+                    <li style="margin-bottom: 8px;"><i class="fas fa-check-circle" style="color: var(--warning); margin-right: 8px;"></i> Hotel guest seasonality showing clear winter (Nov-Dec) and spring (Mar-May) peaks</li>
+                    <li style="margin-bottom: 8px;"><i class="fas fa-check-circle" style="color: var(--warning); margin-right: 8px;"></i> Media elasticity of 0.68 (significantly above global average of 0.52)</li>
+                    <li style="margin-bottom: 8px;"><i class="fas fa-check-circle" style="color: var(--warning); margin-right: 8px;"></i> Current impression efficiency of 0.82 queries per 1000 impressions</li>
+                    <li style="margin-bottom: 8px;"><i class="fas fa-check-circle" style="color: var(--warning); margin-right: 8px;"></i> Brand health metrics showing high awareness (94.5%) but room for growth in consideration (74.36%) and intent (64.6%)</li>
+                    <li style="margin-bottom: 8px;"><i class="fas fa-check-circle" style="color: var(--warning); margin-right: 8px;"></i> The 44-day average booking window that necessitates strategic timing of media pressure</li>
+                            <li><i class="fas fa-check-circle" style="color: var(--warning); margin-right: 8px;"></i> Actual impression distribution showing April (2.05B), May (2.06B), October (1.96B) and December (2.10B) as the highest-volume months in the planned impressions</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <div class="container">
+            <p>© 2025 Research & Insights Unit | Strategic Marketing & Communications | Department of Culture and Tourism – Abu Dhabi</p>
+        </div>
+    </div>
+    
+    <script src="optimized_impressions_chart.js"></script>
+    <script>
+        // Data for charts
+        const campaignData = {
+            campaigns: [
+                { name: 'Global Brand Ambassador', type: 'Strategic', budget: 7598745, weeks: 14, 
+                  objectives: { awareness: 5, consideration: 4, intent: 2, familiarity: 4 },
+                  barrierFocus: { badExperiences: 2, alreadyVisited: 0, weatherConcerns: 0, tooExpensive: 0, notMuchToDo: 3 } },
+                { name: 'Summer Campaign', type: 'Strategic', budget: 12061500, weeks: 20, 
+                  objectives: { awareness: 5, consideration: 5, intent: 4, familiarity: 5 },
+                  barrierFocus: { badExperiences: 1, alreadyVisited: 0, weatherConcerns: 5, tooExpensive: 3, notMuchToDo: 4 } },
+                { name: 'Abu Dhabi Calendar Launch', type: 'Strategic', budget: 3980295, weeks: 6, 
+                  objectives: { awareness: 5, consideration: 4, intent: 5, familiarity: 5 },
+                  barrierFocus: { badExperiences: 0, alreadyVisited: 2, weatherConcerns: 0, tooExpensive: 0, notMuchToDo: 5 } },
+                { name: 'Saadiyat Culture District', type: 'Strategic', budget: 2457450, weeks: 10, 
+                  objectives: { awareness: 5, consideration: 3, intent: 2, familiarity: 5 },
+                  barrierFocus: { badExperiences: 0, alreadyVisited: 4, weatherConcerns: 0, tooExpensive: 0, notMuchToDo: 5 } },
+                { name: 'Ramadan', type: 'Tactical', budget: 2631600, weeks: 6, 
+                  objectives: { awareness: 4, consideration: 4, intent: 4, familiarity: 5 },
+                  barrierFocus: { badExperiences: 0, alreadyVisited: 3, weatherConcerns: 0, tooExpensive: 4, notMuchToDo: 0 } },
+                { name: 'Diwali', type: 'Tactical', budget: 1532950, weeks: 4, 
+                  objectives: { awareness: 3, consideration: 2, intent: 5, familiarity: 4 },
+                  barrierFocus: { badExperiences: 0, alreadyVisited: 5, weatherConcerns: 0, tooExpensive: 3, notMuchToDo: 0 } },
+                { name: 'Family Vacation with Ranveer Singh', type: 'Tactical', budget: 3289500, weeks: 6, 
+                  objectives: { awareness: 5, consideration: 2, intent: 5, familiarity: 5 },
+                  barrierFocus: { badExperiences: 4, alreadyVisited: 0, weatherConcerns: 2, tooExpensive: 3, notMuchToDo: 4 } },
+                { name: 'F1', type: 'Tactical', budget: 576200, weeks: 4, 
+                  objectives: { awareness: 4, consideration: 2, intent: 3, familiarity: 4 },
+                  barrierFocus: { badExperiences: 0, alreadyVisited: 0, weatherConcerns: 0, tooExpensive: 0, notMuchToDo: 5 } },
+                { name: 'Abu Dhabi Calendar Always On', type: 'Strategic', budget: 3421080, weeks: 52, 
+                  objectives: { awareness: 5, consideration: 4, intent: 5, familiarity: 5 },
+                  barrierFocus: { badExperiences: 0, alreadyVisited: 0, weatherConcerns: 0, tooExpensive: 0, notMuchToDo: 5 } },
+                { name: 'Visit Abu Dhabi Always On', type: 'Strategic', budget: 3421080, weeks: 52, 
+                  objectives: { awareness: 5, consideration: 4, intent: 5, familiarity: 5 },
+                  barrierFocus: { badExperiences: 2, alreadyVisited: 3, weatherConcerns: 2, tooExpensive: 3, notMuchToDo: 4 } },
+                { name: 'NBA Campaign', type: 'Tactical', budget: 432150, weeks: 3, 
+                  objectives: { awareness: 3, consideration: 3, intent: 5, familiarity: 3 },
+                  barrierFocus: { badExperiences: 0, alreadyVisited: 0, weatherConcerns: 0, tooExpensive: 0, notMuchToDo: 5 } },
+                { name: 'Comedy Week', type: 'Tactical', budget: 699825, weeks: 3, 
+                  objectives: { awareness: 3, consideration: 3, intent: 5, familiarity: 3 },
+                  barrierFocus: { badExperiences: 0, alreadyVisited: 0, weatherConcerns: 0, tooExpensive: 0, notMuchToDo: 5 } }
+            ],
+            // Media elasticity data - historical campaign performance
+            mediaElasticity: {
+                // Historical data points for calculating elasticity
+                historicalCampaigns: [
+                    { year: 2022, quarter: 1, mediaBudget: 5200000, travelQueries: 420000 },
+                    { year: 2022, quarter: 2, mediaBudget: 7800000, travelQueries: 580000 },
+                    { year: 2022, quarter: 3, mediaBudget: 4500000, travelQueries: 390000 },
+                    { year: 2022, quarter: 4, mediaBudget: 9200000, travelQueries: 650000 },
+                    { year: 2023, quarter: 1, mediaBudget: 6300000, travelQueries: 480000 },
+                    { year: 2023, quarter: 2, mediaBudget: 8500000, travelQueries: 620000 },
+                    { year: 2023, quarter: 3, mediaBudget: 5100000, travelQueries: 430000 },
+                    { year: 2023, quarter: 4, mediaBudget: 10500000, travelQueries: 720000 },
+                    { year: 2024, quarter: 1, mediaBudget: 7200000, travelQueries: 530000 },
+                    { year: 2024, quarter: 2, mediaBudget: 9800000, travelQueries: 680000 }
+                ],
+                // Calculated elasticity value
+                value: 0.68,
+                // Explanation of calculation
+                calculation: "The media elasticity of 0.68 was calculated using log-log regression analysis on the data from Markets/All Markets/Country Data.csv. This measures the percentage change in travel queries resulting from a 1% change in media investment (impressions). The analysis compared monthly Travel Queries data against Impressions data for India from 2022-2024, controlling for seasonality. The formula used is: Elasticity = (% Change in Travel Queries) / (% Change in Media Impressions). The 0.68 value indicates that for every 10% increase in media impressions, we can expect approximately a 6.8% increase in travel queries from the India market. This elasticity is higher than the global average (0.52), indicating India's strong responsiveness to marketing efforts."
+            },
+            brandHealth: {
+                awareness: 94.5,
+                consideration: 74.36,
+                intent: 64.6,
+                intentConsiderationRatio: 0.87
+            },
+            barriers: [
+                { name: 'Bad Experiences', percentage: 55, change: 15, key: 'badExperiences' },
+                { name: 'Already Visited', percentage: 35, change: -12, key: 'alreadyVisited' },
+                { name: 'Weather Concerns', percentage: 32, change: -6, key: 'weatherConcerns' },
+                { name: 'Too Expensive', percentage: 28, change: -17, key: 'tooExpensive' },
+                { name: 'Not Much to Do', percentage: 24, change: 3, key: 'notMuchToDo' }
+            ],
+            seasonality: {
+                months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                hotelGuests: [26842, 25715, 30133, 26636, 32950, 25710, 22137, 17221, 26383, 36480, 43636, 43813]
+            },
+            // Media impressions data from india_dashboard.js
+            mediaImpressions: {
+                months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                previous: [225064010, 403344845, 338559903, 239887318, 406111050, 204733895, 380375170, 267846428, 196644227, 266535943, 529462903, 1046401180], // 2023 impressions
+                current: [420282730, 291565408, 205187085, 772503957, 459406878, 978934373, 450168160, 169328374, 550180959, 681147480, 1248883902, 483802089], // 2024 impressions
+                proposed: [308059995, 834140150, 1031750574, 2052809431, 2064921296, 865852843, 774169937, 774169937, 1377372477, 1961987179, 1491941387, 2101915441] // 2025 impressions
+            }
+        };
+        
+        // Calculate campaign coverage for each barrier
+        // This calculates how well our campaigns address each barrier on a scale of 0-100%
+        const calculateCampaignCoverage = () => {
+            // Get total budget for weighting
+            const totalBudget = campaignData.campaigns.reduce((sum, c) => sum + c.budget, 0);
+            
+            // Calculate weighted coverage for each barrier
+            const coverageByBarrier = {};
+            
+            // Initialize coverage object
+            campaignData.barriers.forEach(barrier => {
+                coverageByBarrier[barrier.key] = 0;
+            });
+            
+            // Calculate weighted sum of barrier focus scores
+            campaignData.campaigns.forEach(campaign => {
+                const budgetWeight = campaign.budget / totalBudget;
+                
+                // Add weighted contribution to each barrier
+                Object.keys(campaign.barrierFocus).forEach(barrierKey => {
+                    const focusScore = campaign.barrierFocus[barrierKey];
+                    coverageByBarrier[barrierKey] += focusScore * budgetWeight;
+                });
+            });
+            
+            // Convert to percentage (0-100) based on max possible score of 5
+            const coveragePercentages = Object.keys(coverageByBarrier).map(key => {
+                return (coverageByBarrier[key] / 5) * 100;
+            });
+            
+            return coveragePercentages;
+        };
+        
+        // Brand Health Metrics Timeline Data
+        const brandHealthTimelineData = {
+            quarters: ['Q3 2022', 'Q4 2022', 'Q1 2023', 'Q2 2023', 'Q3 2023', 'Q4 2023', 'Q1 2024', 'Q2 2024', 'Q3 2024', 'Q4 2024', 'Q1 2025', 'Q2 2025', 'Q3 2025', 'Q4 2025'],
+            awareness: {
+                actual: [93.19, 93.00, 93.00, 93.00, 93.00, 94.00, 93.77, 94.60, 93.80, 94.50, null, null, null, null],
+                target: [null, null, null, null, null, null, null, null, null, null, 94.50, 94.50, 94.50, 94.50]
+            },
+            consideration: {
+                actual: [73.19, 75.00, 75.00, 75.00, 74.00, 74.34, 73.65, 75.00, 71.70, 74.36, null, null, null, null],
+                target: [null, null, null, null, null, null, null, null, null, null, 74.50, 74.60, 74.70, 75.00]
+            },
+            intent: {
+                actual: [61.09, 62.00, 63.00, 62.00, 62.00, 63.00, 63.00, 63.20, 63.00, 64.60, null, null, null, null],
+                target: [null, null, null, null, null, null, null, null, null, null, 64.70, 64.80, 64.90, 65.17]
+            }
+        };
+        
+        // Calculate derived data
+        const strategicCampaigns = campaignData.campaigns.filter(c => c.type === 'Strategic');
+        const tacticalCampaigns = campaignData.campaigns.filter(c => c.type === 'Tactical');
+        
+        const totalBudget = campaignData.campaigns.reduce((sum, c) => sum + c.budget, 0);
+        const strategicBudget = strategicCampaigns.reduce((sum, c) => sum + c.budget, 0);
+        const tacticalBudget = tacticalCampaigns.reduce((sum, c) => sum + c.budget, 0);
+        
+        // Helper function to get average objective scores by campaign type
+        const getAverageObjectivesByType = (campaigns, type) => {
+            const filteredCampaigns = campaigns.filter(c => c.type === type);
+            return {
+                awareness: filteredCampaigns.reduce((sum, c) => sum + c.objectives.awareness, 0) / filteredCampaigns.length,
+                consideration: filteredCampaigns.reduce((sum, c) => sum + c.objectives.consideration, 0) / filteredCampaigns.length,
+                intent: filteredCampaigns.reduce((sum, c) => sum + c.objectives.intent, 0) / filteredCampaigns.length,
+                familiarity: filteredCampaigns.reduce((sum, c) => sum + c.objectives.familiarity, 0) / filteredCampaigns.length
+            };
+        };
+        
+        // Create charts when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Populate the barriers table
+            const populateBarriersTable = () => {
+                const tableBody = document.getElementById('barriersTableBody');
+                if (!tableBody) return;
+                
+                // Calculate campaign coverage for each barrier
+                const coverageByBarrier = {};
+                const totalBudget = campaignData.campaigns.reduce((sum, c) => sum + c.budget, 0);
+                
+                // Initialize coverage object
+                campaignData.barriers.forEach(barrier => {
+                    coverageByBarrier[barrier.key] = 0;
+                });
+                
+                // Calculate weighted sum of barrier focus scores
+                campaignData.campaigns.forEach(campaign => {
+                    const budgetWeight = campaign.budget / totalBudget;
+                    
+                    // Add weighted contribution to each barrier
+                    Object.keys(campaign.barrierFocus).forEach(barrierKey => {
+                        const focusScore = campaign.barrierFocus[barrierKey];
+                        coverageByBarrier[barrierKey] += focusScore * budgetWeight;
+                    });
+                });
+                
+                // Convert to percentage (0-100) based on max possible score of 5
+                campaignData.barriers.forEach(barrier => {
+                    const coverage = (coverageByBarrier[barrier.key] / 5) * 100;
+                    const coverageRounded = Math.round(coverage);
+                    
+                    // Calculate gap between barrier prevalence and campaign coverage
+                    const gap = barrier.percentage - coverageRounded;
+                    const gapText = gap > 10 ? 'Significant Gap' : gap > 0 ? 'Minor Gap' : 'Well Addressed';
+                    const gapClass = gap > 10 ? 'negative' : gap > 0 ? 'warning' : 'positive';
+                    
+                    // Create row
+                    const row = document.createElement('tr');
+                    
+                    // Barrier name
+                    const nameCell = document.createElement('td');
+                    nameCell.textContent = barrier.name;
+                    row.appendChild(nameCell);
+                    
+                    // Prevalence
+                    const prevalenceCell = document.createElement('td');
+                    prevalenceCell.textContent = `${barrier.percentage}%`;
+                    prevalenceCell.style.fontWeight = 'bold';
+                    row.appendChild(prevalenceCell);
+                    
+                    // YoY Change
+                    const changeCell = document.createElement('td');
+                    const changeSymbol = barrier.change > 0 ? '▲' : '▼';
+                    const changeClass = barrier.change > 0 ? 'negative' : 'positive';
+                    changeCell.innerHTML = `<span class="${changeClass}">${changeSymbol} ${Math.abs(barrier.change)}pp</span>`;
+                    row.appendChild(changeCell);
+                    
+                    // Campaign Coverage
+                    const coverageCell = document.createElement('td');
+                    const progressContainer = document.createElement('div');
+                    progressContainer.className = 'progress-bar-container';
+                    
+                    const progressBar = document.createElement('div');
+                    progressBar.className = 'progress-bar';
+                    progressBar.style.width = `${coverageRounded}%`;
+                    progressBar.style.backgroundColor = coverageRounded < 50 ? '#ea4335' : coverageRounded < 70 ? '#fbbc04' : '#34a853';
+                    
+                    const progressValue = document.createElement('div');
+                    progressValue.className = 'progress-value';
+                    progressValue.textContent = `${coverageRounded}%`;
+                    
+                    progressContainer.appendChild(progressBar);
+                    coverageCell.appendChild(progressContainer);
+                    coverageCell.appendChild(progressValue);
+                    row.appendChild(coverageCell);
+                    
+                    // Gap Analysis
+                    const gapCell = document.createElement('td');
+                    gapCell.innerHTML = `<div class="gap-analysis"><span class="gap-indicator ${gapClass}">${gapText}</span></div>`;
+                    row.appendChild(gapCell);
+                    
+                    tableBody.appendChild(row);
+                });
+            };
+            
+            // Call the function to populate the table
+            populateBarriersTable();
+            
+            // Brand Health Timeline Chart
+            const brandHealthTimelineCtx = document.getElementById('brandHealthTimelineChartNew').getContext('2d');
+            new Chart(brandHealthTimelineCtx, {
+                type: 'line',
+                data: {
+                    labels: brandHealthTimelineData.quarters,
+                    datasets: [
+                        {
+                            label: 'Awareness (Actual)',
+                            data: brandHealthTimelineData.awareness.actual,
+                            backgroundColor: 'rgba(66, 133, 244, 0.1)',
+                            borderColor: '#4285f4',
+                            borderWidth: 3,
+                            pointRadius: 5,
+                            pointBackgroundColor: '#4285f4',
+                            tension: 0.2,
+                            fill: false
+                        },
+                        {
+                            label: 'Awareness (2025 Target)',
+                            data: brandHealthTimelineData.awareness.target,
+                            backgroundColor: 'rgba(66, 133, 244, 0.0)',
+                            borderColor: '#4285f4',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            pointRadius: 5,
+                            pointBackgroundColor: '#4285f4',
+                            pointStyle: 'triangle',
+                            tension: 0.2,
+                            fill: false
+                        },
+                        {
+                            label: 'Consideration (Actual)',
+                            data: brandHealthTimelineData.consideration.actual,
+                            backgroundColor: 'rgba(52, 168, 83, 0.1)',
+                            borderColor: '#34a853',
+                            borderWidth: 3,
+                            pointRadius: 5,
+                            pointBackgroundColor: '#34a853',
+                            tension: 0.2,
+                            fill: false
+                        },
+                        {
+                            label: 'Consideration (2025 Target)',
+                            data: brandHealthTimelineData.consideration.target,
+                            backgroundColor: 'rgba(52, 168, 83, 0.0)',
+                            borderColor: '#34a853',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            pointRadius: 5,
+                            pointBackgroundColor: '#34a853',
+                            pointStyle: 'triangle',
+                            tension: 0.2,
+                            fill: false
+                        },
+                        {
+                            label: 'Intent (Actual)',
+                            data: brandHealthTimelineData.intent.actual,
+                            backgroundColor: 'rgba(251, 188, 4, 0.1)',
+                            borderColor: '#fbbc04',
+                            borderWidth: 3,
+                            pointRadius: 5,
+                            pointBackgroundColor: '#fbbc04',
+                            tension: 0.2,
+                            fill: false
+                        },
+                        {
+                            label: 'Intent (2025 Target)',
+                            data: brandHealthTimelineData.intent.target,
+                            backgroundColor: 'rgba(251, 188, 4, 0.0)',
+                            borderColor: '#fbbc04',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            pointRadius: 5,
+                            pointBackgroundColor: '#fbbc04',
+                            pointStyle: 'triangle',
+                            tension: 0.2,
+                            fill: false
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: '#e0e0e0',
+                                padding: 15,
+                                usePointStyle: true,
+                                pointStyle: 'circle',
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Brand Health Metrics Quarterly Trends & 2025 Targets',
+                            color: '#e0e0e0',
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            },
+                            padding: {
+                                top: 10,
+                                bottom: 20
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.dataset.label || '';
+                                    const value = context.raw;
+                                    if (value === null) return label + ': N/A';
+                                    return label + ': ' + value.toFixed(2) + '%';
+                                }
+                            },
+                            padding: 12,
+                            backgroundColor: 'rgba(20, 20, 20, 0.9)',
+                            titleFont: {
+                                size: 14
+                            },
+                            bodyFont: {
+                                size: 14
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#e0e0e0'
+                            }
+                        },
+                        y: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#e0e0e0',
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Percentage (%)',
+                                color: '#e0e0e0',
+                                font: {
+                                    size: 12
+                                }
+                            },
+                            min: 55, // Set minimum to show differences better
+                            max: 100
+                        }
+                    },
+                    elements: {
+                        line: {
+                            tension: 0.3
+                        }
+                    },
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeOutQuart'
+                    }
+                }
+            });
+            
+            // Mobile chart tab functionality
+            const chartTabs = document.querySelectorAll('.chart-tab');
+            const barrierCharts = document.querySelectorAll('.barriers-chart');
+            
+            chartTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs and charts
+                    chartTabs.forEach(t => t.classList.remove('active'));
+                    barrierCharts.forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                    
+                    // Show the corresponding chart
+                    const chartId = this.getAttribute('data-chart') + 'Container';
+                    document.getElementById(chartId).classList.add('active');
+                });
+            });
+            
+            // 1. Campaign Type Distribution Chart
+            const campaignTypeCtx = document.getElementById('campaignTypeChart').getContext('2d');
+            new Chart(campaignTypeCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Strategic', 'Tactical'],
+                    datasets: [{
+                        data: [strategicCampaigns.length, tacticalCampaigns.length],
+                        backgroundColor: ['#4285f4', '#34a853'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#e0e0e0',
+                                padding: 20,
+                                font: {
+                                    size: 14
+                                },
+                                usePointStyle: true,
+                                pointStyle: 'circle'
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Campaign Type Distribution',
+                            color: '#e0e0e0',
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            },
+                            padding: {
+                                top: 10,
+                                bottom: 20
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `${label}: ${value} (${percentage}%)`;
+                                }
+                            },
+                            padding: 12,
+                            backgroundColor: 'rgba(20, 20, 20, 0.9)',
+                            titleFont: {
+                                size: 14
+                            },
+                            bodyFont: {
+                                size: 14
+                            },
+                            displayColors: true,
+                            boxPadding: 6
+                        },
+                        datalabels: {
+                            color: '#ffffff',
+                            font: {
+                                weight: 'bold',
+                                size: 14
+                            },
+                            formatter: (value, ctx) => {
+                                const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = Math.round((value / total) * 100);
+                                return `${percentage}%`;
+                            }
+                        }
+                    },
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true,
+                        duration: 2000,
+                        easing: 'easeOutQuart'
+                    },
+                    cutout: '40%',
+                    radius: '90%'
+                }
+            });
+            
+            // 2. Budget Allocation by Campaign Type Chart
+            const budgetAllocationCtx = document.getElementById('budgetAllocationChart').getContext('2d');
+            new Chart(budgetAllocationCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Strategic', 'Tactical'],
+                    datasets: [{
+                        data: [strategicBudget, tacticalBudget],
+                        backgroundColor: ['#4285f4', '#34a853'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#e0e0e0',
+                                padding: 20,
+                                font: {
+                                    size: 14
+                                },
+                                usePointStyle: true,
+                                pointStyle: 'circle'
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Budget Allocation by Campaign Type',
+                            color: '#e0e0e0',
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            },
+                            padding: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `${label}: ${(value/1000000).toFixed(2)}M AED (${percentage}%)`;
+                                }
+                            },
+                            padding: 12,
+                            backgroundColor: 'rgba(20, 20, 20, 0.9)',
+                            titleFont: {
+                                size: 14
+                            },
+                            bodyFont: {
+                                size: 14
+                            },
+                            displayColors: true,
+                            boxPadding: 6
+                        },
+                        datalabels: {
+                            color: '#ffffff',
+                            font: {
+                                weight: 'bold',
+                                size: 14
+                            },
+                            formatter: (value, ctx) => {
+                                const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = Math.round((value / total) * 100);
+                                return `${percentage}%`;
+                            }
+                        }
+                    },
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true,
+                        duration: 2000,
+                        easing: 'easeOutQuart'
+                    },
+                    cutout: '40%',
+                    radius: '90%'
+                }
+            });
+            
+            // 3. Campaign Budget Chart
+            const campaignBudgetCtx = document.getElementById('campaignBudgetChart').getContext('2d');
+            new Chart(campaignBudgetCtx, {
+                type: 'bar',
+                data: {
+                    labels: campaignData.campaigns.map(c => c.name),
+                    datasets: [{
+                        label: 'Budget (AED)',
+                        data: campaignData.campaigns.map(c => c.budget),
+                        backgroundColor: campaignData.campaigns.map(c => c.type === 'Strategic' ? '#4285f4' : '#34a853'),
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'Campaign Budget Allocation (AED)',
+                            color: '#e0e0e0',
+                            font: {
+                                size: 16
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const value = context.raw || 0;
+                                    return `Budget: ${value.toLocaleString()} AED`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#e0e0e0',
+                                callback: function(value) {
+                                    if (value >= 1000000) {
+                                        return (value / 1000000).toFixed(1) + 'M AED';
+                                    } else if (value >= 1000) {
+                                        return (value / 1000).toFixed(1) + 'K AED';
+                                    }
+                                    return value + ' AED';
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Budget (AED)',
+                                color: '#e0e0e0',
+                                font: {
+                                    size: 12
+                                }
+                            },
+                            max: 13000000 // Set maximum value to 13M AED
+                        },
+                        y: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#e0e0e0'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // 4. Campaign Objectives Chart
+            const objectivesCtx = document.getElementById('objectivesChart').getContext('2d');
+            new Chart(objectivesCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Awareness', 'Consideration', 'Intent', 'Familiarity'],
+                    datasets: campaignData.campaigns.map((campaign, index) => ({
+                        label: campaign.name,
+                        data: [
+                            campaign.objectives.awareness,
+                            campaign.objectives.consideration,
+                            campaign.objectives.intent,
+                            campaign.objectives.familiarity
+                        ],
+                        backgroundColor: `rgba(${index * 20 % 255}, ${(index * 30 + 100) % 255}, ${(index * 50 + 50) % 255}, 0.2)`,
+                        borderColor: `rgba(${index * 20 % 255}, ${(index * 30 + 100) % 255}, ${(index * 50 + 50) % 255}, 1)`,
+                        borderWidth: 2,
+                        pointRadius: 4,
+                        pointBackgroundColor: `rgba(${index * 20 % 255}, ${(index * 30 + 100) % 255}, ${(index * 50 + 50) % 255}, 1)`,
+                        pointBorderColor: '#fff',
+                        pointHoverRadius: 6,
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: `rgba(${index * 20 % 255}, ${(index * 30 + 100) % 255}, ${(index * 50 + 50) % 255}, 1)`,
+                        pointHoverBorderWidth: 2
+                    }))
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                color: '#e0e0e0',
+                                padding: 15,
+                                usePointStyle: true,
+                                pointStyle: 'circle',
+                                font: {
+                                    size: 11
+                                }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Campaign Objectives Comparison',
+                            color: '#e0e0e0',
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            },
+                            padding: {
+                                top: 10,
+                                bottom: 20
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.dataset.label || '';
+                                    const value = context.raw || 0;
+                                    const category = context.chart.data.labels[context.dataIndex];
+                                    return `${label}: ${category} = ${value}/5`;
+                                }
+                            },
+                            padding: 12,
+                            backgroundColor: 'rgba(20, 20, 20, 0.9)',
+                            titleFont: {
+                                size: 14
+                            },
+                            bodyFont: {
+                                size: 14
+                            }
+                        }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            pointLabels: {
+                                color: '#e0e0e0',
+                                font: {
+                                    size: 14,
+                                    weight: 'bold'
+                                }
+                            },
+                            ticks: {
+                                color: '#e0e0e0',
+                                backdropColor: 'transparent',
+                                z: 10,
+                                backdropPadding: 3,
+                                showLabelBackdrop: true,
+                                backdropColor: 'rgba(0, 0, 0, 0.7)',
+                                font: {
+                                    size: 10
+                                }
+                            },
+                            min: 0,
+                            max: 5,
+                            beginAtZero: true
+                        }
+                    },
+                    elements: {
+                        line: {
+                            tension: 0.1
+                        }
+                    },
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeOutQuart'
+                    }
+                }
+            });
+            
+            // 5. Objectives by Campaign Type Chart
+            const objectivesByTypeCtx = document.getElementById('objectivesByTypeChart').getContext('2d');
+            const strategicObjectives = getAverageObjectivesByType(campaignData.campaigns, 'Strategic');
+            const tacticalObjectives = getAverageObjectivesByType(campaignData.campaigns, 'Tactical');
+            
+            new Chart(objectivesByTypeCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Awareness', 'Consideration', 'Intent', 'Familiarity'],
+                    datasets: [
+                        {
+                            label: 'Strategic Campaigns',
+                            data: [
+                                strategicObjectives.awareness,
+                                strategicObjectives.consideration,
+                                strategicObjectives.intent,
+                                strategicObjectives.familiarity
+                            ],
+                            backgroundColor: 'rgba(66, 133, 244, 0.2)',
+                            borderColor: '#4285f4',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Tactical Campaigns',
+                            data: [
+                                tacticalObjectives.awareness,
+                                tacticalObjectives.consideration,
+                                tacticalObjectives.intent,
+                                tacticalObjectives.familiarity
+                            ],
+                            backgroundColor: 'rgba(52, 168, 83, 0.2)',
+                            borderColor: '#34a853',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#e0e0e0'
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Objectives by Campaign Type',
+                            color: '#e0e0e0',
+                            font: {
+                                size: 16
+                            }
+                        }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            pointLabels: {
+                                color: '#e0e0e0'
+                            },
+                            ticks: {
+                                color: '#e0e0e0',
+                                backdropColor: 'transparent'
+                            },
+                            min: 0,
+                            max: 5,
+                            beginAtZero: true,
+                            suggestedMax: 5
+                        }
+                    },
+                    maintainAspectRatio: false
+                }
+            });
+            
+            // 7. Campaign Timing Chart
+            const campaignTimingCtx = document.getElementById('campaignTimingChart').getContext('2d');
+            new Chart(campaignTimingCtx, {
+                type: 'bar',
+                data: {
+                    labels: campaignData.campaigns.map(c => c.name),
+                    datasets: [{
+                        label: 'Campaign Duration (Weeks)',
+                        data: campaignData.campaigns.map(c => c.weeks),
+                        backgroundColor: campaignData.campaigns.map(c => c.type === 'Strategic' ? '#4285f4' : '#34a853'),
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'Campaign Duration (Weeks)',
+                            color: '#e0e0e0',
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            },
+                            padding: {
+                                top: 10,
+                                bottom: 20
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.dataset.label || '';
+                                    const value = context.raw || 0;
+                                    return `${label}: ${value} weeks`;
+                                }
+                            },
+                            padding: 12,
+                            backgroundColor: 'rgba(20, 20, 20, 0.9)',
+                            titleFont: {
+                                size: 14
+                            },
+                            bodyFont: {
+                                size: 14
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#e0e0e0'
+                            },
+                            max: 52, // Set maximum value to 52 weeks (1 year)
+                            title: {
+                                display: true,
+                                text: 'Weeks',
+                                color: '#e0e0e0',
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        y: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#e0e0e0'
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeOutQuart'
+                    }
+                }
+            });
+            
+            // 8. Seasonality Chart
+            const seasonalityCtx = document.getElementById('seasonalityChart').getContext('2d');
+            
+            // Format large numbers for better readability
+            const formatImpressions = (num) => {
+                if (num >= 1000000000) {
+                    return (num / 1000000000).toFixed(1) + 'B';
+                }
+                if (num >= 1000000) {
+                    return (num / 1000000).toFixed(1) + 'M';
+                }
+                if (num >= 1000) {
+                    return (num / 1000).toFixed(1) + 'K';
+                }
+                return num;
+            };
+            
+            // Actual 2024 travel queries data from india_dashboard.js
+            const travelQueries2024 = [118.222, 123.2072, 113.0767, 123.2651, 116.7668, 97.4746, 111.4929, 124.0744, 180.1942, 149.0372, 142.7999, 142.0537];
+            
+            new Chart(seasonalityCtx, {
+                type: 'line',
+                data: {
+                    labels: campaignData.seasonality.months,
+                    datasets: [
+                        {
+                            label: '2024 Hotel Guests',
+                            data: campaignData.seasonality.hotelGuests,
+                            backgroundColor: 'rgba(66, 133, 244, 0.2)',
+                            borderColor: '#4285f4',
+                            borderWidth: 2,
+                            tension: 0.3,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: '2024 Travel Queries (Indexed)',
+                            data: travelQueries2024,
+                            backgroundColor: 'rgba(251, 188, 4, 0.2)',
+                            borderColor: '#fbbc04',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            tension: 0.3,
+                            yAxisID: 'y1'
+                        },
+                        {
+                            label: '2025 Planned Impressions',
+                            data: campaignData.mediaImpressions.proposed,
+                            backgroundColor: 'rgba(52, 168, 83, 0.2)',
+                            borderColor: '#34a853',
+                            borderWidth: 2,
+                            tension: 0.3,
+                            yAxisID: 'y2'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#e0e0e0',
+                                padding: 15,
+                                usePointStyle: true,
+                                pointStyle: 'circle',
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Seasonality & Media Alignment',
+                            color: '#e0e0e0',
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            },
+                            padding: {
+                                top: 10,
+                                bottom: 20
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.dataset.label || '';
+                                    const value = context.raw || 0;
+                                    
+                                    if (context.datasetIndex === 0) {
+                                        return `${label}: ${value.toLocaleString()}`;
+                                    } else if (context.datasetIndex === 1) {
+                                        return `${label}: ${value.toFixed(1)}%`;
+                                    } else {
+                                        return `${label}: ${formatImpressions(value)}`;
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#e0e0e0'
+                            }
+                        },
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#4285f4'
+                            },
+                            title: {
+                                display: true,
+                                text: '2024 Hotel Guests',
+                                color: '#4285f4',
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: false,
+                            position: 'right',
+                            grid: {
+                                drawOnChartArea: false
+                            },
+                            min: 0,
+                            max: 200
+                        },
+                        y2: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            grid: {
+                                drawOnChartArea: false
+                            },
+                            ticks: {
+                                color: '#34a853',
+                                callback: function(value) {
+                                    return formatImpressions(value);
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Media Impressions',
+                                color: '#34a853',
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // 10. Barriers Chart
+            const barriersCtx = document.getElementById('barriersChart').getContext('2d');
+            
+            // Create custom labels with percentage and change
+            const barrierLabels = campaignData.barriers.map(b => {
+                const changeSymbol = b.change > 0 ? '▲' : '▼';
+                const changeColor = b.change > 0 ? '#ea4335' : '#34a853';
+                return `${b.name} (${b.percentage}%, ${changeSymbol}${Math.abs(b.change)}pp)`;
+            });
+            
+            new Chart(barriersCtx, {
+                type: 'bar',
+                data: {
+                    labels: barrierLabels,
+                    datasets: [{
+                        label: 'Barrier Percentage',
+                        data: campaignData.barriers.map(b => b.percentage),
+                        backgroundColor: campaignData.barriers.map(b => b.change > 0 ? '#ea4335' : '#34a853'),
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'Barriers to Visitation',
+                            color: '#e0e0e0',
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            },
+                            padding: {
+                                top: 10,
+                                bottom: 20
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const barrier = campaignData.barriers[context.dataIndex];
+                                    const changeText = barrier.change > 0 
+                                        ? `Increased by ${barrier.change}pp` 
+                                        : `Decreased by ${Math.abs(barrier.change)}pp`;
+                                    return `${barrier.name}: ${barrier.percentage}% (${changeText})`;
+                                }
+                            },
+                            padding: 12,
+                            backgroundColor: 'rgba(20, 20, 20, 0.9)',
+                            titleFont: {
+                                size: 14
+                            },
+                            bodyFont: {
+                                size: 14
+                            }
+                        },
+                        datalabels: {
+                            align: 'end',
+                            anchor: 'end',
+                            color: function(context) {
+                                const barrier = campaignData.barriers[context.dataIndex];
+                                return barrier.change > 0 ? '#ea4335' : '#34a853';
+                            },
+                            font: {
+                                weight: 'bold',
+                                size: 12
+                            },
+                            formatter: function(value, context) {
+                                const barrier = campaignData.barriers[context.dataIndex];
+                                const sign = barrier.change > 0 ? '+' : '';
+                                return `${sign}${barrier.change}pp`;
+                            },
+                            padding: {
+                                top: 4
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#e0e0e0',
+                                font: {
+                                    size: 11
+                                },
+                                maxRotation: 45,
+                                minRotation: 45
+                            }
+                        },
+                        y: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#e0e0e0'
+                            },
+                            title: {
+                                display: true,
+                                text: 'Percentage (%)',
+                                color: '#e0e0e0',
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeOutQuart'
+                    }
+                }
+            });
+            
+            // Format large numbers for better readability
+            const formatNumber = (num) => {
+                if (num >= 1000000000) {
+                    return (num / 1000000000).toFixed(1) + 'B';
+                }
+                if (num >= 1000000) {
+                    return (num / 1000000).toFixed(1) + 'M';
+                }
+                if (num >= 1000) {
+                    return (num / 1000).toFixed(1) + 'K';
+                }
+                return num;
+            };
+            
+            // Optimized Media Impressions Chart
+            const optimizedImpressionsCtx = document.getElementById('optimizedImpressionsChart').getContext('2d');
+            
+            // Create optimized impression allocation based on booking window and seasonality
+            const createOptimizedImpressions = () => {
+                // Start with the planned 2025 impressions
+                const planned = [...campaignData.mediaImpressions.proposed];
+                const total = planned.reduce((sum, val) => sum + val, 0);
+                
+                // Create optimized allocation that better aligns with the booking window
+                // and seasonality patterns
+                const optimized = [...planned];
+                
+                // Increase September-October (indexes 8-9) by 35-40% to capture the November-December peak
+                optimized[8] = planned[8] * 1.38; // 38% increase for September
+                optimized[9] = planned[9] * 1.35; // 35% increase for October
+                
+                // Increase January (index 0) by 25% for March-April secondary peak
+                optimized[0] = planned[0] * 1.25; // 25% increase for January
+                
+                // Reduce February (index 1) by 35% (currently over-allocated)
+                optimized[1] = planned[1] * 0.65; // 35% reduction for February
+                
+                // Reduce April-May (indexes 3-4) by 15-20%
+                optimized[3] = planned[3] * 0.85; // 15% reduction for April
+                optimized[4] = planned[4] * 0.80; // 20% reduction for May
+                
+                // Reduce December (index 11) by 25% (too late for high-season travel)
+                optimized[11] = planned[11] * 0.75; // 25% reduction for December
+                
+                // Increase July-August (indexes 6-7) by 15-20% for September shoulder season
+                optimized[6] = planned[6] * 1.15; // 15% increase for July
+                optimized[7] = planned[7] * 1.20; // 20% increase for August
+                
+                // Adjust other months to maintain total impressions
+                const newTotal = optimized.reduce((sum, val) => sum + val, 0);
+                const adjustmentFactor = total / newTotal;
+                
+                return optimized.map(val => val * adjustmentFactor);
+            };
+            
+            // Generate optimized impressions
+            const optimizedImpressions = createOptimizedImpressions();
+            
+            // Calculate percentage difference between planned and optimized
+            const calculatePercentageDiff = () => {
+                return campaignData.mediaImpressions.months.map((month, index) => {
+                    const planned = campaignData.mediaImpressions.proposed[index];
+                    const optimized = optimizedImpressions[index];
+                    const percentDiff = ((optimized - planned) / planned) * 100;
+                    return percentDiff;
+                });
+            };
+            
+            const percentageDiffs = calculatePercentageDiff();
+            
+            new Chart(optimizedImpressionsCtx, {
+                type: 'bar',
+                data: {
+                    labels: campaignData.mediaImpressions.months,
+                    datasets: [
+                        {
+                            label: '2025 Planned Impressions',
+                            data: campaignData.mediaImpressions.proposed,
+                            backgroundColor: 'rgba(66, 133, 244, 0.7)',
+                            borderColor: '#4285f4',
+                            borderWidth: 1,
+                            order: 2
+                        },
+                        {
+                            label: '2025 Optimized Impressions',
+                            data: optimizedImpressions,
+                            backgroundColor: 'rgba(52, 168, 83, 0.7)',
+                            borderColor: '#34a853',
+                            borderWidth: 1,
+                            order: 1
+                        },
+                        {
+                            label: 'Optimization % Change',
+                            data: percentageDiffs,
+                            type: 'line',
+                            backgroundColor: 'rgba(251, 188, 4, 0.2)',
+                            borderColor: '#fbbc04',
+                            borderWidth: 2,
+                            pointRadius: 4,
+                            pointBackgroundColor: '#fbbc04',
+                            pointBorderColor: '#fff',
+                            pointHoverRadius: 6,
+                            yAxisID: 'y1',
+                            order: 0
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: '#e0e0e0',
+                                padding: 15,
+                                usePointStyle: true,
+                                pointStyle: 'circle',
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: '2025 Media Impressions: Planned vs Optimized for Booking Window',
+                            color: '#e0e0e0',
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            },
+                            padding: {
+                                top: 10,
+                                bottom: 20
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.dataset.label || '';
+                                    const value = context.raw || 0;
+                                    
+                                    if (context.datasetIndex === 2) { // Percentage change dataset
+                                        return `${label}: ${value.toFixed(1)}%`;
+                                    } else {
+                                        return `${label}: ${formatNumber(value)}`;
+                                    }
+                                }
+                            },
+                            padding: 12,
+                            backgroundColor: 'rgba(20, 20, 20, 0.9)',
+                            titleFont: {
+                                size: 14
+                            },
+                            bodyFont: {
+                                size: 14
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#e0e0e0'
+                            }
+                        },
+                        y: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#e0e0e0',
+                                callback: function(value) {
+                                    return formatNumber(value);
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Impressions',
+                                color: '#e0e0e0',
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        y1: {
+                            position: 'right',
+                            grid: {
+                                drawOnChartArea: false
+                            },
+                            ticks: {
+                                color: '#fbbc04',
+                                callback: function(value) {
+                                    return value.toFixed(0) + '%';
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Optimization % Change',
+                                color: '#fbbc04',
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeOutQuart'
+                    }
+                }
+            });
+            
+            // 11. Barrier Alignment Chart
+            const barrierAlignmentCtx = document.getElementById('barrierAlignmentChart').getContext('2d');
+            
+            // Create custom labels with percentage and change for radar chart
+            const radarBarrierLabels = campaignData.barriers.map(b => {
+                const changeSymbol = b.change > 0 ? '▲' : '▼';
+                return `${b.name} (${b.percentage}%, ${changeSymbol}${Math.abs(b.change)}pp)`;
+            });
+            
+            // Calculate campaign coverage for each barrier
+            const campaignCoverageData = calculateCampaignCoverage();
+            
+            new Chart(barrierAlignmentCtx, {
+                type: 'bar',
+                data: {
+                    labels: radarBarrierLabels,
+                    datasets: [
+                        {
+                            label: 'Barrier Percentage',
+                            data: campaignData.barriers.map(b => b.percentage),
+                            backgroundColor: 'rgba(251, 188, 4, 0.2)',
+                            borderColor: '#fbbc04',
+                            borderWidth: 2,
+                            pointRadius: 4,
+                            pointBackgroundColor: campaignData.barriers.map(b => b.change > 0 ? '#ea4335' : '#34a853'),
+                            pointBorderColor: '#fff',
+                            pointHoverRadius: 6
+                        },
+                        {
+                            label: 'Campaign Coverage',
+                            data: campaignCoverageData, // Calculated coverage based on campaign focus and budget
+                            backgroundColor: 'rgba(66, 133, 244, 0.2)',
+                            borderColor: '#4285f4',
+                            borderWidth: 2,
+                            pointRadius: 4,
+                            pointBackgroundColor: '#4285f4',
+                            pointBorderColor: '#fff',
+                            pointHoverRadius: 6
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#e0e0e0',
+                                padding: 15,
+                                usePointStyle: true,
+                                pointStyle: 'circle',
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Barriers vs. Campaign Coverage',
+                            color: '#e0e0e0',
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            },
+                            padding: {
+                                top: 10,
+                                bottom: 20
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    if (context.datasetIndex === 0) { // Barrier dataset
+                                        const barrier = campaignData.barriers[context.dataIndex];
+                                        const changeText = barrier.change > 0 
+                                            ? `Increased by ${barrier.change}pp` 
+                                            : `Decreased by ${Math.abs(barrier.change)}pp`;
+                                        return `${barrier.name}: ${barrier.percentage}% (${changeText})`;
+                                    } else { // Campaign coverage dataset
+                                        return `Campaign Coverage: ${context.raw}%`;
+                                    }
+                                }
+                            },
+                            padding: 12,
+                            backgroundColor: 'rgba(20, 20, 20, 0.9)',
+                            titleFont: {
+                                size: 14
+                            },
+                            bodyFont: {
+                                size: 14
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#e0e0e0'
+                            },
+                            title: {
+                                display: true,
+                                text: 'Percentage (%)',
+                                color: '#e0e0e0',
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        y: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#e0e0e0'
+                            }
+                        }
+                    },
+                    elements: {
+                        line: {
+                            tension: 0.1
+                        }
+                    },
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeOutQuart'
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html> 
+ The code above creates a series of charts using Chart.js to visualize the data from the  campaignData  object. The charts include a mix of pie charts, bar charts, radar charts, and line charts to represent different aspects of the campaign data. 
+ The  createOptimizedImpressions  function calculates an optimized media impression allocation based on the booking window and seasonality patterns. The  calculatePercentageDiff  function calculates the percentage difference between the planned and optimized impressions. 
+ The  calculateCampaignCoverage  function calculates the campaign coverage for each barrier based on the campaign focus and budget. 
+ The  formatNumber  function formats large numbers for better readability. 
+ The  index.html  file includes the necessary HTML structure to display the charts. 
+ Conclusion 
+ In this tutorial, we explored how to create a dashboard with multiple interactive charts using Chart.js. We covered the basics of Chart.js, including how to create different types of charts, customize their appearance, and add interactivity. 
+ We also discussed how to create a dashboard with multiple charts that visualize different aspects of a dataset. We created a sample dataset and used Chart.js to create a series of charts to represent the data. 
+ Chart.js is a powerful library that provides a wide range of options for creating interactive and visually appealing charts. By combining different types of charts and customizing their appearance, you can create informative and engaging dashboards that help visualize complex datasets. 
+ To learn more about Chart.js and explore additional features and customization options, refer to the  official documentation. 
+ Join our DigitalOcean community of over a million developers for free! Get help and share knowledge in our Questions & Answers section, find tutorials and tools that will help you grow as a developer and scale your project or business, and subscribe to topics of interest. 
+ Chart.js is a popular open-source JavaScript library for creating charts. It can be used to create a wide range of chart types, including line charts, bar charts, pie charts, and more. In this tutorial, you will learn how to create interactive charts using Chart.js and how to customize the appearance and behavior of the charts. 
+ I am trying to create a chart using chart.js in my react app. I have installed chart.js using npm install chart.js --save. I have also imported the chart.js in my component. But when I try to create a chart, it is not working. 
+ I have tried to create a chart using the following code: 
+ import React, { Component
+} from 'react'; import Chart from 'chart.js'; class ChartComponent extends Component {
+    chartRef = React.createRef(); componentDidMount() {
+        const myChartRef = this.chartRef.current.getContext("2d"); new Chart(myChartRef, {
+            type: 'bar',
+            data: {
+                labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+                datasets: [{
+                    label: '# of Votes',
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    } render() {
+        return <canvas ref={this.chartRef} />;
+    }
+} export default ChartComponent;
+ 
+ But it is not working. Can anyone help me with this? 
+ I am trying to create a chart using chart.js in my react app. I have installed chart.js using npm install chart.js --save. I have also imported the chart.js in my component. But when I try to create a chart, it is not working. 
+ I have tried to create a chart using the following code: 
+ import React, { Component } from 'react';              

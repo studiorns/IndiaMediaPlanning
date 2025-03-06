@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced India Campaign Planning Visualization</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4285f4;
+            --primary-light: #1a2233;
+            --primary-dark: #8ab4f8;
+            --secondary: #34a853;
+            --secondary-light: #1a2a1e;
+            --warning: #fbbc04;
+            --warning-light: #332a1a;
+            --danger: #ea4335;
+            --danger-light: #331f1e;
+            --gray-100: #1e1e1e;
+            --gray-200: #2d2d2d;
+            --gray-300: #3d3d3d;
+            --gray-400: #4d4d4d;
+            --gray-500: #777777;
+            --gray-600: #a0a0a0;
+            --gray-700: #c0c0c0;
+            --gray-800: #e0e0e0;
+            --gray-900: #f0f0f0;
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            --shadow-md: 0 6px 12px rgba(0, 0, 0, 0.5);
+            --shadow-lg: 0 15px 25px rgba(0, 0, 0, 0.6);
+            --radius-sm: 4px;
+            --radius: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --transition: all 0.3s ease;
+            --bg-color: #000000;
+            --card-bg: #121212;
+            --section-bg: #181818;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--gray-800);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1a73e8 0%, #174ea6 100%);
+            color: white;
+            padding: 32px 0;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            position: relative;
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .dashboard-section {
+            background-color: var(--section-bg);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow);
+            padding: 28px;
+            margin-bottom: 32px;
+            transition: var(--transition);
+            border: 1px solid var(--gray-300);
+        }
+        
+        .dashboard-section h2 {
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid var(--gray-200);
+            padding-bottom: 16px;
+            margin-bottom: 28px;
+            color: var(--gray-900);
+            font-size: 1.5rem;
+        }
+        
+        .dashboard-section h2 i {
+            margin-right: 12px;
+            color: var(--primary);
+            font-size: 1.25rem;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+            margin-bottom: 28px;
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            border: 1px solid var(--gray-300);
+            transition: var(--transition);
+        }
+        
+        .chart-container.tall {
+            height: 600px;
+        }
+        
+        .chart-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 28px;
+            margin-bottom: 28px;
+        }
+        
+        .chart-column {
+            flex: 1 1 400px;
+            min-width: 0;
+        }
+        
+        .chart-container-half {
+            height: 350px;
+        }
+        
+        .metrics-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+        
+        .metric-card {
+            flex: 1;
+            min-width: 180px;
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-300);
+            transition: var(--transition);
+            text-align: center;
+        }
+        
+        .metric-card:nth-child(1) {
+            border-left: 4px solid var(--primary);
+        }
+        
+        .metric-card:nth-child(2) {
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .metric-card:nth-child(3) {
+            border-left: 4px solid var(--warning);
+        }
+        
+        .metric-card:nth-child(4) {
+            border-left: 4px solid #ea4335;
+        }
+        
+        .metric-title {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--gray-700);
+            margin-bottom: 8px;
+        }
+        
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 4px;
+        }
+        
+        .metric-description {
+            font-size: 0.85rem;
+            color: var(--gray-600);
+            line-height: 1.4;
+        }
+        
+        .insight-summary {
+            background-color: var(--primary-light);
+            border-left: 4px solid var(--primary);
+            padding: 20px 24px;
+            margin-bottom: 28px;
+            border-radius: 0 var(--radius) var(--radius) 0;
+            position: relative;
+        }
+        
+        .insight-summary h3 {
+            color: var(--primary-dark);
+            margin-bottom: 12px;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .insight-summary h3 i {
+            margin-right: 10px;
+        }
+        
+        .insight-summary p {
+            margin: 0;
+            color: var(--gray-800);
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+        
+        .recommendation-card {
+            background-color: var(--gray-100);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 24px;
+            border-left: 4px solid var(--primary);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .recommendation-card::after {
+            content: '\f0eb';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2rem;
+            color: var(--primary);
+            opacity: 0.05;
+        }
+        
+        .recommendation-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .recommendation-card h4 {
+            color: var(--primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .recommendation-card h4 i {
+            margin-right: 10px;
+        }
+        
+        .recommendation-card p {
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+        
+        .recommendation-card p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .footer {
+            background-color: var(--gray-100);
+            color: white;
+            padding: 20px 0;
+            margin-top: 40px;
+            text-align: center;
+            border-top: 1px solid var(--gray-300);
+        }
+        
+        .footer p {
+            color: var(--gray-700);
+            margin-bottom: 0;
+            font-size: 0.9rem;
+        }
+        
+        /* Campaign Calendar styles */
+        .calendar-container {
+            display: grid;
+            grid-template-columns: 200px repeat(12, 1fr);
+            gap: 4px;
+            margin-bottom: 28px;
+            overflow-x: auto;
+        }
+        
+        .calendar-header {
+            display: grid;
+            grid-template-columns: 200px repeat(12, 1fr);
+            gap: 4px;
+            margin-bottom: 8px;
+            position: sticky;
+            top: 0;
+            background-color: var(--section-bg);
+            z-index: 10;
+        }
+        
+        .calendar-header-cell {
+            text-align: center;
+            font-weight: 600;
+            padding: 8px 4px;
+            font-size: 0.9rem;
+            color: var(--gray-800);
+            background-color: var(--gray-200);
+            border-radius: var(--radius-sm);
+        }
+        
+        .calendar-row {
+            display: contents;
+        }
+        
+        .calendar-label {
+            padding: 10px 8px;
+            font-weight: 600;
+            color: var(--gray-800);
+            background-color: var(--gray-200);
+            border-radius: var(--radius-sm);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .calendar-cell {
+            height: 40px;
+            background-color: var(--gray-300);
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .calendar-cell.active {
+            background-color: var(--primary);
+        }
+        
+        .calendar-cell.active-strategic {
+            background-color: var(--primary);
+        }
+        
+        .calendar-cell.active-tactical {
+            background-color: var(--secondary);
+        }
+        
+        .calendar-cell.active-culture {
+            background-color: var(--warning);
+        }
+        
+        .calendar-cell.active-brand-awareness {
+            background-color: var(--primary);
+        }
+        
+        .calendar-cell.active-strategic-leavers {
+            background-color: var(--secondary);
+        }
+        
+        .calendar-cell .budget-percentage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        .calendar-legend {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .calendar-legend-item {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+        
+        .calendar-legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .dot-strategic {
+            background-color: var(--primary);
+        }
+        
+        .dot-tactical {
+            background-color: var(--secondary);
+        }
+        
+        .dot-culture {
+            background-color: var(--warning);
+        }
+        
+        /* Filter buttons */
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            background-color: var(--gray-300);
+            color: var(--gray-800);
+            border: none;
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        
+        .filter-btn.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .filter-btn:hover:not(.active) {
+            background-color: var(--gray-400);
+        }
+        
+        @media (max-width: 768px) {
+            .chart-row {
+                flex-direction: column;
+            }
+            
+            .chart-container {
+                height: 350px;
+            }
+            
+            .container {
+                padding: 0 16px;
+            }
+            
+            .dashboard-section {
+                padding: 20px;
+                margin-bottom: 24px;
+            }
+            
+            .calendar-container {
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Enhanced India Campaign Planning Dashboard</h1>
+            <p>Detailed Campaign Analysis with Performance Metrics and Optimization Insights for Paid Media Team</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="insight-summary">
+            <h3><i class="fas fa-lightbulb"></i> Key Insights for Paid Media Team</h3>
+            <p>India represents a high-potential market with excellent brand health metrics (94.5% awareness, 74.4% consideration, 64.6% intent) and strong response to media investments (0.68 elasticity). The detailed campaign analysis reveals opportunities to optimize budget allocation and timing to better align with the 44-day booking window and seasonal travel patterns.</p>
+        </div>
+        
+        <!-- Executive Summary Metrics -->
+        <div class="dashboard-section">
+            <h2><i class="fas fa-tachometer-alt"></i> Executive Summary</h2>
+            
+            <div class="metrics-row">
+                <div class="metric-card">
+                    <div class="metric-title">Total Budget</div>
+                    <div class="metric-value">$8.09M</div>
+                    <div class="metric-description">Total campaign investment for India market</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-title">Media Elasticity</div>
+                    <div class="metric-value">0.68</div>
+                    <div class="metric-description">High responsiveness to media investments</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-title">Booking Window</div>
+                    <div class="metric-value">44 days</div>
+                    <div class="metric-description">Average time between booking and arrival</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-title">Projected ROI Increase</div>
+                    <div class="metric-value">+18%</div>
+                    <div class="metric-description">Based on optimized distribution</div>
+                </div>
+            </div>
+            
+            <div class="recommendation-card">
+                <h4><i class="fas fa-bullseye"></i> Strategic Focus for Paid Media Team</h4>
+                <p>Based on the analysis of campaign performance and market dynamics, we recommend the following strategic focus areas:</p>
+                <ol style="margin-left: 20px; margin-bottom: 16px;">
+                    <li><strong>Booking Window Alignment:</strong> Ensure campaign timing aligns with the 44-day booking window, especially for peak travel periods (Nov-Dec and Mar-May).</li>
+                    <li><strong>Budget Reallocation:</strong> Shift 30% of awareness budget to conversion initiatives, as awareness is already at 94.5%.</li>
+                    <li><strong>Barrier Targeting:</strong> Increase focus on addressing "Bad Experiences" barrier (55% prevalence) which currently has only 38% campaign coverage.</li>
+                    <li><strong>Impression Optimization:</strong> Implement the optimized impression distribution to better align with seasonal travel patterns.</li>
+                </ol>
+            </div>
+        </div>
+        
+        <!-- Campaign Calendar Visualization -->
+        <div class="dashboard-section">
+            <h2><i class="fas fa-calendar-alt"></i> Campaign Calendar & Budget Allocation</h2>
+            
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-type="all">All Campaigns</button>
+                <button class="filter-btn" data-type="brand-awareness">Brand Awareness</button>
+                <button class="filter-btn" data-type="strategic-leavers">Strategic Leavers</button>
+                <button class="filter-btn" data-type="culture">Culture</button>
+            </div>
+            
+            <div class="calendar-header">
+                <div class="calendar-header-cell">Campaign</div>
+                <div class="calendar-header-cell">Jan</div>
+                <div class="calendar-header-cell">Feb</div>
+                <div class="calendar-header-cell">Mar</div>
+                <div class="calendar-header-cell">Apr</div>
+                <div class="calendar-header-cell">May</div>
+                <div class="calendar-header-cell">Jun</div>
+                <div class="calendar-header-cell">Jul</div>
+                <div class="calendar-header-cell">Aug</div>
+                <div class="calendar-header-cell">Sep</div>
+                <div class="calendar-header-cell">Oct</div>
+                <div class="calendar-header-cell">Nov</div>
+                <div class="calendar-header-cell">Dec</div>
+            </div>
+            
+            <div id="campaignCalendar" class="calendar-container">
+                <!-- Calendar will be populated by JavaScript -->
+            </div>
+            
+            <div class="calendar-legend">
+                <div class="calendar-legend-item">
+                    <div class="calendar-legend-dot dot-strategic"></div>
+                    Brand Awareness
+                </div>
+                <div class="calendar-legend-item">
+                    <div class="calendar-legend-dot dot-tactical"></div>
+                    Strategic Leavers
+                </div>
+                <div class="calendar-legend-item">
+                    <div class="calendar-legend-dot dot-culture"></div>
+                    Culture
+                </div>
+                <div class="calendar-legend-item">
+                    <span style="font-size: 0.8rem; margin-right: 5px;">8%</span>
+                    Budget % per Month
+                </div>
+            </div>
+            
+            <div class="insight-summary">
+                <h3><i class="fas fa-chart-line"></i> Calendar Insights</h3>
+                <p>The campaign calendar reveals significant concentration in April-May and September-December, with lower activity in January-February. This pattern generally aligns with seasonal travel trends but could be better optimized for the 44-day booking window. Key opportunities include increasing January activity to support the March-April secondary peak and strengthening September-October to capture the November-December peak season.</p>
+            </div>
+        </div>
+        
+        <!-- Campaign Budget Overview -->
+        <div class="dashboard-section">
+            <h2><i class="fas fa-money-bill-wave"></i> Campaign Budget Analysis</h2>
+            
+            <div class="chart-row">
+                <div class="chart-column">
+                    <div class="chart-container chart-container-half tall">
+                        <canvas id="campaignBudgetChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-column">
+                    <div class="chart-container chart-container-half">
+                        <canvas id="campaignTypeDistributionChart"></canvas>
+                    </div>
+                    <div class="chart-container chart-container-half">
+                        <canvas id="budgetByMonthChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="insight-summary">
+                <h3><i class="fas fa-chart-pie"></i> Budget Allocation Insights</h3>
+                <p>The Summer Campaign represents the largest budget allocation at $2.27M (28.1% of total budget), followed by the Global Brand Ambassador Q4 at $1.3M (16.1%). Strategic campaigns account for 69.4% of the total budget, while Tactical campaigns make up 30.6%. The budget allocation shows a strong focus on brand awareness initiatives, which aligns with the high brand health metrics already achieved in the India market.</p>
+            </div>
+            
+            <div class="recommendation-card">
+                <h4><i class="fas fa-exchange-alt"></i> Budget Reallocation Recommendations</h4>
+                <p>Based on the budget analysis and campaign performance, we recommend the following budget reallocations:</p>
+                <ul style="margin-left: 20px; margin-bottom: 16px;">
+                    <li>Reduce Global Brand Ambassador Q1 budget by 30% and reallocate to conversion-focused initiatives, as awareness is already at 94.5%.</li>
+                    <li>Increase budget for Family Vacation with Ranveer Singh by 15% as it shows strong engagement metrics and addresses the "Bad Experiences" barrier.</li>
+                    <li>Maintain or slightly increase the Visit Abu Dhabi Always On campaign as it shows the best efficiency metrics ($0.24 CPM).</li>
+                    <li>Consider reducing the Ramadan campaign budget as it has the highest CPM ($3.61) unless it serves specific strategic objectives.</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Campaign Performance Comparison -->
+        <div class="dashboard-section">
+            <h2><i class="fas fa-chart-bar"></i> Campaign Performance Analysis</h2>
+            
+            <div class="chart-container">
+                <canvas id="campaignPerformanceChart"></canvas>
+            </div>
+            
+            <div class="chart-container">
+                <canvas id="campaignEfficiencyChart"></canvas>
+            </div>
+            
+            <div class="chart-container">
+                <canvas id="impressionEngagementScatterChart"></canvas>
+            </div>
+            
+            <div class="insight-summary">
+                <h3><i class="fas fa-chart-line"></i> Performance Insights</h3>
+                <p>The campaign performance analysis reveals significant variations in efficiency metrics across campaigns. The Ramadan campaign has the highest CPM ($3.61) but also delivers strong engagement. The Visit Abu Dhabi Always On campaign shows excellent cost efficiency with a CPM of only $0.24, while maintaining high engagement levels (422.8M). The Summer campaign delivers the highest volume of impressions (3.36B) and strong engagement (382.9M) at a moderate CPM of $0.68.</p>
+            </div>
+            
+            <div class="metrics-row">
+                <div class="metric-card">
+                    <div class="metric-title">Most Efficient Campaign</div>
+                    <div class="metric-value">VAD AO</div>
+                    <div class="metric-description">$0.24 CPM with 422.8M engagements</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-title">Highest Engagement</div>
+                    <div class="metric-value">VAD AO</div>
+                    <div class="metric-description">422.8M engagements (23.8% engagement rate)</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-title">Highest Volume</div>
+                    <div class="metric-value">Summer</div>
+                    <div class="metric-description">3.36B impressions ($0.68 CPM)</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-title">Best CTS</div>
+                    <div class="metric-value">VAD AO</div>
+                    <div class="metric-description">100% click-to-session rate</div>
+                </div>
+            </div>
+            
+            <div class="recommendation-card">
+                <h4><i class="fas fa-lightbulb"></i> Performance Optimization Recommendations</h4>
+                <p>Based on the performance analysis, we recommend the following optimizations:</p>
+                <ul style="margin-left: 20px; margin-bottom: 16px;">
+                    <li>Scale up the Visit Abu Dhabi Always On campaign given its excellent efficiency metrics.</li>
+                    <li>Apply the creative and targeting strategies from the VAD AO campaign to other campaigns to improve their efficiency.</li>
+                    <li>Review the Ramadan campaign strategy to improve its cost efficiency while maintaining its strong engagement.</li>
+                    <li>Consider consolidating smaller campaigns with similar objectives to improve operational efficiency.</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Monthly Campaign Distribution -->
+        <div class="dashboard-section">
+            <h2><i class="fas fa-calendar-alt"></i> Monthly Impression Distribution</h2>
+            
+            <div class="chart-container">
+                <canvas id="campaignDistributionChart"></canvas>
+            </div>
+            
+            <div class="chart-container">
+                <canvas id="optimizedImpressionsChart"></canvas>
+            </div>
+            
+            <div class="insight-summary">
+                <h3><i class="fas fa-chart-line"></i> Distribution Insights</h3>
+                <p>The monthly campaign distribution reveals significant variations in media pressure throughout the year. April and May show the highest concentration of campaigns with over 2B impressions each, primarily driven by the Summer campaign and Family Vacation with Ranveer Singh. September-December also show strong campaign activity with the ADC Launch and GBA Q4 campaigns adding significant impression volume. January shows the lowest campaign activity, presenting an opportunity to increase media pressure to support the March-April secondary peak travel period.</p>
+            </div>
+            
+            <div class="recommendation-card">
+                <h4><i class="fas fa-calendar-check"></i> Impression Distribution Recommendations</h4>
+                <p>Based on the detailed campaign distribution analysis and the 44-day booking window, we recommend the following timing adjustments:</p>
+                <ul style="margin-left: 20px; margin-bottom: 16px;">
+                    <li>Increase January impressions by 25% to better support the March-April secondary peak travel period</li>
+                    <li>Reduce February impressions by 35% as this month is currently over-allocated</li>
+                    <li>Increase September-October impressions by 35-40% to better capture the November-December peak travel season</li>
+                    <li>Reduce December impressions by 25% as these are too late to influence high-season travel due to the booking window</li>
+                </ul>
+                <p>These adjustments will better align campaign timing with the 44-day booking window while maintaining the same total annual impressions.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <div class="container">
+            <p>© 2025 Research & Insights Unit | Strategic Marketing & Communications | Department of Culture and Tourism – Abu Dhabi</p>
+        </div>
+    </div>
+    
+    <!-- Load scripts in the correct order -->
+    <script>
+        // Make ChartDataLabels available globally
+        window.ChartDataLabels = window.ChartDataLabels || {};
+    </script>
+    <script src="enhanced_dashboard_data.js"></script>
+    <script src="optimized_impressions_chart.js"></script>
+    <script src="campaign_distribution_chart.js"></script>
+    <script src="campaign_performance_metrics.js"></script>
+    <script src="campaign_visualization.js"></script>
+</body>
+</html>
