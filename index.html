@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>India Campaign Planning Visualization</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -580,7 +581,31 @@
     <div class="container">
         <div class="insight-summary">
             <h3><i class="fas fa-lightbulb"></i> Key Insights</h3>
-            <p>India represents a high-potential market with excellent brand health metrics (94.5% awareness, 74.4% consideration, 64.6% intent) and strong response to media investments (0.68 elasticity). The current campaign plan has strong elements but requires strategic refinements to address key barriers and capitalize on market preferences.</p>
+            <p>India represents a high-potential market with excellent brand health metrics (94.5% awareness, 74.36% consideration, 64.6% intent) and strong conversion rate (87% consideration-to-intent ratio). The current campaign plan has strong elements but requires strategic refinements to address key barriers and capitalize on market preferences.</p>
+        </div>
+        
+        <div class="metrics-row">
+            <div class="metric-card">
+                <div class="metric-title">Brand Awareness</div>
+                <div class="metric-value">94.5%</div>
+                <div class="metric-description">Q4 2024 vs Q4 2025 Target: 94.5% <span style="color: #a0aec0;">(0% change)</span></div>
+            </div>
+            
+            <div class="metric-card">
+                <div class="metric-title">Brand Consideration</div>
+                <div class="metric-value">74.36%</div>
+                <div class="metric-description">Q4 2024 vs Q4 2025 Target: 75.0% <span style="color: #34a853;">(+0.64%)</span></div>
+            </div>
+            
+            <div class="metric-card">
+                <div class="metric-title">Brand Intent</div>
+                <div class="metric-value">64.6%</div>
+                <div class="metric-description">Q4 2024 vs Q4 2025 Target: 65.17% <span style="color: #34a853;">(+0.57%)</span></div>
+            </div>
+        </div>
+        
+        <div class="chart-container">
+            <canvas id="brandHealthTimelineChartNew"></canvas>
         </div>
         
         <div class="dashboard-section">
@@ -609,10 +634,6 @@
             
             <div class="chart-container">
                 <canvas id="objectivesChart"></canvas>
-            </div>
-            
-            <div class="chart-container">
-                <canvas id="brandHealthTimelineChartNew"></canvas>
             </div>
             
             <div class="chart-container chart-container-half">
@@ -958,7 +979,7 @@
         </div>
     </div>
     
-    <script src="optimized_impressions_chart.js"></script>
+    <script src="enhanced_optimized_impressions_chart.js"></script>
     <script src="seasonality_chart.js"></script>
     <script>
         // Campaign budget data from detailed-campaign-planning-India.csv
@@ -1928,9 +1949,6 @@
                 }
             });
             
-            // 7. Campaign Timing Chart - Monthly data for India
-            const campaignTimingCtx = document.getElementById('campaignTimingChart').getContext('2d');
-            
             // Monthly data for India from Country Data.csv
             const monthlyData = {
                 months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
@@ -1952,184 +1970,6 @@
                 }
                 return num;
             };
-            
-            new Chart(campaignTimingCtx, {
-                type: 'line',
-                data: {
-                    labels: monthlyData.months,
-                    datasets: [
-                        {
-                            label: 'Impressions 2025 (planned)',
-                            data: monthlyData.impressions2025,
-                            backgroundColor: 'rgba(66, 133, 244, 0.1)',
-                            borderColor: '#4285f4',
-                            borderWidth: 3,
-                            pointRadius: 5,
-                            pointBackgroundColor: '#4285f4',
-                            tension: 0.2,
-                            yAxisID: 'y-impressions'
-                        },
-                        {
-                            label: 'Travel Queries 2024',
-                            data: monthlyData.travelQueries2024,
-                            backgroundColor: 'rgba(234, 67, 53, 0.1)',
-                            borderColor: '#ea4335',
-                            borderWidth: 3,
-                            pointRadius: 5,
-                            pointBackgroundColor: '#ea4335',
-                            tension: 0.2,
-                            yAxisID: 'y-queries'
-                        },
-                        {
-                            label: 'Hotel Guests 2024',
-                            data: monthlyData.hotelGuests2024,
-                            backgroundColor: 'rgba(251, 188, 4, 0.1)',
-                            borderColor: '#fbbc04',
-                            borderWidth: 3,
-                            pointRadius: 5,
-                            pointBackgroundColor: '#fbbc04',
-                            tension: 0.2,
-                            yAxisID: 'y-guests'
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    interaction: {
-                        mode: 'index',
-                        intersect: false
-                    },
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                            labels: {
-                                color: '#e0e0e0',
-                                padding: 15,
-                                usePointStyle: true,
-                                pointStyle: 'circle',
-                                font: {
-                                    size: 12
-                                }
-                            }
-                        },
-                        title: {
-                            display: true,
-                            text: 'Monthly Trends: Impressions, Travel Queries & Hotel Guests (India)',
-                            color: '#e0e0e0',
-                            font: {
-                                size: 16,
-                                weight: 'bold'
-                            },
-                            padding: {
-                                top: 10,
-                                bottom: 20
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    const label = context.dataset.label || '';
-                                    const value = context.raw || 0;
-                                    
-                                    if (context.datasetIndex === 0) { // Impressions
-                                        return `${label}: ${formatNumberForChart(value)}`;
-                                    } else if (context.datasetIndex === 1) { // Travel Queries
-                                        return `${label}: ${value.toFixed(1)}`;
-                                    } else { // Hotel Guests
-                                        return `${label}: ${value.toLocaleString()}`;
-                                    }
-                                }
-                            },
-                            padding: 12,
-                            backgroundColor: 'rgba(20, 20, 20, 0.9)',
-                            titleFont: {
-                                size: 14
-                            },
-                            bodyFont: {
-                                size: 14
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            grid: {
-                                color: 'rgba(255, 255, 255, 0.1)'
-                            },
-                            ticks: {
-                                color: '#e0e0e0'
-                            }
-                        },
-                        'y-impressions': {
-                            type: 'linear',
-                            display: true,
-                            position: 'left',
-                            grid: {
-                                color: 'rgba(255, 255, 255, 0.1)'
-                            },
-                            ticks: {
-                                color: '#4285f4',
-                                callback: function(value) {
-                                    return formatNumberForChart(value);
-                                }
-                            },
-                            title: {
-                                display: true,
-                                text: 'Impressions',
-                                color: '#4285f4',
-                                font: {
-                                    size: 12
-                                }
-                            }
-                        },
-                        'y-queries': {
-                            type: 'linear',
-                            display: true,
-                            position: 'right',
-                            grid: {
-                                drawOnChartArea: false
-                            },
-                            ticks: {
-                                color: '#ea4335'
-                            },
-                            title: {
-                                display: true,
-                                text: 'Travel Queries',
-                                color: '#ea4335',
-                                font: {
-                                    size: 12
-                                }
-                            }
-                        },
-                        'y-guests': {
-                            type: 'linear',
-                            display: true,
-                            position: 'right',
-                            grid: {
-                                drawOnChartArea: false
-                            },
-                            ticks: {
-                                color: '#fbbc04',
-                                callback: function(value) {
-                                    return formatNumberForChart(value);
-                                }
-                            },
-                            title: {
-                                display: true,
-                                text: 'Hotel Guests',
-                                color: '#fbbc04',
-                                font: {
-                                    size: 12
-                                }
-                            }
-                        }
-                    },
-                    animation: {
-                        duration: 2000,
-                        easing: 'easeOutQuart'
-                    }
-                }
-            });
             
             // 8. Seasonality Chart
             const seasonalityCtx = document.getElementById('seasonalityChart').getContext('2d');
@@ -2672,136 +2512,7 @@
                 }
             });
             
-            // 11. Barrier Alignment Chart
-            const barrierAlignmentCtx = document.getElementById('barrierAlignmentChart').getContext('2d');
-            
-            // Create custom labels with percentage and change for radar chart
-            const radarBarrierLabels = campaignData.barriers.map(b => {
-                const changeSymbol = b.change > 0 ? '▲' : '▼';
-                return `${b.name} (${b.percentage}%, ${changeSymbol}${Math.abs(b.change)}pp)`;
-            });
-            
             // Calculate campaign coverage for each barrier
             const campaignCoverageData = calculateCampaignCoverage();
-            
-            new Chart(barrierAlignmentCtx, {
-                type: 'bar',
-                data: {
-                    labels: radarBarrierLabels,
-                    datasets: [
-                        {
-                            label: 'Barrier Percentage',
-                            data: campaignData.barriers.map(b => b.percentage),
-                            backgroundColor: 'rgba(251, 188, 4, 0.2)',
-                            borderColor: '#fbbc04',
-                            borderWidth: 2,
-                            pointRadius: 4,
-                            pointBackgroundColor: campaignData.barriers.map(b => b.change > 0 ? '#ea4335' : '#34a853'),
-                            pointBorderColor: '#fff',
-                            pointHoverRadius: 6
-                        },
-                        {
-                            label: 'Campaign Coverage',
-                            data: campaignCoverageData, // Calculated coverage based on campaign focus and budget
-                            backgroundColor: 'rgba(66, 133, 244, 0.2)',
-                            borderColor: '#4285f4',
-                            borderWidth: 2,
-                            pointRadius: 4,
-                            pointBackgroundColor: '#4285f4',
-                            pointBorderColor: '#fff',
-                            pointHoverRadius: 6
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                color: '#e0e0e0',
-                                padding: 15,
-                                usePointStyle: true,
-                                pointStyle: 'circle',
-                                font: {
-                                    size: 12
-                                }
-                            }
-                        },
-                        title: {
-                            display: true,
-                            text: 'Barriers vs. Campaign Coverage',
-                            color: '#e0e0e0',
-                            font: {
-                                size: 16,
-                                weight: 'bold'
-                            },
-                            padding: {
-                                top: 10,
-                                bottom: 20
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    if (context.datasetIndex === 0) { // Barrier dataset
-                                        const barrier = campaignData.barriers[context.dataIndex];
-                                        const changeText = barrier.change > 0 
-                                            ? `Increased by ${barrier.change}pp` 
-                                            : `Decreased by ${Math.abs(barrier.change)}pp`;
-                                        return `${barrier.name}: ${barrier.percentage}% (${changeText})`;
-                                    } else { // Campaign coverage dataset
-                                        return `Campaign Coverage: ${context.raw}%`;
-                                    }
-                                }
-                            },
-                            padding: 12,
-                            backgroundColor: 'rgba(20, 20, 20, 0.9)',
-                            titleFont: {
-                                size: 14
-                            },
-                            bodyFont: {
-                                size: 14
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            grid: {
-                                color: 'rgba(255, 255, 255, 0.1)'
-                            },
-                            ticks: {
-                                color: '#e0e0e0'
-                            },
-                            title: {
-                                display: true,
-                                text: 'Percentage (%)',
-                                color: '#e0e0e0',
-                                font: {
-                                    size: 12
-                                }
-                            }
-                        },
-                        y: {
-                            grid: {
-                                color: 'rgba(255, 255, 255, 0.1)'
-                            },
-                            ticks: {
-                                color: '#e0e0e0'
-                            }
-                        }
-                    },
-                    elements: {
-                        line: {
-                            tension: 0.1
-                        }
-                    },
-                    animation: {
-                        duration: 2000,
-                        easing: 'easeOutQuart'
-                    }
-                }
-            });
         });
     </script>
