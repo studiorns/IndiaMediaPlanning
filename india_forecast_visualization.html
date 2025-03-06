@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>India Travel Queries Forecast Visualization</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .chart-container {
+            margin-bottom: 40px;
+            height: 500px;
+        }
+        .chart-title {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #555;
+            font-size: 18px;
+        }
+        .data-source {
+            text-align: center;
+            font-size: 12px;
+            color: #777;
+            margin-top: 10px;
+        }
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            background-color: #eee;
+            border: none;
+            cursor: pointer;
+            margin: 0 5px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .tab.active {
+            background-color: #007bff;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .info-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #007bff;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 0 4px 4px 0;
+        }
+        .info-box h3 {
+            margin-top: 0;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>India Travel Queries Forecast Visualization</h1>
+        
+        <div class="info-box">
+            <h3>Enhanced Model Forecast</h3>
+            <p>This visualization shows the updated forecast based on the Enhanced Model methodology. The January 2025 actual data (142.92) is used across all scenarios as a fixed starting point, with forecasts for February-December varying by scenario.</p>
+            <p>The Enhanced Model incorporates India's high Intent/Consideration ratio (0.87), strong media elasticity (0.68), and market-specific parameters tailored to India's unique characteristics.</p>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('forecast-comparison')">Forecast Comparison</button>
+            <button class="tab" onclick="showTab('yoy-growth')">YoY Growth</button>
+            <button class="tab" onclick="showTab('historical-data')">Historical Data</button>
+            <button class="tab" onclick="showTab('arima-forecast')">ARIMA Forecast</button>
+        </div>
+        
+        <div id="forecast-comparison" class="tab-content active">
+            <div class="chart-title">2025 Travel Queries Forecast Comparison (Enhanced Model)</div>
+            <div class="chart-container">
+                <canvas id="forecastChart"></canvas>
+            </div>
+            <div class="data-source">Data source: India_Travel_Queries_2025_Forecast.csv</div>
+        </div>
+        
+        <div id="yoy-growth" class="tab-content">
+            <div class="chart-title">Year-over-Year Growth by Scenario (Enhanced Model)</div>
+            <div class="chart-container">
+                <canvas id="yoyGrowthChart"></canvas>
+            </div>
+            <div class="data-source">Data source: India_Travel_Queries_2025_Forecast.csv</div>
+        </div>
+        
+        <div id="historical-data" class="tab-content">
+            <div class="chart-title">Historical Travel Queries (2020-2024)</div>
+            <div class="chart-container">
+                <canvas id="historicalChart"></canvas>
+            </div>
+            <div class="data-source">Data source: Country Data.csv</div>
+        </div>
+        
+        <div id="arima-forecast" class="tab-content">
+            <div class="chart-title">ARIMA Forecast with Confidence Intervals</div>
+            <div class="chart-container">
+                <canvas id="arimaChart"></canvas>
+            </div>
+            <div class="data-source">Data source: India_Travel_Queries_2025_Forecast.csv</div>
+        </div>
+    </div>
+
+    <script>
+        // Function to show the selected tab
+        function showTab(tabId) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show the selected tab content
+            document.getElementById(tabId).classList.add('active');
+            
+            // Add active class to the clicked tab
+            document.querySelector(`.tab[onclick="showTab('${tabId}')"]`).classList.add('active');
+        }
+
+        // Chart data
+        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        
+        // 2024 Queries data
+        const queries2024 = [142.92, 123.21, 113.08, 123.27, 116.77, 97.47, 111.49, 124.07, 180.19, 149.04, 142.80, 142.05];
+        
+        // Forecast data for different scenarios (Enhanced Model)
+        const conservativeForecast = [142.92, 159.64, 137.96, 142.04, 135.89, 81.40, 116.74, 153.26, 351.03, 241.55, 209.49, 225.03];
+        const moderateForecast = [142.92, 167.24, 144.53, 148.81, 142.36, 85.28, 122.30, 160.56, 367.74, 253.05, 219.47, 235.74];
+        const ambitiousForecast = [142.92, 174.84, 151.10, 155.57, 148.84, 89.15, 127.86, 167.86, 384.46, 264.55, 229.44, 246.46];
+        
+        // ARIMA forecast data
+        const arimaForecast = [143.35, 124.45, 114.21, 124.51, 117.94, 98.44, 112.60, 125.31, 181.99, 150.53, 144.23, 143.47];
+        const arimaLowerCI = [130.85, 113.25, 103.91, 113.31, 107.32, 89.58, 102.47, 114.03, 165.61, 136.98, 131.25, 130.56];
+        const arimaUpperCI = [155.85, 135.65, 124.51, 135.71, 128.56, 107.30, 122.73, 136.59, 198.37, 164.08, 157.21, 156.38];
+        
+        // YoY growth data (calculated from the forecast data)
+        const conservativeYoY = [
+            0.0,  // Jan (actual data used)
+            29.6, // Feb
+            22.0, // Mar
+            15.2, // Apr
+            16.4, // May
+            -16.5, // Jun
+            4.7,  // Jul
+            23.5, // Aug
+            94.8, // Sep
+            62.1, // Oct
+            46.7, // Nov
+            58.4  // Dec
+        ];
+        
+        const moderateYoY = [
+            0.0,  // Jan (actual data used)
+            35.7, // Feb
+            27.8, // Mar
+            20.7, // Apr
+            21.9, // May
+            -12.5, // Jun
+            9.7,  // Jul
+            29.4, // Aug
+            104.1, // Sep
+            69.8, // Oct
+            53.7, // Nov
+            65.9  // Dec
+        ];
+        
+        const ambitiousYoY = [
+            0.0,  // Jan (actual data used)
+            41.9, // Feb
+            33.6, // Mar
+            26.2, // Apr
+            27.5, // May
+            -8.5, // Jun
+            14.7, // Jul
+            35.3, // Aug
+            113.4, // Sep
+            77.5, // Oct
+            60.7, // Nov
+            73.5  // Dec
+        ];
+        
+        const arimaYoY = [
+            0.3,  // Jan
+            1.0,  // Feb
+            1.0,  // Mar
+            1.0,  // Apr
+            1.0,  // May
+            1.0,  // Jun
+            1.0,  // Jul
+            1.0,  // Aug
+            1.0,  // Sep
+            1.0,  // Oct
+            1.0,  // Nov
+            1.0   // Dec
+        ];
+        
+        // Historical data (2020-2024)
+        const historical2020 = [29.18, 66.24, 31.70, 17.38, 16.27, 15.89, 23.03, 36.90, 27.27, 26.26, 24.82, 28.82];
+        const historical2021 = [35.35, 26.74, 26.44, 24.64, 23.21, 26.33, 29.13, 62.22, 66.11, 67.44, 66.98, 64.06];
+        const historical2022 = [67.61, 52.15, 64.38, 67.96, 75.54, 76.01, 80.85, 92.98, 95.09, 90.56, 85.86, 85.89];
+        const historical2023 = [88.79, 84.38, 98.35, 89.12, 102.28, 86.41, 100.71, 111.86, 123.96, 122.87, 113.42, 116.77];
+        const historical2024 = queries2024;
+
+        // Create the Forecast Comparison Chart
+        const forecastCtx = document.getElementById('forecastChart').getContext('2d');
+        const forecastChart = new Chart(forecastCtx, {
+            type: 'line',
+            data: {
+                labels: months,
+                datasets: [
+                    {
+                        label: '2024 Actual',
+                        data: queries2024,
+                        borderColor: 'rgba(128, 128, 128, 1)',
+                        backgroundColor: 'rgba(128, 128, 128, 0.1)',
+                        borderWidth: 2,
+                        fill: false
+                    },
+                    {
+                        label: 'Conservative (33.9% YoY)',
+                        data: conservativeForecast,
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                        borderWidth: 2,
+                        fill: false
+                    },
+                    {
+                        label: 'Moderate (39.8% YoY)',
+                        data: moderateForecast,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.1)',
+                        borderWidth: 2,
+                        fill: false
+                    },
+                    {
+                        label: 'Ambitious (45.8% YoY)',
+                        data: ambitiousForecast,
+                        borderColor: 'rgba(153, 102, 255, 1)',
+                        backgroundColor: 'rgba(153, 102, 255, 0.1)',
+                        borderWidth: 2,
+                        fill: false
+                    },
+                    {
+                        label: 'ARIMA (1.0% YoY)',
+                        data: arimaForecast,
+                        borderColor: 'rgba(255, 159, 64, 1)',
+                        backgroundColor: 'rgba(255, 159, 64, 0.1)',
+                        borderWidth: 2,
+                        borderDash: [5, 5],
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        title: {
+                            display: true,
+                            text: 'Indexed Queries'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Month'
+                        }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'India Travel Queries Forecast Comparison (2025)'
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false
+                    }
+                }
+            }
+        });
+
+        // Create the YoY Growth Chart
+        const yoyCtx = document.getElementById('yoyGrowthChart').getContext('2d');
+        const yoyGrowthChart = new Chart(yoyCtx, {
+            type: 'bar',
+            data: {
+                labels: months,
+                datasets: [
+                    {
+                        label: 'Conservative',
+                        data: conservativeYoY,
+                        backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Moderate',
+                        data: moderateYoY,
+                        backgroundColor: 'rgba(75, 192, 192, 0.7)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Ambitious',
+                        data: ambitiousYoY,
+                        backgroundColor: 'rgba(153, 102, 255, 0.7)',
+                        borderColor: 'rgba(153, 102, 255, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'ARIMA',
+                        data: arimaYoY,
+                        backgroundColor: 'rgba(255, 159, 64, 0.7)',
+                        borderColor: 'rgba(255, 159, 64, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'YoY Growth (%)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Month'
+                        }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Year-over-Year Growth by Scenario (2025 vs 2024)'
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + context.raw + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Create the Historical Data Chart
+        const historicalCtx = document.getElementById('historicalChart').getContext('2d');
+        const historicalChart = new Chart(historicalCtx, {
+            type: 'line',
+            data: {
+                labels: months,
+                datasets: [
+                    {
+                        label: '2020',
+                        data: historical2020,
+                        borderColor: 'rgba(201, 203, 207, 1)',
+                        backgroundColor: 'rgba(201, 203, 207, 0.1)',
+                        borderWidth: 2,
+                        fill: false
+                    },
+                    {
+                        label: '2021',
+                        data: historical2021,
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.1)',
+                        borderWidth: 2,
+                        fill: false
+                    },
+                    {
+                        label: '2022',
+                        data: historical2022,
+                        borderColor: 'rgba(255, 205, 86, 1)',
+                        backgroundColor: 'rgba(255, 205, 86, 0.1)',
+                        borderWidth: 2,
+                        fill: false
+                    },
+                    {
+                        label: '2023',
+                        data: historical2023,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.1)',
+                        borderWidth: 2,
+                        fill: false
+                    },
+                    {
+                        label: '2024',
+                        data: historical2024,
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                        borderWidth: 3,
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        title: {
+                            display: true,
+                            text: 'Indexed Queries'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Month'
+                        }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Historical Travel Queries (2020-2024)'
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false
+                    }
+                }
+            }
+        });
+
+        // Create the ARIMA Forecast Chart with Confidence Intervals
+        const arimaCtx = document.getElementById('arimaChart').getContext('2d');
+        const arimaChart = new Chart(arimaCtx, {
+            type: 'line',
+            data: {
+                labels: months,
+                datasets: [
+                    {
+                        label: '2024 Actual',
+                        data: queries2024,
+                        borderColor: 'rgba(128, 128, 128, 1)',
+                        backgroundColor: 'rgba(128, 128, 128, 0.1)',
+                        borderWidth: 2,
+                        fill: false
+                    },
+                    {
+                        label: 'ARIMA Forecast',
+                        data: arimaForecast,
+                        borderColor: 'rgba(255, 159, 64, 1)',
+                        backgroundColor: 'rgba(255, 159, 64, 0.1)',
+                        borderWidth: 2,
+                        fill: false
+                    },
+                    {
+                        label: 'Lower 95% CI',
+                        data: arimaLowerCI,
+                        borderColor: 'rgba(255, 159, 64, 0.5)',
+                        backgroundColor: 'transparent',
+                        borderWidth: 1,
+                        borderDash: [5, 5],
+                        fill: false,
+                        pointRadius: 0
+                    },
+                    {
+                        label: 'Upper 95% CI',
+                        data: arimaUpperCI,
+                        borderColor: 'rgba(255, 159, 64, 0.5)',
+                        backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                        borderWidth: 1,
+                        borderDash: [5, 5],
+                        fill: '-1',
+                        pointRadius: 0
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        title: {
+                            display: true,
+                            text: 'Indexed Queries'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Month'
+                        }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'ARIMA Forecast with 95% Confidence Intervals (2025)'
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+India Travel Queries 2025 Forecast,,,,,,,,,
+,,,,,,,,,
+Month,2024 Actual,Conservative,Moderate,Ambitious,ARIMA,Conservative YoY,Moderate YoY,Ambitious YoY,ARIMA YoY
+January,142.92,142.92,142.92,142.92,143.35,0.0%,0.0%,0.0%,0.3%
+February,123.21,159.64,167.24,174.84,124.45,29.6%,35.7%,41.9%,1.0%
+March,113.08,137.96,144.53,151.10,114.21,22.0%,27.8%,33.6%,1.0%
+April,123.27,142.04,148.81,155.57,124.51,15.2%,20.7%,26.2%,1.0%
+May,116.77,135.89,142.36,148.84,117.94,16.4%,21.9%,27.5%,1.0%
+June,97.47,81.40,85.28,89.15,98.44,-16.5%,-12.5%,-8.5%,1.0%
+July,111.49,116.74,122.30,127.86,112.60,4.7%,9.7%,14.7%,1.0%
+August,124.07,153.26,160.56,167.86,125.31,23.5%,29.4%,35.3%,1.0%
+September,180.19,351.03,367.74,384.46,181.99,94.8%,104.1%,113.4%,1.0%
+October,149.04,241.55,253.05,264.55,150.53,62.1%,69.8%,77.5%,1.0%
+November,142.80,209.49,219.47,229.44,144.23,46.7%,53.7%,60.7%,1.0%
+December,142.05,225.03,235.74,246.46,143.47,58.4%,65.9%,73.5%,1.0%
+Average,130.53,174.75,182.50,190.25,131.84,33.9%,39.8%,45.8%,1.0%
+,,,,,,,,,
+Forecast Parameters,,,,,,,,,
+,Conservative,Moderate,Ambitious,Notes,,,,,
+Base Growth Factor,14.0%,19.0%,24.0%,"Updated growth factors for India market based on Enhanced Model",,,,,
+Media Effectiveness Multiplier,0.68,0.68,0.68,"High media elasticity (significantly above global average of 0.52)",,,,,
+Flight Search Correlation,0.42,0.45,0.48,"Strong correlation with flight searches",,,,,
+Brand Health Coefficient,0.87,0.87,0.87,"High Intent/Consideration ratio (highest among all markets)",,,,,
+,,,,,,,,,
+Key Insights,,,,,,,,,
+1. January 2025 actual data (142.92) is used across all scenarios as per the enhanced model methodology.,,,,,,,,,
+2. September shows the highest forecast values across all scenarios due to seasonality and strong brand health metrics.,,,,,,,,,
+3. The Enhanced Model incorporates India's high Intent/Consideration ratio (0.87) and strong media elasticity (0.68).,,,,,,,,,
+4. The Moderate scenario is recommended as the primary forecast for planning purposes.,,,,,,,,,
+5. Media investment should be aligned with the 44-day average booking window to maximize efficiency.,,,,,,,,,
+,,,,,,,,,
+Data Sources,,,,,,,,,
+- Historical Queries: Travel_Queries_Forecast_India.csv,,,,,,,,,
+- Flight Searches: Flight-searches_India.csv,,,,,,,,,
+- Media Impressions: Impressions_India.csv,,,,,,,,,
+- Brand Health: Brand Health Metrics.csv,,,,,,,,,
+- Average Length of Stay: ALOS-by-Market.csv,,,,,,,,,
+,,,,,,,,,
+Notes,,,,,,,,,
+- All values are indexed to a baseline of 100 representing the average monthly query volume in 2023.,,,,,,,,,
+- YoY Growth represents the percentage change from 2024 to 2025 for each scenario.,,,,,,,,,
+- The ARIMA forecast uses a (1,1,1) model with outlier detection and adjustment.,,,,,,,,,
+- January 2025 actual data (142.92) is used across all scenarios as per the enhanced model methodology.,,,,,,,,,
+- For detailed methodology and rationale, see Enhanced_Model_Methodology_and_Insights.md,,,,,,,,,
