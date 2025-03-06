@@ -166,16 +166,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 'y-queries': {
                     type: 'linear',
-                    display: true,
+                    display: false, // Hide the entire axis
                     position: 'right',
                     grid: {
                         drawOnChartArea: false
                     },
                     ticks: {
-                        color: '#ea4335'
+                        display: false
                     },
                     title: {
-                        display: true,
+                        display: false, // Hide the axis title as well
                         text: 'Travel Queries',
                         color: '#ea4335',
                         font: {
