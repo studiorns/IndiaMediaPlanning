@@ -632,12 +632,12 @@
         <div class="dashboard-section objectives-section">
             <h2><i class="fas fa-bullseye"></i> Campaign Objectives & Brand Health Alignment</h2>
             
-            <div class="chart-container">
-                <canvas id="objectivesChart"></canvas>
-            </div>
-            
             <div class="chart-container chart-container-half">
                 <canvas id="objectivesByTypeChart"></canvas>
+            </div>
+            
+            <div class="chart-container">
+                <canvas id="objectivesChart"></canvas>
             </div>
         </div>
         
@@ -981,6 +981,164 @@
     
     <script src="enhanced_optimized_impressions_chart.js"></script>
     <script src="seasonality_chart.js"></script>
+    <script src="objectivesByTypeChart_improved.js"></script>
+    <script>
+        // This script will run after the page loads to enhance the objectives by type charts
+        document.addEventListener('DOMContentLoaded', function() {
+            // Wait for charts to be fully loaded
+            setTimeout(function() {
+                // Get the objectives section container
+                const objectivesSection = document.querySelector('.objectives-section .chart-container-half');
+                if (!objectivesSection) return;
+                
+                // Add a section title
+                const sectionTitle = document.createElement('div');
+                sectionTitle.style.textAlign = 'center';
+                sectionTitle.style.marginBottom = '25px';
+                sectionTitle.innerHTML = `
+                    <h3 style="color: #333; font-size: 18px; margin-bottom: 8px;">Campaign Objectives by Type</h3>
+                    <p style="color: #666; font-size: 14px; max-width: 700px; margin: 0 auto;">
+                        These radar charts show the focus areas for each campaign type, highlighting the balance between awareness, consideration, intent, and familiarity objectives.
+                    </p>
+                `;
+                objectivesSection.insertBefore(sectionTitle, objectivesSection.firstChild);
+                
+                // Find all chart containers
+                const chartContainers = objectivesSection.querySelectorAll('div > div');
+                if (chartContainers.length < 3) return;
+                
+                // Define chart types and their properties
+                const chartTypes = [
+                    {
+                        name: 'Strategic Campaigns',
+                        description: 'Strategic campaigns focus on long-term brand building with high awareness and familiarity objectives.',
+                        color: '#4285f4'
+                    },
+                    {
+                        name: 'Tactical Campaigns',
+                        description: 'Tactical campaigns drive immediate action with strong intent objectives.',
+                        color: '#34a853'
+                    },
+                    {
+                        name: 'Culture Campaigns',
+                        description: 'Culture campaigns highlight Abu Dhabi\'s cultural attractions, with a strong focus on awareness and familiarity.',
+                        color: '#fbbc04'
+                    }
+                ];
+                
+                // Enhance each chart container
+                chartContainers.forEach((container, index) => {
+                    if (index >= chartTypes.length) return;
+                    
+                    // Apply styling to container
+                    container.style.backgroundColor = 'white';
+                    container.style.borderRadius = '8px';
+                    container.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+                    container.style.padding = '20px';
+                    container.style.marginBottom = '20px';
+                    container.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
+                    container.style.borderTop = `4px solid ${chartTypes[index].color}`;
+                    
+                    // Add hover effect
+                    container.addEventListener('mouseenter', function() {
+                        this.style.transform = 'translateY(-5px)';
+                        this.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.15)';
+                    });
+                    
+                    container.addEventListener('mouseleave', function() {
+                        this.style.transform = '';
+                        this.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+                    });
+                    
+                    // Add title
+                    const title = document.createElement('div');
+                    title.style.fontSize = '16px';
+                    title.style.fontWeight = '600';
+                    title.style.marginBottom = '15px';
+                    title.style.textAlign = 'center';
+                    title.style.color = chartTypes[index].color;
+                    title.textContent = chartTypes[index].name;
+                    
+                    // Add description
+                    const description = document.createElement('div');
+                    description.style.fontSize = '13px';
+                    description.style.color = '#666';
+                    description.style.margin = '15px 0';
+                    description.style.textAlign = 'center';
+                    description.textContent = chartTypes[index].description;
+                    
+                    // Insert title at the beginning of the container
+                    container.insertBefore(title, container.firstChild);
+                    
+                    // Insert description after the canvas
+                    const canvas = container.querySelector('canvas');
+                    if (canvas) {
+                        container.insertBefore(description, canvas.nextSibling);
+                    } else {
+                        container.appendChild(description);
+                    }
+                });
+                
+                // Add a legend at the bottom
+                const legendContainer = document.createElement('div');
+                legendContainer.style.display = 'flex';
+                legendContainer.style.justifyContent = 'center';
+                legendContainer.style.flexWrap = 'wrap';
+                legendContainer.style.gap = '20px';
+                legendContainer.style.marginTop = '15px';
+                legendContainer.style.backgroundColor = 'white';
+                legendContainer.style.borderRadius = '8px';
+                legendContainer.style.padding = '15px';
+                legendContainer.style.boxShadow = '0 1px 5px rgba(0, 0, 0, 0.1)';
+                
+                const dimensions = [
+                    { name: 'Awareness', description: 'Focus on increasing brand recognition and visibility' },
+                    { name: 'Consideration', description: 'Efforts to get travelers to evaluate Abu Dhabi as a destination' },
+                    { name: 'Intent', description: 'Driving action and booking decisions' },
+                    { name: 'Familiarity', description: 'Building deeper knowledge of destination offerings' }
+                ];
+                
+                dimensions.forEach(dim => {
+                    const dimensionElement = document.createElement('div');
+                    dimensionElement.style.display = 'flex';
+                    dimensionElement.style.alignItems = 'center';
+                    
+                    const colorDot = document.createElement('div');
+                    colorDot.style.width = '8px';
+                    colorDot.style.height = '8px';
+                    colorDot.style.borderRadius = '50%';
+                    colorDot.style.backgroundColor = '#333';
+                    colorDot.style.marginRight = '8px';
+                    
+                    const dimensionText = document.createElement('div');
+                    dimensionText.style.fontSize = '12px';
+                    
+                    const dimensionName = document.createElement('span');
+                    dimensionName.textContent = dim.name;
+                    dimensionName.style.fontWeight = '600';
+                    dimensionName.style.color = '#333';
+                    dimensionName.style.marginRight = '5px';
+                    
+                    const dimensionDesc = document.createElement('span');
+                    dimensionDesc.textContent = dim.description;
+                    dimensionDesc.style.color = '#666';
+                    dimensionDesc.style.fontSize = '11px';
+                    
+                    dimensionText.appendChild(dimensionName);
+                    dimensionText.appendChild(document.createTextNode(': '));
+                    dimensionText.appendChild(dimensionDesc);
+                    
+                    dimensionElement.appendChild(colorDot);
+                    dimensionElement.appendChild(dimensionText);
+                    
+                    legendContainer.appendChild(dimensionElement);
+                });
+                
+                objectivesSection.appendChild(legendContainer);
+                
+            }, 1000); // Wait 1 second for charts to load
+        });
+    </script>
     <script>
         // Campaign budget data from detailed-campaign-planning-India.csv
         const detailedCampaignData = {
@@ -1907,12 +2065,78 @@ const cultureBudget = cultureCampaigns.reduce((sum, c) => sum + c.budget, 0);
                 }
             });
             
-            // 5. Objectives by Campaign Type Chart
-            const objectivesByTypeCtx = document.getElementById('objectivesByTypeChart').getContext('2d');
+            // 5. Objectives by Campaign Type Charts - Split into 3 separate charts
+            // Remove the existing canvas
+            const objectivesByTypeContainer = document.getElementById('objectivesByTypeChart').parentNode;
+            document.getElementById('objectivesByTypeChart').remove();
+            
+            // Create 3 new canvas elements for each chart type
+            const strategicCanvas = document.createElement('canvas');
+            strategicCanvas.id = 'strategicObjectivesChart';
+            strategicCanvas.style.height = '100%';
+            strategicCanvas.style.width = '100%';
+            
+            const tacticalCanvas = document.createElement('canvas');
+            tacticalCanvas.id = 'tacticalObjectivesChart';
+            tacticalCanvas.style.height = '100%';
+            tacticalCanvas.style.width = '100%';
+            
+            const cultureCanvas = document.createElement('canvas');
+            cultureCanvas.id = 'cultureObjectivesChart';
+            cultureCanvas.style.height = '100%';
+            cultureCanvas.style.width = '100%';
+            
+            // Create a flex container for the charts
+            const chartsContainer = document.createElement('div');
+            chartsContainer.style.display = 'flex';
+            chartsContainer.style.flexWrap = 'wrap';
+            chartsContainer.style.gap = '20px';
+            chartsContainer.style.justifyContent = 'center';
+            
+            // Create individual chart containers
+            const strategicContainer = document.createElement('div');
+            strategicContainer.style.flex = '1';
+            strategicContainer.style.minWidth = '300px';
+            strategicContainer.style.maxWidth = '400px';
+            strategicContainer.appendChild(strategicCanvas);
+            
+            const tacticalContainer = document.createElement('div');
+            tacticalContainer.style.flex = '1';
+            tacticalContainer.style.minWidth = '300px';
+            tacticalContainer.style.maxWidth = '400px';
+            tacticalContainer.appendChild(tacticalCanvas);
+            
+            const cultureContainer = document.createElement('div');
+            cultureContainer.style.flex = '1';
+            cultureContainer.style.minWidth = '300px';
+            cultureContainer.style.maxWidth = '400px';
+            cultureContainer.appendChild(cultureCanvas);
+            
+            // Add all containers to the flex container
+            chartsContainer.appendChild(strategicContainer);
+            chartsContainer.appendChild(tacticalContainer);
+            chartsContainer.appendChild(cultureContainer);
+            
+            // Add the flex container to the original chart container
+            objectivesByTypeContainer.appendChild(chartsContainer);
+            
+            // Get average objectives by campaign type
             const strategicObjectives = getAverageObjectivesByType(campaignData.campaigns, 'Strategic');
             const tacticalObjectives = getAverageObjectivesByType(campaignData.campaigns, 'Tactical');
             
-            new Chart(objectivesByTypeCtx, {
+            // Add culture objectives from the CSV data
+            // Saadiyat Cultural District campaign has these values from the CSV:
+            // Awareness: 5, Familiarity: 3, Intent: 2, Familiarity: 5
+            const cultureObjectives = {
+                awareness: 5,
+                consideration: 3, // Using the first Familiarity value as Consideration
+                intent: 2,
+                familiarity: 5
+            };
+            
+            // Create Strategic Campaigns Chart
+            const strategicCtx = document.getElementById('strategicObjectivesChart').getContext('2d');
+            new Chart(strategicCtx, {
                 type: 'radar',
                 data: {
                     labels: ['Awareness', 'Consideration', 'Intent', 'Familiarity'],
@@ -1927,19 +2151,9 @@ const cultureBudget = cultureCampaigns.reduce((sum, c) => sum + c.budget, 0);
                             ],
                             backgroundColor: 'rgba(66, 133, 244, 0.2)',
                             borderColor: '#4285f4',
-                            borderWidth: 1
-                        },
-                        {
-                            label: 'Tactical Campaigns',
-                            data: [
-                                tacticalObjectives.awareness,
-                                tacticalObjectives.consideration,
-                                tacticalObjectives.intent,
-                                tacticalObjectives.familiarity
-                            ],
-                            backgroundColor: 'rgba(52, 168, 83, 0.2)',
-                            borderColor: '#34a853',
-                            borderWidth: 1
+                            borderWidth: 2,
+                            pointRadius: 4,
+                            pointBackgroundColor: '#4285f4'
                         }
                     ]
                 },
@@ -1950,15 +2164,23 @@ const cultureBudget = cultureCampaigns.reduce((sum, c) => sum + c.budget, 0);
                         legend: {
                             position: 'bottom',
                             labels: {
-                                color: '#e0e0e0'
+                                color: '#e0e0e0',
+                                font: {
+                                    size: 12
+                                }
                             }
                         },
                         title: {
                             display: true,
-                            text: 'Objectives by Campaign Type',
+                            text: 'Strategic Campaign Objectives',
                             color: '#e0e0e0',
                             font: {
-                                size: 16
+                                size: 14,
+                                weight: 'bold'
+                            },
+                            padding: {
+                                top: 10,
+                                bottom: 10
                             }
                         }
                     },
@@ -1971,19 +2193,187 @@ const cultureBudget = cultureCampaigns.reduce((sum, c) => sum + c.budget, 0);
                                 color: 'rgba(255, 255, 255, 0.1)'
                             },
                             pointLabels: {
-                                color: '#e0e0e0'
+                                color: '#e0e0e0',
+                                font: {
+                                    size: 12,
+                                    weight: 'bold'
+                                }
                             },
                             ticks: {
                                 color: '#e0e0e0',
-                                backdropColor: 'transparent'
+                                backdropColor: 'transparent',
+                                font: {
+                                    size: 10
+                                }
                             },
                             min: 0,
                             max: 5,
                             beginAtZero: true,
                             suggestedMax: 5
                         }
+                    }
+                }
+            });
+            
+            // Create Tactical Campaigns Chart
+            const tacticalCtx = document.getElementById('tacticalObjectivesChart').getContext('2d');
+            new Chart(tacticalCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Awareness', 'Consideration', 'Intent', 'Familiarity'],
+                    datasets: [
+                        {
+                            label: 'Tactical Campaigns',
+                            data: [
+                                tacticalObjectives.awareness,
+                                tacticalObjectives.consideration,
+                                tacticalObjectives.intent,
+                                tacticalObjectives.familiarity
+                            ],
+                            backgroundColor: 'rgba(52, 168, 83, 0.2)',
+                            borderColor: '#34a853',
+                            borderWidth: 2,
+                            pointRadius: 4,
+                            pointBackgroundColor: '#34a853'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#e0e0e0',
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Tactical Campaign Objectives',
+                            color: '#e0e0e0',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            },
+                            padding: {
+                                top: 10,
+                                bottom: 10
+                            }
+                        }
                     },
-                    maintainAspectRatio: false
+                    scales: {
+                        r: {
+                            angleLines: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            pointLabels: {
+                                color: '#e0e0e0',
+                                font: {
+                                    size: 12,
+                                    weight: 'bold'
+                                }
+                            },
+                            ticks: {
+                                color: '#e0e0e0',
+                                backdropColor: 'transparent',
+                                font: {
+                                    size: 10
+                                }
+                            },
+                            min: 0,
+                            max: 5,
+                            beginAtZero: true,
+                            suggestedMax: 5
+                        }
+                    }
+                }
+            });
+            
+            // Create Culture Campaigns Chart
+            const cultureCtx = document.getElementById('cultureObjectivesChart').getContext('2d');
+            new Chart(cultureCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Awareness', 'Consideration', 'Intent', 'Familiarity'],
+                    datasets: [
+                        {
+                            label: 'Culture Campaigns',
+                            data: [
+                                cultureObjectives.awareness,
+                                cultureObjectives.consideration,
+                                cultureObjectives.intent,
+                                cultureObjectives.familiarity
+                            ],
+                            backgroundColor: 'rgba(251, 188, 4, 0.2)',
+                            borderColor: '#fbbc04',
+                            borderWidth: 2,
+                            pointRadius: 4,
+                            pointBackgroundColor: '#fbbc04'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#e0e0e0',
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Culture Campaign Objectives',
+                            color: '#e0e0e0',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            },
+                            padding: {
+                                top: 10,
+                                bottom: 10
+                            }
+                        }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            pointLabels: {
+                                color: '#e0e0e0',
+                                font: {
+                                    size: 12,
+                                    weight: 'bold'
+                                }
+                            },
+                            ticks: {
+                                color: '#e0e0e0',
+                                backdropColor: 'transparent',
+                                font: {
+                                    size: 10
+                                }
+                            },
+                            min: 0,
+                            max: 5,
+                            beginAtZero: true,
+                            suggestedMax: 5
+                        }
+                    }
                 }
             });
             
@@ -1995,8 +2385,8 @@ const cultureBudget = cultureCampaigns.reduce((sum, c) => sum + c.budget, 0);
                 hotelGuests2024: [26842, 25715, 30133, 26636, 32950, 25710, 22137, 17221, 26383, 36480, 43636, 43813]
             };
             
-            // Format large numbers for better readability
-            const formatNumberForChart = (num) => {
+            // Format large numbers for better readability (used for charts)
+            const formatNumber = (num) => {
                 if (num >= 1000000000) {
                     return (num / 1000000000).toFixed(1) + 'B';
                 }
@@ -2007,24 +2397,23 @@ const cultureBudget = cultureCampaigns.reduce((sum, c) => sum + c.budget, 0);
                     return (num / 1000).toFixed(1) + 'K';
                 }
                 return num;
+            };
+            
+            // Format impressions for display (used for hotel guests)
+            const formatImpressions = (num) => {
+                if (num >= 1000000) {
+                    return (num / 1000000).toFixed(1) + 'M';
+                }
+                if (num >= 1000) {
+                    return (num / 1000).toFixed(1) + 'K';
+                }
+                return num.toString();
             };
             
             // 8. Seasonality Chart
             const seasonalityCtx = document.getElementById('seasonalityChart').getContext('2d');
             
-            // Format large numbers for better readability
-            const formatImpressions = (num) => {
-                if (num >= 1000000000) {
-                    return (num / 1000000000).toFixed(1) + 'B';
-                }
-                if (num >= 1000000) {
-                    return (num / 1000000).toFixed(1) + 'M';
-                }
-                if (num >= 1000) {
-                    return (num / 1000).toFixed(1) + 'K';
-                }
-                return num;
-            };
+            // Use the existing formatNumber function for impressions
             
             // Data from Country Data.csv for India
             const indiaData = {
@@ -2115,7 +2504,7 @@ const cultureBudget = cultureCampaigns.reduce((sum, c) => sum + c.budget, 0);
                                     const value = context.raw || 0;
                                     
                                     if (context.datasetIndex === 0) { // Impressions
-                                        return `${label}: ${formatImpressions(value)}`;
+                                        return `${label}: ${formatNumber(value)}`;
                                     } else if (context.datasetIndex === 1) { // Travel Queries
                                         return `${label}: ${value.toFixed(1)}`;
                                     } else { // Hotel Guests
@@ -2152,7 +2541,7 @@ const cultureBudget = cultureCampaigns.reduce((sum, c) => sum + c.budget, 0);
                             ticks: {
                                 color: '#4285f4',
                                 callback: function(value) {
-                                    return formatImpressions(value);
+                                    return formatNumber(value);
                                 }
                             },
                             title: {
@@ -2334,20 +2723,6 @@ const cultureBudget = cultureCampaigns.reduce((sum, c) => sum + c.budget, 0);
                     }
                 }
             });
-            
-            // Format large numbers for better readability
-            const formatNumber = (num) => {
-                if (num >= 1000000000) {
-                    return (num / 1000000000).toFixed(1) + 'B';
-                }
-                if (num >= 1000000) {
-                    return (num / 1000000).toFixed(1) + 'M';
-                }
-                if (num >= 1000) {
-                    return (num / 1000).toFixed(1) + 'K';
-                }
-                return num;
-            };
             
             // Optimized Media Impressions Chart
             const optimizedImpressionsCtx = document.getElementById('optimizedImpressionsChart').getContext('2d');
