@@ -1141,13 +1141,15 @@
             }
         };
         
-        // Calculate derived data
-        const strategicCampaigns = campaignData.campaigns.filter(c => c.type === 'Strategic');
-        const tacticalCampaigns = campaignData.campaigns.filter(c => c.type === 'Tactical');
-        
-        const totalBudget = campaignData.campaigns.reduce((sum, c) => sum + c.budget, 0);
-        const strategicBudget = strategicCampaigns.reduce((sum, c) => sum + c.budget, 0);
-        const tacticalBudget = tacticalCampaigns.reduce((sum, c) => sum + c.budget, 0);
+// Calculate derived data
+const strategicCampaigns = campaignData.campaigns.filter(c => c.type === 'Strategic');
+const tacticalCampaigns = campaignData.campaigns.filter(c => c.type === 'Tactical');
+const cultureCampaigns = campaignData.campaigns.filter(c => c.type === 'Culture');
+
+const totalBudget = campaignData.campaigns.reduce((sum, c) => sum + c.budget, 0);
+const strategicBudget = strategicCampaigns.reduce((sum, c) => sum + c.budget, 0);
+const tacticalBudget = tacticalCampaigns.reduce((sum, c) => sum + c.budget, 0);
+const cultureBudget = cultureCampaigns.reduce((sum, c) => sum + c.budget, 0);
         
         // Helper function to get average objective scores by campaign type
         const getAverageObjectivesByType = (campaigns, type) => {
@@ -1446,13 +1448,49 @@
             
             // 1. Campaign Type Distribution Chart
             const campaignTypeCtx = document.getElementById('campaignTypeChart').getContext('2d');
+            
+            // Calculate campaign counts by type from detailed-campaign-planning-India.csv
+            const calculateCampaignCountsByType = () => {
+                // Get campaigns from detailed data
+                const campaigns = detailedCampaignData.campaigns;
+                
+                // Initialize counts
+                let strategicCount = 0;
+                let tacticalCount = 0;
+                let cultureCount = 0;
+                
+                // Count campaigns by type
+                campaigns.forEach(campaign => {
+                    if (campaign.type === 'Strategic') {
+                        strategicCount++;
+                    } else if (campaign.type === 'Tactical') {
+                        tacticalCount++;
+                    } else if (campaign.type === 'Culture') {
+                        cultureCount++;
+                    }
+                });
+                
+                return {
+                    strategic: strategicCount,
+                    tactical: tacticalCount,
+                    culture: cultureCount
+                };
+            };
+            
+            // Get campaign counts by type
+            const campaignCountsByType = calculateCampaignCountsByType();
+            
             new Chart(campaignTypeCtx, {
                 type: 'pie',
                 data: {
-                    labels: ['Strategic', 'Tactical'],
+                    labels: ['Strategic', 'Tactical', 'Culture'],
                     datasets: [{
-                        data: [strategicCampaigns.length, tacticalCampaigns.length],
-                        backgroundColor: ['#4285f4', '#34a853'],
+                        data: [
+                            campaignCountsByType.strategic,
+                            campaignCountsByType.tactical,
+                            campaignCountsByType.culture
+                        ],
+                        backgroundColor: ['#4285f4', '#34a853', '#fbbc04'],
                         borderWidth: 1
                     }]
                 },
