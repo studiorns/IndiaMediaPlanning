@@ -12,6 +12,147 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        /* Campaign Calendar styles */
+        .calendar-container {
+            margin-bottom: 28px;
+            overflow-x: auto;
+        }
+        
+        .calendar-header {
+            display: grid;
+            grid-template-columns: 200px repeat(12, 1fr);
+            gap: 4px;
+            margin-bottom: 8px;
+            position: sticky;
+            top: 0;
+            background-color: var(--section-bg);
+            z-index: 10;
+        }
+        
+        .calendar-header-cell {
+            text-align: center;
+            font-weight: 600;
+            padding: 8px 4px;
+            font-size: 0.9rem;
+            color: var(--gray-800);
+            background-color: var(--gray-200);
+            border-radius: var(--radius-sm);
+        }
+        
+        .calendar-row-wrapper {
+            display: contents;
+        }
+        
+        .calendar-label {
+            padding: 8px 6px;
+            font-weight: 600;
+            color: var(--gray-800);
+            background-color: var(--gray-200);
+            border-radius: var(--radius-sm);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 0.85rem;
+            line-height: 1.2;
+        }
+        
+        .calendar-cell {
+            height: 40px;
+            background-color: var(--gray-300);
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+            position: relative;
+            min-width: 30px; /* Ensure minimum width for cells */
+        }
+        
+        .calendar-cell.active {
+            background-color: var(--primary);
+        }
+        
+        .calendar-cell.active-strategic {
+            background-color: var(--primary);
+        }
+        
+        .calendar-cell.active-tactical {
+            background-color: var(--secondary);
+        }
+        
+        .calendar-cell.active-culture {
+            background-color: var(--warning);
+        }
+        
+        .calendar-cell .budget-percentage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        .calendar-legend {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .calendar-legend-item {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+        
+        .calendar-legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .dot-strategic {
+            background-color: var(--primary);
+        }
+        
+        .dot-tactical {
+            background-color: var(--secondary);
+        }
+        
+        .dot-culture {
+            background-color: var(--warning);
+        }
+        
+        /* Filter buttons */
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            background-color: var(--gray-300);
+            color: var(--gray-800);
+            border: none;
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        
+        .filter-btn.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .filter-btn:hover:not(.active) {
+            background-color: var(--gray-400);
+        }
+        
         :root {
             --primary: #4285f4;
             --primary-light: #1a2233;
@@ -639,6 +780,56 @@
             <div class="chart-container">
                 <canvas id="campaignBudgetChart"></canvas>
             </div>
+            
+            <!-- Campaign Calendar Visualization -->
+            <div class="dashboard-subsection">
+                <h3 style="margin-top: 20px; margin-bottom: 15px; display: flex; align-items: center;">
+                    <i class="fas fa-calendar-alt" style="margin-right: 10px; color: var(--primary);"></i>
+                    Campaign Calendar & Monthly Budget Allocation
+                </h3>
+                
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-type="all">All Campaigns</button>
+                    <button class="filter-btn" data-type="strategic">Strategic</button>
+                    <button class="filter-btn" data-type="tactical">Tactical</button>
+                    <button class="filter-btn" data-type="culture">Culture</button>
+                </div>
+                
+                <div class="calendar-header">
+                    <div class="calendar-header-cell">Campaign</div>
+                    <div class="calendar-header-cell">Jan</div>
+                    <div class="calendar-header-cell">Feb</div>
+                    <div class="calendar-header-cell">Mar</div>
+                    <div class="calendar-header-cell">Apr</div>
+                    <div class="calendar-header-cell">May</div>
+                    <div class="calendar-header-cell">Jun</div>
+                    <div class="calendar-header-cell">Jul</div>
+                    <div class="calendar-header-cell">Aug</div>
+                    <div class="calendar-header-cell">Sep</div>
+                    <div class="calendar-header-cell">Oct</div>
+                    <div class="calendar-header-cell">Nov</div>
+                    <div class="calendar-header-cell">Dec</div>
+                </div>
+                
+                <div id="campaignCalendar" class="calendar-container">
+                    <!-- Calendar will be populated by JavaScript -->
+                </div>
+                
+                <div class="calendar-legend">
+                    <div class="calendar-legend-item">
+                        <div class="calendar-legend-dot dot-strategic"></div>
+                        Strategic
+                    </div>
+                    <div class="calendar-legend-item">
+                        <div class="calendar-legend-dot dot-tactical"></div>
+                        Tactical
+                    </div>
+                    <div class="calendar-legend-item">
+                        <div class="calendar-legend-dot dot-culture"></div>
+                        Culture
+                    </div>
+                </div>
+            </div>
         </div>
         
         <div class="dashboard-section">
@@ -784,7 +975,7 @@
                             <td>1,491,941,387</td>
                             <td>0%</td>
                             <td>Unchanged</td>
-                        </tr>
+                         </tr>
                         <tr>
                             <td>Dec</td>
                             <td>2,101,915,441</td>
@@ -982,6 +1173,13 @@
     <script src="enhanced_optimized_impressions_chart.js"></script>
     <script src="seasonality_chart.js"></script>
     <script src="objectivesByTypeChart_improved.js"></script>
+    <script src="campaign_objectives_chart.js"></script>
+    <script src="enhanced_dashboard_data.js"></script>
+    <script src="campaignTimingChart.js"></script>
+    <script src="brand_health_timeline_chart.js"></script>
+    <script src="campaign_distribution_chart.js"></script>
+    <script src="campaign_budget_charts.js"></script>
+    <script src="budget_allocation_chart.js"></script>
     <script>
         // This script will run after the page loads to enhance the objectives by type charts
         document.addEventListener('DOMContentLoaded', function() {
@@ -1163,91 +1361,6 @@
         // Sort campaigns by budget in descending order
         detailedCampaignData.campaigns.sort((a, b) => b.budget - a.budget);
         
-        // Data for charts
-        const campaignData = {
-            campaigns: [
-                { name: 'Global Brand Ambassador', type: 'Strategic', budget: 7598745, weeks: 14, 
-                  objectives: { awareness: 5, consideration: 4, intent: 2, familiarity: 4 },
-                  barrierFocus: { badExperiences: 2, alreadyVisited: 0, weatherConcerns: 0, tooExpensive: 0, notMuchToDo: 3 } },
-                { name: 'Summer Campaign', type: 'Strategic', budget: 12061500, weeks: 20, 
-                  objectives: { awareness: 5, consideration: 5, intent: 4, familiarity: 5 },
-                  barrierFocus: { badExperiences: 1, alreadyVisited: 0, weatherConcerns: 5, tooExpensive: 3, notMuchToDo: 4 } },
-                { name: 'Abu Dhabi Calendar Launch', type: 'Strategic', budget: 3980295, weeks: 6, 
-                  objectives: { awareness: 5, consideration: 4, intent: 5, familiarity: 5 },
-                  barrierFocus: { badExperiences: 0, alreadyVisited: 2, weatherConcerns: 0, tooExpensive: 0, notMuchToDo: 5 } },
-                { name: 'Saadiyat Culture District', type: 'Strategic', budget: 2457450, weeks: 10, 
-                  objectives: { awareness: 5, consideration: 3, intent: 2, familiarity: 5 },
-                  barrierFocus: { badExperiences: 0, alreadyVisited: 4, weatherConcerns: 0, tooExpensive: 0, notMuchToDo: 5 } },
-                { name: 'Ramadan', type: 'Tactical', budget: 2631600, weeks: 6, 
-                  objectives: { awareness: 4, consideration: 4, intent: 4, familiarity: 5 },
-                  barrierFocus: { badExperiences: 0, alreadyVisited: 3, weatherConcerns: 0, tooExpensive: 4, notMuchToDo: 0 } },
-                { name: 'Diwali', type: 'Tactical', budget: 1532950, weeks: 4, 
-                  objectives: { awareness: 3, consideration: 2, intent: 5, familiarity: 4 },
-                  barrierFocus: { badExperiences: 0, alreadyVisited: 5, weatherConcerns: 0, tooExpensive: 3, notMuchToDo: 0 } },
-                { name: 'Family Vacation with Ranveer Singh', type: 'Tactical', budget: 3289500, weeks: 6, 
-                  objectives: { awareness: 5, consideration: 2, intent: 5, familiarity: 5 },
-                  barrierFocus: { badExperiences: 4, alreadyVisited: 0, weatherConcerns: 2, tooExpensive: 3, notMuchToDo: 4 } },
-                { name: 'F1', type: 'Tactical', budget: 576200, weeks: 4, 
-                  objectives: { awareness: 4, consideration: 2, intent: 3, familiarity: 4 },
-                  barrierFocus: { badExperiences: 0, alreadyVisited: 0, weatherConcerns: 0, tooExpensive: 0, notMuchToDo: 5 } },
-                { name: 'Abu Dhabi Calendar Always On', type: 'Strategic', budget: 3421080, weeks: 52, 
-                  objectives: { awareness: 5, consideration: 4, intent: 5, familiarity: 5 },
-                  barrierFocus: { badExperiences: 0, alreadyVisited: 0, weatherConcerns: 0, tooExpensive: 0, notMuchToDo: 5 } },
-                { name: 'Visit Abu Dhabi Always On', type: 'Strategic', budget: 3421080, weeks: 52, 
-                  objectives: { awareness: 5, consideration: 4, intent: 5, familiarity: 5 },
-                  barrierFocus: { badExperiences: 2, alreadyVisited: 3, weatherConcerns: 2, tooExpensive: 3, notMuchToDo: 4 } },
-                { name: 'NBA Campaign', type: 'Tactical', budget: 432150, weeks: 3, 
-                  objectives: { awareness: 3, consideration: 3, intent: 5, familiarity: 3 },
-                  barrierFocus: { badExperiences: 0, alreadyVisited: 0, weatherConcerns: 0, tooExpensive: 0, notMuchToDo: 5 } },
-                { name: 'Comedy Week', type: 'Tactical', budget: 699825, weeks: 3, 
-                  objectives: { awareness: 3, consideration: 3, intent: 5, familiarity: 3 },
-                  barrierFocus: { badExperiences: 0, alreadyVisited: 0, weatherConcerns: 0, tooExpensive: 0, notMuchToDo: 5 } }
-            ],
-            // Media elasticity data - historical campaign performance
-            mediaElasticity: {
-                // Historical data points for calculating elasticity
-                historicalCampaigns: [
-                    { year: 2022, quarter: 1, mediaBudget: 5200000, travelQueries: 420000 },
-                    { year: 2022, quarter: 2, mediaBudget: 7800000, travelQueries: 580000 },
-                    { year: 2022, quarter: 3, mediaBudget: 4500000, travelQueries: 390000 },
-                    { year: 2022, quarter: 4, mediaBudget: 9200000, travelQueries: 650000 },
-                    { year: 2023, quarter: 1, mediaBudget: 6300000, travelQueries: 480000 },
-                    { year: 2023, quarter: 2, mediaBudget: 8500000, travelQueries: 620000 },
-                    { year: 2023, quarter: 3, mediaBudget: 5100000, travelQueries: 430000 },
-                    { year: 2023, quarter: 4, mediaBudget: 10500000, travelQueries: 720000 },
-                    { year: 2024, quarter: 1, mediaBudget: 7200000, travelQueries: 530000 },
-                    { year: 2024, quarter: 2, mediaBudget: 9800000, travelQueries: 680000 }
-                ],
-                // Calculated elasticity value
-                value: 0.68,
-                // Explanation of calculation
-                calculation: "The media elasticity of 0.68 was calculated using log-log regression analysis on the data from Markets/All Markets/Country Data.csv. This measures the percentage change in travel queries resulting from a 1% change in media investment (impressions). The analysis compared monthly Travel Queries data against Impressions data for India from 2022-2024, controlling for seasonality. The formula used is: Elasticity = (% Change in Travel Queries) / (% Change in Media Impressions). The 0.68 value indicates that for every 10% increase in media impressions, we can expect approximately a 6.8% increase in travel queries from the India market. This elasticity is higher than the global average (0.52), indicating India's strong responsiveness to marketing efforts."
-            },
-            brandHealth: {
-                awareness: 94.5,
-                consideration: 74.36,
-                intent: 64.6,
-                intentConsiderationRatio: 0.87
-            },
-            barriers: [
-                { name: 'Bad Experiences', percentage: 55, change: 15, key: 'badExperiences' },
-                { name: 'Already Visited', percentage: 35, change: -12, key: 'alreadyVisited' },
-                { name: 'Weather Concerns', percentage: 32, change: -6, key: 'weatherConcerns' },
-                { name: 'Too Expensive', percentage: 28, change: -17, key: 'tooExpensive' },
-                { name: 'Not Much to Do', percentage: 24, change: 3, key: 'notMuchToDo' }
-            ],
-            seasonality: {
-                months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                hotelGuests: [26842, 25715, 30133, 26636, 32950, 25710, 22137, 17221, 26383, 36480, 43636, 43813]
-            },
-            // Media impressions data from india_dashboard.js
-            mediaImpressions: {
-                months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                previous: [225064010, 403344845, 338559903, 239887318, 406111050, 204733895, 380375170, 267846428, 196644227, 266535943, 529462903, 1046401180], // 2023 impressions
-                current: [420282730, 291565408, 205187085, 772503957, 459406878, 978934373, 450168160, 169328374, 550180959, 681147480, 1248883902, 483802089], // 2024 impressions
-                proposed: [308059995, 834140150, 1031750574, 2052809431, 2064921296, 865852843, 774169937, 774169937, 1377372477, 1961987179, 1491941387, 2101915441] // 2025 impressions
-            }
-        };
         
         // Calculate campaign coverage for each barrier
         // This calculates how well our campaigns address each barrier on a scale of 0-100%
@@ -1409,181 +1522,6 @@ const cultureBudget = cultureCampaigns.reduce((sum, c) => sum + c.budget, 0);
             // Call the function to populate the table
             populateBarriersTable();
             
-            // Brand Health Timeline Chart
-            const brandHealthTimelineCtx = document.getElementById('brandHealthTimelineChartNew').getContext('2d');
-            new Chart(brandHealthTimelineCtx, {
-                type: 'line',
-                data: {
-                    labels: brandHealthTimelineData.quarters,
-                    datasets: [
-                        {
-                            label: 'Awareness (Actual)',
-                            data: brandHealthTimelineData.awareness.actual,
-                            backgroundColor: 'rgba(66, 133, 244, 0.1)',
-                            borderColor: '#4285f4',
-                            borderWidth: 3,
-                            pointRadius: 5,
-                            pointBackgroundColor: '#4285f4',
-                            tension: 0.2,
-                            fill: false
-                        },
-                        {
-                            label: 'Awareness (2025 Target)',
-                            data: brandHealthTimelineData.awareness.target,
-                            backgroundColor: 'rgba(66, 133, 244, 0.0)',
-                            borderColor: '#4285f4',
-                            borderWidth: 2,
-                            borderDash: [5, 5],
-                            pointRadius: 5,
-                            pointBackgroundColor: '#4285f4',
-                            pointStyle: 'triangle',
-                            tension: 0.2,
-                            fill: false
-                        },
-                        {
-                            label: 'Consideration (Actual)',
-                            data: brandHealthTimelineData.consideration.actual,
-                            backgroundColor: 'rgba(52, 168, 83, 0.1)',
-                            borderColor: '#34a853',
-                            borderWidth: 3,
-                            pointRadius: 5,
-                            pointBackgroundColor: '#34a853',
-                            tension: 0.2,
-                            fill: false
-                        },
-                        {
-                            label: 'Consideration (2025 Target)',
-                            data: brandHealthTimelineData.consideration.target,
-                            backgroundColor: 'rgba(52, 168, 83, 0.0)',
-                            borderColor: '#34a853',
-                            borderWidth: 2,
-                            borderDash: [5, 5],
-                            pointRadius: 5,
-                            pointBackgroundColor: '#34a853',
-                            pointStyle: 'triangle',
-                            tension: 0.2,
-                            fill: false
-                        },
-                        {
-                            label: 'Intent (Actual)',
-                            data: brandHealthTimelineData.intent.actual,
-                            backgroundColor: 'rgba(251, 188, 4, 0.1)',
-                            borderColor: '#fbbc04',
-                            borderWidth: 3,
-                            pointRadius: 5,
-                            pointBackgroundColor: '#fbbc04',
-                            tension: 0.2,
-                            fill: false
-                        },
-                        {
-                            label: 'Intent (2025 Target)',
-                            data: brandHealthTimelineData.intent.target,
-                            backgroundColor: 'rgba(251, 188, 4, 0.0)',
-                            borderColor: '#fbbc04',
-                            borderWidth: 2,
-                            borderDash: [5, 5],
-                            pointRadius: 5,
-                            pointBackgroundColor: '#fbbc04',
-                            pointStyle: 'triangle',
-                            tension: 0.2,
-                            fill: false
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    interaction: {
-                        mode: 'index',
-                        intersect: false
-                    },
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                            labels: {
-                                color: '#e0e0e0',
-                                padding: 15,
-                                usePointStyle: true,
-                                pointStyle: 'circle',
-                                font: {
-                                    size: 12
-                                }
-                            }
-                        },
-                        title: {
-                            display: true,
-                            text: 'Brand Health Metrics Quarterly Trends & 2025 Targets',
-                            color: '#e0e0e0',
-                            font: {
-                                size: 16,
-                                weight: 'bold'
-                            },
-                            padding: {
-                                top: 10,
-                                bottom: 20
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    const label = context.dataset.label || '';
-                                    const value = context.raw;
-                                    if (value === null) return label + ': N/A';
-                                    return label + ': ' + value.toFixed(2) + '%';
-                                }
-                            },
-                            padding: 12,
-                            backgroundColor: 'rgba(20, 20, 20, 0.9)',
-                            titleFont: {
-                                size: 14
-                            },
-                            bodyFont: {
-                                size: 14
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            grid: {
-                                color: 'rgba(255, 255, 255, 0.1)'
-                            },
-                            ticks: {
-                                color: '#e0e0e0'
-                            }
-                        },
-                        y: {
-                            grid: {
-                                color: 'rgba(255, 255, 255, 0.1)'
-                            },
-                            ticks: {
-                                color: '#e0e0e0',
-                                callback: function(value) {
-                                    return value + '%';
-                                }
-                            },
-                            title: {
-                                display: true,
-                                text: 'Percentage (%)',
-                                color: '#e0e0e0',
-                                font: {
-                                    size: 12
-                                }
-                            },
-                            min: 55, // Set minimum to show differences better
-                            max: 100
-                        }
-                    },
-                    elements: {
-                        line: {
-                            tension: 0.3
-                        }
-                    },
-                    animation: {
-                        duration: 2000,
-                        easing: 'easeOutQuart'
-                    }
-                }
-            });
             
             // Mobile chart tab functionality
             const chartTabs = document.querySelectorAll('.chart-tab');
@@ -2383,20 +2321,6 @@ const cultureBudget = cultureCampaigns.reduce((sum, c) => sum + c.budget, 0);
                 impressions2025: [308059995, 834140149, 1031750573, 2052809431, 2064921296, 865852843, 774169937, 774169937, 1377372476, 1961987179, 1491941387, 2101915441],
                 travelQueries2024: [118.222, 123.2072, 113.0767, 123.2651, 116.7668, 97.4746, 111.4929, 124.0744, 180.1942, 149.0372, 142.7999, 142.0537],
                 hotelGuests2024: [26842, 25715, 30133, 26636, 32950, 25710, 22137, 17221, 26383, 36480, 43636, 43813]
-            };
-            
-            // Format large numbers for better readability (used for charts)
-            const formatNumber = (num) => {
-                if (num >= 1000000000) {
-                    return (num / 1000000000).toFixed(1) + 'B';
-                }
-                if (num >= 1000000) {
-                    return (num / 1000000).toFixed(1) + 'M';
-                }
-                if (num >= 1000) {
-                    return (num / 1000).toFixed(1) + 'K';
-                }
-                return num;
             };
             
             // Format impressions for display (used for hotel guests)

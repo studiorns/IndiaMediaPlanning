@@ -175,64 +175,88 @@ const campaignData = {
     // Campaign calendar data
     campaignCalendar: [
         { 
-            name: 'Global Brand Ambassador', 
+            name: 'Global Brand Ambassador Q1', 
             category: 'strategic',
-            months: [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1] 
+            months: [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            percentages: [45, 28, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         },
         { 
-            name: 'Summer Campaign', 
+            name: 'Global Brand Ambassador Q4', 
             category: 'strategic',
-            months: [0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0] 
+            months: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+            percentages: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 60, 40]
+        },
+        { 
+            name: 'Summer', 
+            category: 'strategic',
+            months: [0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+            percentages: [0, 0, 0, 30, 25, 15, 15, 15, 0, 0, 0, 0]
         },
         { 
             name: 'Abu Dhabi Calendar Launch', 
             category: 'strategic',
-            months: [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1] 
+            months: [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
+            percentages: [0, 0, 0, 0, 0, 0, 0, 0, 35, 30, 20, 15]
         },
         { 
-            name: 'Saadiyat Culture District', 
+            name: 'Saadiyat Cultural District', 
             category: 'culture',
-            months: [0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0] 
+            months: [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            percentages: [0, 0, 4, 10, 10, 10, 7, 7, 10, 14, 14, 14]
         },
         { 
             name: 'Ramadan', 
             category: 'tactical',
-            months: [0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0] 
+            months: [0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            percentages: [0, 40, 60, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         },
         { 
             name: 'Diwali', 
             category: 'tactical',
-            months: [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0] 
+            months: [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0],
+            percentages: [0, 0, 0, 0, 0, 0, 0, 0, 40, 60, 0, 0]
         },
         { 
             name: 'Family Vacation with Ranveer Singh', 
-            category: 'tactical',
-            months: [0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0] 
+            category: 'strategic',
+            months: [0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
+            percentages: [0, 15, 28, 28, 28, 0, 0, 0, 0, 0, 0, 0]
         },
         { 
             name: 'F1', 
             category: 'tactical',
-            months: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1] 
+            months: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            percentages: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 100]
         },
         { 
             name: 'Abu Dhabi Calendar Always On', 
             category: 'strategic',
-            months: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] 
+            months: [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            percentages: [0, 13, 13, 7, 7, 7, 7, 7, 7, 12, 12, 12]
         },
         { 
             name: 'Visit Abu Dhabi Always On', 
             category: 'strategic',
-            months: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] 
+            months: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            percentages: [4, 10, 10, 7, 7, 7, 7, 7, 7, 12, 12, 12]
         },
         { 
-            name: 'NBA Campaign', 
+            name: 'NBA', 
             category: 'tactical',
-            months: [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0] 
+            months: [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+            percentages: [0, 0, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0]
         },
         { 
             name: 'Comedy Week', 
             category: 'tactical',
-            months: [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0] 
+            months: [0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
+            percentages: [0, 0, 0, 25, 60, 15, 0, 0, 0, 0, 0, 0]
+        },
+        { 
+            name: 'Search Always On', 
+            category: 'strategic',
+            months: [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            percentages: [0, 0, 9, 8, 8, 8, 8, 8, 8, 13, 12, 20]
         }
     ],
     
