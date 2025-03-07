@@ -69,19 +69,22 @@ const colors = {
     border: 'rgba(255, 255, 255, 0.2)'
 };
 
-// Format large numbers for better readability
-const formatNumber = (num) => {
-    if (num >= 1000000000) {
-        return (num / 1000000000).toFixed(1) + 'B';
-    }
-    if (num >= 1000000) {
-        return (num / 1000000).toFixed(1) + 'M';
-    }
-    if (num >= 1000) {
-        return (num / 1000).toFixed(1) + 'K';
-    }
-    return num;
-};
+// Format large numbers for better readability - check if function already exists
+// to avoid duplicate declaration errors
+if (typeof window.formatNumber === 'undefined') {
+    window.formatNumber = (num) => {
+        if (num >= 1000000000) {
+            return (num / 1000000000).toFixed(1) + 'B';
+        }
+        if (num >= 1000000) {
+            return (num / 1000000).toFixed(1) + 'M';
+        }
+        if (num >= 1000) {
+            return (num / 1000).toFixed(1) + 'K';
+        }
+        return num;
+    };
+}
 
 // Format numbers with commas for display
 const formatNumberWithCommas = (num) => {

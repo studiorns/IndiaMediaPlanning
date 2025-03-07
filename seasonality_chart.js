@@ -6,19 +6,22 @@ const indiaData = {
     impressions2025: [308059995, 834140149, 1031750573, 2052809431, 2064921296, 865852843, 774169937, 774169937, 1377372476, 1961987179, 1491941387, 2101915441]
 };
 
-// Format large numbers for better readability
-const formatNumber = (num) => {
-    if (num >= 1000000000) {
-        return (num / 1000000000).toFixed(1) + 'B';
-    }
-    if (num >= 1000000) {
-        return (num / 1000000).toFixed(1) + 'M';
-    }
-    if (num >= 1000) {
-        return (num / 1000).toFixed(1) + 'K';
-    }
-    return num;
-};
+// Format large numbers for better readability - check if function already exists
+// to avoid duplicate declaration errors
+if (typeof window.formatNumber === 'undefined') {
+    window.formatNumber = (num) => {
+        if (num >= 1000000000) {
+            return (num / 1000000000).toFixed(1) + 'B';
+        }
+        if (num >= 1000000) {
+            return (num / 1000000).toFixed(1) + 'M';
+        }
+        if (num >= 1000) {
+            return (num / 1000).toFixed(1) + 'K';
+        }
+        return num;
+    };
+}
 
 // Initialize the seasonality chart when the DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {

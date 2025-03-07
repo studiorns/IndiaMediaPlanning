@@ -14,572 +14,489 @@ document.addEventListener('DOMContentLoaded', function() {
     // Create Campaign Efficiency Chart
     createCampaignEfficiencyChart();
     
-    // Create Campaign Budget Chart
-    createCampaignBudgetChart();
-    
-    // Create Campaign Type Distribution Chart
-    createCampaignTypeDistributionChart();
-    
-    // Create Marketing KPI Spider Charts
-    createMarketingKPISpiderCharts();
+    // Note: The following charts are now created by campaign_distribution_chart.js
+    // to avoid duplicate chart initialization errors
+    // - createCampaignBudgetChart();
+    // - createCampaignTypeDistributionChart();
 });
-
-// Create Marketing KPI Spider Charts
-function createMarketingKPISpiderCharts() {
-    console.log("Creating Marketing KPI Spider Charts");
-    
-    // Create Strategic Campaigns Radar Chart
-    const strategicCtx = document.getElementById('strategicCampaignsRadarChart');
-    if (strategicCtx) {
-        // Filter strategic campaigns
-        const strategicCampaigns = campaignData.campaigns.filter(c => c.type === 'Strategic');
-        
-        const strategicDatasets = strategicCampaigns.map(campaign => ({
-            label: campaign.name,
-            data: [
-                campaign.objectives.awareness,
-                campaign.objectives.consideration,
-                campaign.objectives.intent,
-                campaign.objectives.familiarity
-            ],
-            backgroundColor: 'rgba(66, 133, 244, 0.2)',
-            borderColor: '#4285f4',
-            borderWidth: 2,
-            pointRadius: 4,
-            pointBackgroundColor: '#4285f4',
-            pointBorderColor: '#fff',
-            pointHoverRadius: 6
-        }));
-        
-        new Chart(strategicCtx, {
-            type: 'radar',
-            data: {
-                labels: ['Awareness', 'Consideration', 'Intent', 'Familiarity'],
-                datasets: strategicDatasets
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'right',
-                        labels: {
-                            color: '#e0e0e0',
-                            padding: 10,
-                            usePointStyle: true,
-                            pointStyle: 'circle',
-                            font: {
-                                size: 10
-                            }
-                        }
-                    },
-                    title: {
-                        display: true,
-                        text: 'Strategic Campaigns KPIs',
-                        color: '#e0e0e0',
-                        font: {
-                            size: 16,
-                            weight: 'bold'
-                        },
-                        padding: {
-                            top: 10,
-                            bottom: 20
-                        }
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                const label = context.dataset.label || '';
-                                const value = context.raw || 0;
-                                const category = context.chart.data.labels[context.dataIndex];
-                                return `${label}: ${category} = ${value}/5`;
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    r: {
-                        angleLines: {
-                            color: 'rgba(255, 255, 255, 0.1)'
-                        },
-                        grid: {
-                            color: 'rgba(255, 255, 255, 0.1)'
-                        },
-                        pointLabels: {
-                            color: '#e0e0e0',
-                            font: {
-                                size: 14,
-                                weight: 'bold'
-                            }
-                        },
-                        ticks: {
-                            color: '#e0e0e0',
-                            backdropColor: 'transparent',
-                            showLabelBackdrop: false,
-                            font: {
-                                size: 10
-                            }
-                        },
-                        min: 0,
-                        max: 5,
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    }
-    
-    // Create Tactical Campaigns Radar Chart
-    const tacticalCtx = document.getElementById('tacticalCampaignsRadarChart');
-    if (tacticalCtx) {
-        // Filter tactical campaigns
-        const tacticalCampaigns = campaignData.campaigns.filter(c => c.type === 'Tactical');
-        
-        const tacticalDatasets = tacticalCampaigns.map(campaign => ({
-            label: campaign.name,
-            data: [
-                campaign.objectives.awareness,
-                campaign.objectives.consideration,
-                campaign.objectives.intent,
-                campaign.objectives.familiarity
-            ],
-            backgroundColor: 'rgba(52, 168, 83, 0.2)',
-            borderColor: '#34a853',
-            borderWidth: 2,
-            pointRadius: 4,
-            pointBackgroundColor: '#34a853',
-            pointBorderColor: '#fff',
-            pointHoverRadius: 6
-        }));
-        
-        new Chart(tacticalCtx, {
-            type: 'radar',
-            data: {
-                labels: ['Awareness', 'Consideration', 'Intent', 'Familiarity'],
-                datasets: tacticalDatasets
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'right',
-                        labels: {
-                            color: '#e0e0e0',
-                            padding: 10,
-                            usePointStyle: true,
-                            pointStyle: 'circle',
-                            font: {
-                                size: 10
-                            }
-                        }
-                    },
-                    title: {
-                        display: true,
-                        text: 'Tactical Campaigns KPIs',
-                        color: '#e0e0e0',
-                        font: {
-                            size: 16,
-                            weight: 'bold'
-                        },
-                        padding: {
-                            top: 10,
-                            bottom: 20
-                        }
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                const label = context.dataset.label || '';
-                                const value = context.raw || 0;
-                                const category = context.chart.data.labels[context.dataIndex];
-                                return `${label}: ${category} = ${value}/5`;
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    r: {
-                        angleLines: {
-                            color: 'rgba(255, 255, 255, 0.1)'
-                        },
-                        grid: {
-                            color: 'rgba(255, 255, 255, 0.1)'
-                        },
-                        pointLabels: {
-                            color: '#e0e0e0',
-                            font: {
-                                size: 14,
-                                weight: 'bold'
-                            }
-                        },
-                        ticks: {
-                            color: '#e0e0e0',
-                            backdropColor: 'transparent',
-                            showLabelBackdrop: false,
-                            font: {
-                                size: 10
-                            }
-                        },
-                        min: 0,
-                        max: 5,
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    }
-    
-    // Create Culture Campaigns Radar Chart
-    const cultureCtx = document.getElementById('cultureCampaignsRadarChart');
-    if (cultureCtx) {
-        // Filter culture campaigns
-        const cultureCampaigns = campaignData.campaigns.filter(c => c.type === 'Culture');
-        
-        const cultureDatasets = cultureCampaigns.map(campaign => ({
-            label: campaign.name,
-            data: [
-                campaign.objectives.awareness,
-                campaign.objectives.consideration,
-                campaign.objectives.intent,
-                campaign.objectives.familiarity
-            ],
-            backgroundColor: 'rgba(156, 39, 176, 0.2)',
-            borderColor: '#9c27b0',
-            borderWidth: 2,
-            pointRadius: 4,
-            pointBackgroundColor: '#9c27b0',
-            pointBorderColor: '#fff',
-            pointHoverRadius: 6
-        }));
-        
-        new Chart(cultureCtx, {
-            type: 'radar',
-            data: {
-                labels: ['Awareness', 'Consideration', 'Intent', 'Familiarity'],
-                datasets: cultureDatasets
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'right',
-                        labels: {
-                            color: '#e0e0e0',
-                            padding: 10,
-                            usePointStyle: true,
-                            pointStyle: 'circle',
-                            font: {
-                                size: 10
-                            }
-                        }
-                    },
-                    title: {
-                        display: true,
-                        text: 'Culture Campaigns KPIs',
-                        color: '#e0e0e0',
-                        font: {
-                            size: 16,
-                            weight: 'bold'
-                        },
-                        padding: {
-                            top: 10,
-                            bottom: 20
-                        }
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                const label = context.dataset.label || '';
-                                const value = context.raw || 0;
-                                const category = context.chart.data.labels[context.dataIndex];
-                                return `${label}: ${category} = ${value}/5`;
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    r: {
-                        angleLines: {
-                            color: 'rgba(255, 255, 255, 0.1)'
-                        },
-                        grid: {
-                            color: 'rgba(255, 255, 255, 0.1)'
-                        },
-                        pointLabels: {
-                            color: '#e0e0e0',
-                            font: {
-                                size: 14,
-                                weight: 'bold'
-                            }
-                        },
-                        ticks: {
-                            color: '#e0e0e0',
-                            backdropColor: 'transparent',
-                            showLabelBackdrop: false,
-                            font: {
-                                size: 10
-                            }
-                        },
-                        min: 0,
-                        max: 5,
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    }
-    
-    // Create Top Campaigns Radar Chart
-    const topCampaignsCtx = document.getElementById('topCampaignsRadarChart');
-    if (topCampaignsCtx) {
-        // Get top 5 campaigns by budget
-        const topCampaigns = [...campaignData.campaigns].sort((a, b) => b.budget - a.budget).slice(0, 5);
-        
-        // Create datasets for top campaigns
-        const topCampaignsData = topCampaigns.map((campaign, index) => {
-            // Generate a unique color for each campaign
-            const colors = [
-                { bg: 'rgba(66, 133, 244, 0.2)', border: '#4285f4' },
-                { bg: 'rgba(52, 168, 83, 0.2)', border: '#34a853' },
-                { bg: 'rgba(251, 188, 4, 0.2)', border: '#fbbc04' },
-                { bg: 'rgba(234, 67, 53, 0.2)', border: '#ea4335' },
-                { bg: 'rgba(156, 39, 176, 0.2)', border: '#9c27b0' }
-            ];
-            
-            return {
-                label: campaign.name,
-                data: [
-                    campaign.objectives.awareness,
-                    campaign.objectives.consideration,
-                    campaign.objectives.intent,
-                    campaign.objectives.familiarity
-                ],
-                backgroundColor: colors[index].bg,
-                borderColor: colors[index].border,
-                borderWidth: 2,
-                pointRadius: 4,
-                pointBackgroundColor: colors[index].border,
-                pointBorderColor: '#fff',
-                pointHoverRadius: 6
-            };
-        });
-        
-        new Chart(topCampaignsCtx, {
-            type: 'radar',
-            data: {
-                labels: ['Awareness', 'Consideration', 'Intent', 'Familiarity'],
-                datasets: topCampaignsData
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'right',
-                        labels: {
-                            color: '#e0e0e0',
-                            padding: 10,
-                            usePointStyle: true,
-                            pointStyle: 'circle',
-                            font: {
-                                size: 10
-                            }
-                        }
-                    },
-                    title: {
-                        display: true,
-                        text: 'Top 5 Campaigns by Budget (KPIs)',
-                        color: '#e0e0e0',
-                        font: {
-                            size: 16,
-                            weight: 'bold'
-                        },
-                        padding: {
-                            top: 10,
-                            bottom: 20
-                        }
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                const label = context.dataset.label || '';
-                                const value = context.raw || 0;
-                                const category = context.chart.data.labels[context.dataIndex];
-                                return `${label}: ${category} = ${value}/5`;
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    r: {
-                        angleLines: {
-                            color: 'rgba(255, 255, 255, 0.1)'
-                        },
-                        grid: {
-                            color: 'rgba(255, 255, 255, 0.1)'
-                        },
-                        pointLabels: {
-                            color: '#e0e0e0',
-                            font: {
-                                size: 14,
-                                weight: 'bold'
-                            }
-                        },
-                        ticks: {
-                            color: '#e0e0e0',
-                            backdropColor: 'transparent',
-                            showLabelBackdrop: false,
-                            font: {
-                                size: 10
-                            }
-                        },
-                        min: 0,
-                        max: 5,
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    }
-    
-    // Create Objectives Chart
-    const objectivesCtx = document.getElementById('objectivesChart');
-    if (objectivesCtx) {
-        new Chart(objectivesCtx, {
-            type: 'radar',
-            data: {
-                labels: ['Awareness', 'Consideration', 'Intent', 'Familiarity'],
-                datasets: campaignData.campaigns.map((campaign, index) => ({
-                    label: campaign.name,
-                    data: [
-                        campaign.objectives.awareness,
-                        campaign.objectives.consideration,
-                        campaign.objectives.intent,
-                        campaign.objectives.familiarity
-                    ],
-                    backgroundColor: `rgba(${index * 20 % 255}, ${(index * 30 + 100) % 255}, ${(index * 50 + 50) % 255}, 0.2)`,
-                    borderColor: `rgba(${index * 20 % 255}, ${(index * 30 + 100) % 255}, ${(index * 50 + 50) % 255}, 1)`,
-                    borderWidth: 2,
-                    pointRadius: 4,
-                    pointBackgroundColor: `rgba(${index * 20 % 255}, ${(index * 30 + 100) % 255}, ${(index * 50 + 50) % 255}, 1)`,
-                    pointBorderColor: '#fff',
-                    pointHoverRadius: 6,
-                    pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: `rgba(${index * 20 % 255}, ${(index * 30 + 100) % 255}, ${(index * 50 + 50) % 255}, 1)`,
-                    pointHoverBorderWidth: 2
-                }))
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'right',
-                        labels: {
-                            color: '#e0e0e0',
-                            padding: 15,
-                            usePointStyle: true,
-                            pointStyle: 'circle',
-                            font: {
-                                size: 11
-                            }
-                        }
-                    },
-                    title: {
-                        display: true,
-                        text: 'Campaign Objectives Comparison',
-                        color: '#e0e0e0',
-                        font: {
-                            size: 16,
-                            weight: 'bold'
-                        },
-                        padding: {
-                            top: 10,
-                            bottom: 20
-                        }
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                const label = context.dataset.label || '';
-                                const value = context.raw || 0;
-                                const category = context.chart.data.labels[context.dataIndex];
-                                return `${label}: ${category} = ${value}/5`;
-                            }
-                        },
-                        padding: 12,
-                        backgroundColor: 'rgba(20, 20, 20, 0.9)',
-                        titleFont: {
-                            size: 14
-                        },
-                        bodyFont: {
-                            size: 14
-                        }
-                    }
-                },
-                scales: {
-                    r: {
-                        angleLines: {
-                            color: 'rgba(255, 255, 255, 0.1)'
-                        },
-                        grid: {
-                            color: 'rgba(255, 255, 255, 0.1)'
-                        },
-                        pointLabels: {
-                            color: '#e0e0e0',
-                            font: {
-                                size: 14,
-                                weight: 'bold'
-                            }
-                        },
-                        ticks: {
-                            color: '#e0e0e0',
-                            backdropColor: 'transparent',
-                            z: 10,
-                            backdropPadding: 3,
-                            showLabelBackdrop: true,
-                            backdropColor: 'rgba(0, 0, 0, 0.7)',
-                            font: {
-                                size: 10
-                            }
-                        },
-                        min: 0,
-                        max: 5,
-                        beginAtZero: true
-                    }
-                },
-                elements: {
-                    line: {
-                        tension: 0.1
-                    }
-                },
-                animation: {
-                    duration: 2000,
-                    easing: 'easeOutQuart'
-                }
-            }
-        });
-    }
-}
 
 // Create Campaign Performance Chart
 function createCampaignPerformanceChart() {
-    // Implementation omitted for brevity
+    const ctx = document.getElementById('campaignPerformanceChart');
+    if (!ctx) {
+        console.error("campaignPerformanceChart canvas not found");
+        return;
+    }
+    
+    // Extract data from campaignData
+    const campaignNames = campaignData.campaigns.map(c => c.name);
+    const impressions = campaignData.campaigns.map(c => c.impressions);
+    const engagements = campaignData.campaigns.map(c => c.engagements);
+    
+    // Format large numbers for better readability
+    const formatNumber = (num) => {
+        if (num >= 1000000000) {
+            return (num / 1000000000).toFixed(1) + 'B';
+        }
+        if (num >= 1000000) {
+            return (num / 1000000).toFixed(1) + 'M';
+        }
+        if (num >= 1000) {
+            return (num / 1000).toFixed(1) + 'K';
+        }
+        return num;
+    };
+    
+    // Create the chart
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: campaignNames,
+            datasets: [
+                {
+                    label: 'Impressions',
+                    data: impressions,
+                    backgroundColor: 'rgba(66, 133, 244, 0.7)',
+                    borderColor: '#4285f4',
+                    borderWidth: 1,
+                    order: 2
+                },
+                {
+                    label: 'Engagements',
+                    data: engagements,
+                    backgroundColor: 'rgba(52, 168, 83, 0.7)',
+                    borderColor: '#34a853',
+                    borderWidth: 1,
+                    order: 1
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'y',
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Campaign Performance Metrics',
+                    color: '#e0e0e0',
+                    font: {
+                        size: 16,
+                        weight: 'bold'
+                    },
+                    padding: {
+                        top: 10,
+                        bottom: 20
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const label = context.dataset.label || '';
+                            const value = context.raw || 0;
+                            return `${label}: ${formatNumber(value)}`;
+                        }
+                    }
+                },
+                legend: {
+                    position: 'top',
+                    labels: {
+                        color: '#e0e0e0',
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                        font: {
+                            size: 12
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    type: 'logarithmic',
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    },
+                    ticks: {
+                        color: '#e0e0e0',
+                        callback: function(value) {
+                            return formatNumber(value);
+                        }
+                    }
+                },
+                y: {
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    },
+                    ticks: {
+                        color: '#e0e0e0'
+                    }
+                }
+            }
+        }
+    });
 }
 
 // Create Campaign Efficiency Chart
 function createCampaignEfficiencyChart() {
-    // Implementation omitted for brevity
+    const ctx = document.getElementById('campaignEfficiencyChart');
+    if (!ctx) {
+        console.error("campaignEfficiencyChart canvas not found");
+        return;
+    }
+    
+    // Extract data from campaignData
+    const campaignNames = campaignData.campaigns.map(c => c.name);
+    const cpm = campaignData.campaigns.map(c => c.cpm);
+    const cts = campaignData.campaigns.map(c => c.cts * 100); // Convert to percentage
+    
+    // Create the chart
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: campaignNames,
+            datasets: [
+                {
+                    label: 'CPM ($)',
+                    data: cpm,
+                    backgroundColor: 'rgba(66, 133, 244, 0.7)',
+                    borderColor: '#4285f4',
+                    borderWidth: 1,
+                    yAxisID: 'y'
+                },
+                {
+                    label: 'Click-to-Session Rate (%)',
+                    data: cts,
+                    backgroundColor: 'rgba(251, 188, 4, 0.7)',
+                    borderColor: '#fbbc04',
+                    borderWidth: 1,
+                    yAxisID: 'y1'
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'y',
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Campaign Efficiency Metrics',
+                    color: '#e0e0e0',
+                    font: {
+                        size: 16,
+                        weight: 'bold'
+                    },
+                    padding: {
+                        top: 10,
+                        bottom: 20
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const label = context.dataset.label || '';
+                            const value = context.raw || 0;
+                            if (label.includes('CPM')) {
+                                return `${label}: $${value.toFixed(2)}`;
+                            } else {
+                                return `${label}: ${value.toFixed(1)}%`;
+                            }
+                        }
+                    }
+                },
+                legend: {
+                    position: 'top',
+                    labels: {
+                        color: '#e0e0e0',
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                        font: {
+                            size: 12
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    },
+                    ticks: {
+                        color: '#e0e0e0'
+                    }
+                },
+                y: {
+                    position: 'left',
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    },
+                    ticks: {
+                        color: '#e0e0e0'
+                    },
+                    title: {
+                        display: true,
+                        text: 'CPM ($)',
+                        color: '#4285f4',
+                        font: {
+                            size: 12,
+                            weight: 'bold'
+                        }
+                    }
+                },
+                y1: {
+                    position: 'right',
+                    grid: {
+                        drawOnChartArea: false
+                    },
+                    ticks: {
+                        color: '#e0e0e0'
+                    },
+                    title: {
+                        display: true,
+                        text: 'Click-to-Session Rate (%)',
+                        color: '#fbbc04',
+                        font: {
+                            size: 12,
+                            weight: 'bold'
+                        }
+                    }
+                }
+            }
+        }
+    });
 }
+
+// These functions are kept for reference but are not called in this file
+// to avoid duplicate chart initialization errors with campaign_distribution_chart.js
 
 // Create Campaign Budget Chart
 function createCampaignBudgetChart() {
-    // Implementation omitted for brevity
+    const ctx = document.getElementById('campaignBudgetChart');
+    if (!ctx) {
+        console.error("campaignBudgetChart canvas not found");
+        return;
+    }
+    
+    // Extract data from campaignData
+    const campaignNames = campaignData.campaigns.map(c => c.name);
+    const budgets = campaignData.campaigns.map(c => c.budget);
+    
+    // Sort data by budget (descending)
+    const sortedData = campaignNames.map((name, index) => ({
+        name: name,
+        budget: budgets[index],
+        type: campaignData.campaigns[index].type
+    })).sort((a, b) => b.budget - a.budget);
+    
+    // Get colors based on campaign type
+    const getColorByType = (type) => {
+        switch(type) {
+            case 'Strategic': return { bg: 'rgba(66, 133, 244, 0.7)', border: '#4285f4' };
+            case 'Tactical': return { bg: 'rgba(52, 168, 83, 0.7)', border: '#34a853' };
+            case 'Culture': return { bg: 'rgba(251, 188, 4, 0.7)', border: '#fbbc04' };
+            default: return { bg: 'rgba(234, 67, 53, 0.7)', border: '#ea4335' };
+        }
+    };
+    
+    // Format currency
+    const formatCurrency = (num) => {
+        if (num >= 1000000) {
+            return '$' + (num / 1000000).toFixed(2) + 'M';
+        }
+        if (num >= 1000) {
+            return '$' + (num / 1000).toFixed(0) + 'K';
+        }
+        return '$' + num.toFixed(0);
+    };
+    
+    // Create the chart
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: sortedData.map(d => d.name),
+            datasets: [
+                {
+                    label: 'Budget',
+                    data: sortedData.map(d => d.budget),
+                    backgroundColor: sortedData.map(d => getColorByType(d.type).bg),
+                    borderColor: sortedData.map(d => getColorByType(d.type).border),
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'y',
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Campaign Budget Allocation',
+                    color: '#e0e0e0',
+                    font: {
+                        size: 16,
+                        weight: 'bold'
+                    },
+                    padding: {
+                        top: 10,
+                        bottom: 20
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const value = context.raw || 0;
+                            const total = sortedData.reduce((sum, d) => sum + d.budget, 0);
+                            const percentage = ((value / total) * 100).toFixed(1);
+                            return `Budget: ${formatCurrency(value)} (${percentage}%)`;
+                        }
+                    }
+                },
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    },
+                    ticks: {
+                        color: '#e0e0e0',
+                        callback: function(value) {
+                            return formatCurrency(value);
+                        }
+                    }
+                },
+                y: {
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    },
+                    ticks: {
+                        color: '#e0e0e0'
+                    }
+                }
+            }
+        }
+    });
 }
 
 // Create Campaign Type Distribution Chart
 function createCampaignTypeDistributionChart() {
-    // Implementation omitted for brevity
+    const ctx = document.getElementById('campaignTypeDistributionChart');
+    if (!ctx) {
+        console.error("campaignTypeDistributionChart canvas not found");
+        return;
+    }
+    
+    // Calculate budget by campaign type
+    const budgetByType = {};
+    campaignData.campaigns.forEach(campaign => {
+        if (!budgetByType[campaign.type]) {
+            budgetByType[campaign.type] = 0;
+        }
+        budgetByType[campaign.type] += campaign.budget;
+    });
+    
+    // Prepare data for chart
+    const types = Object.keys(budgetByType);
+    const budgets = types.map(type => budgetByType[type]);
+    const totalBudget = budgets.reduce((sum, budget) => sum + budget, 0);
+    const percentages = budgets.map(budget => ((budget / totalBudget) * 100).toFixed(1));
+    
+    // Get colors for each type
+    const getColorByType = (type) => {
+        switch(type) {
+            case 'Strategic': return { bg: 'rgba(66, 133, 244, 0.7)', border: '#4285f4' };
+            case 'Tactical': return { bg: 'rgba(52, 168, 83, 0.7)', border: '#34a853' };
+            case 'Culture': return { bg: 'rgba(251, 188, 4, 0.7)', border: '#fbbc04' };
+            default: return { bg: 'rgba(234, 67, 53, 0.7)', border: '#ea4335' };
+        }
+    };
+    
+    // Format currency
+    const formatCurrency = (num) => {
+        if (num >= 1000000) {
+            return '$' + (num / 1000000).toFixed(2) + 'M';
+        }
+        if (num >= 1000) {
+            return '$' + (num / 1000).toFixed(0) + 'K';
+        }
+        return '$' + num.toFixed(0);
+    };
+    
+    // Create the chart
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: types,
+            datasets: [
+                {
+                    data: budgets,
+                    backgroundColor: types.map(type => getColorByType(type).bg),
+                    borderColor: types.map(type => getColorByType(type).border),
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Budget Distribution by Campaign Type',
+                    color: '#e0e0e0',
+                    font: {
+                        size: 16,
+                        weight: 'bold'
+                    },
+                    padding: {
+                        top: 10,
+                        bottom: 20
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const label = context.label || '';
+                            const value = context.raw || 0;
+                            const percentage = ((value / totalBudget) * 100).toFixed(1);
+                            return `${label}: ${formatCurrency(value)} (${percentage}%)`;
+                        }
+                    }
+                },
+                legend: {
+                    position: 'right',
+                    labels: {
+                        color: '#e0e0e0',
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                        font: {
+                            size: 12
+                        },
+                        generateLabels: function(chart) {
+                            const data = chart.data;
+                            if (data.labels.length && data.datasets.length) {
+                                return data.labels.map((label, i) => {
+                                    const meta = chart.getDatasetMeta(0);
+                                    const style = meta.controller.getStyle(i);
+                                    
+                                    return {
+                                        text: `${label}: ${percentages[i]}%`,
+                                        fillStyle: style.backgroundColor,
+                                        strokeStyle: style.borderColor,
+                                        lineWidth: style.borderWidth,
+                                        hidden: isNaN(data.datasets[0].data[i]) || meta.data[i].hidden,
+                                        index: i
+                                    };
+                                });
+                            }
+                            return [];
+                        }
+                    }
+                }
+            }
+        }
+    });
 }
