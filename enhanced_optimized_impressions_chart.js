@@ -16,18 +16,18 @@ const plannedImpressions2025 = [
 
 // Define the 2025 Optimized Impressions (Monthly) data
 const optimizedImpressions2025 = [
-    385074994,    // Jan: +25% to support March-April secondary peak
-    542191098,    // Feb: -35% reduction as currently over-allocated
-    1031750574,   // Mar: unchanged
-    1744888016,   // Apr: -15% reduction (updated)
-    1651937037,   // May: -20% reduction (updated)
-    865852843,    // Jun: unchanged (updated)
-    890295428,    // Jul: +15% increase for September shoulder season (updated)
-    929003924,    // Aug: +20% increase for September shoulder season (updated)
-    1900774018,   // Sep: +38% increase to capture November-December peak
-    2648682692,   // Oct: +35% increase to capture November-December peak
-    1491941387,   // Nov: unchanged (updated)
-    1576436581    // Dec: -25% reduction as too late for high-season travel (updated)
+    308059995,    // Jan: PAST PERIOD - No longer applicable (using actual values)
+    834140150,    // Feb: PAST PERIOD - No longer applicable (using actual values)
+    1134925631,   // Mar: +10% increase for current month activities
+    1847528488,   // Apr: -10% reduction (adjusted from -15%)
+    1755183102,   // May: -15% reduction (adjusted from -20%)
+    865852843,    // Jun: unchanged
+    890295428,    // Jul: +15% increase for September shoulder season
+    929003924,    // Aug: +20% increase for September shoulder season
+    1997190092,   // Sep: +45% enhanced increase to capture November-December peak (adjusted from +38%)
+    2786021794,   // Oct: +42% enhanced increase to capture November-December peak (adjusted from +35%)
+    1566538456,   // Nov: +5% slight increase to support peak season (new)
+    1681532353    // Dec: -20% reduction (adjusted from -25%)
 ];
 
 // Update the campaign data with the new impression values
@@ -37,6 +37,10 @@ if (typeof campaignData !== 'undefined' && campaignData.mediaImpressions) {
 
 // Calculate percentage difference between planned and optimized
 const percentageDiffs = plannedImpressions2025.map((planned, index) => {
+    // For January and February, set percentage diff to 0 since they're past periods
+    if (index <= 1) {
+        return 0;
+    }
     const optimized = optimizedImpressions2025[index];
     const percentDiff = ((optimized - planned) / planned) * 100;
     return percentDiff;
@@ -66,7 +70,8 @@ const colors = {
     grid: 'rgba(255, 255, 255, 0.07)',
     text: '#e0e0e0',
     tooltipBg: 'rgba(20, 20, 20, 0.95)',
-    border: 'rgba(255, 255, 255, 0.2)'
+    border: 'rgba(255, 255, 255, 0.2)',
+    pastPeriod: 'rgba(150, 150, 150, 0.7)'
 };
 
 // Format large numbers for better readability - check if function already exists
@@ -97,12 +102,11 @@ const annotations = [
         type: 'line',
         mode: 'vertical',
         scaleID: 'x',
-        value: 'Sep',
-        borderColor: colors.percentage.main,
+        value: 'Mar',
+        borderColor: '#ffffff',
         borderWidth: 2,
-        borderDash: [5, 5],
         label: {
-            content: '+38% for Nov-Dec peak',
+            content: 'CURRENT MONTH',
             enabled: true,
             position: 'top',
             backgroundColor: colors.tooltipBg,
@@ -117,15 +121,36 @@ const annotations = [
         type: 'line',
         mode: 'vertical',
         scaleID: 'x',
-        value: 'Feb',
-        borderColor: colors.percentage.negative,
+        value: 'Sep',
+        borderColor: colors.percentage.main,
         borderWidth: 2,
         borderDash: [5, 5],
         label: {
-            content: '-35% reduction',
+            content: '+45% for Nov-Dec peak',
             enabled: true,
             position: 'top',
             backgroundColor: colors.tooltipBg,
+            color: colors.text,
+            font: {
+                size: 12,
+                weight: 'bold'
+            }
+        }
+    },
+    {
+        type: 'box',
+        xMin: -0.5,  // Adjusted to cover Jan
+        xMax: 1.5,   // Adjusted to cover Feb
+        yMin: 0,
+        yMax: 'max',
+        backgroundColor: 'rgba(150, 150, 150, 0.2)',
+        borderColor: 'rgba(150, 150, 150, 0.5)',
+        borderWidth: 1,
+        label: {
+            content: 'PAST PERIODS - No longer applicable',
+            enabled: true,
+            position: 'center',
+            backgroundColor: 'rgba(150, 150, 150, 0.7)',
             color: colors.text,
             font: {
                 size: 12,
@@ -158,24 +183,56 @@ document.addEventListener('DOMContentLoaded', function() {
                 {
                     label: '2025 Planned Impressions',
                     data: plannedImpressions2025,
-                    backgroundColor: colors.planned.background,
-                    borderColor: colors.planned.main,
+                    backgroundColor: function(context) {
+                        // Gray out January and February as past periods
+                        const index = context.dataIndex;
+                        return index <= 1 ? colors.pastPeriod : colors.planned.background;
+                    },
+                    borderColor: function(context) {
+                        // Gray out January and February as past periods
+                        const index = context.dataIndex;
+                        return index <= 1 ? colors.pastPeriod : colors.planned.main;
+                    },
                     borderWidth: 1,
                     borderRadius: 4,
-                    hoverBackgroundColor: colors.planned.highlight,
-                    hoverBorderColor: colors.planned.main,
+                    hoverBackgroundColor: function(context) {
+                        // Gray out January and February as past periods
+                        const index = context.dataIndex;
+                        return index <= 1 ? colors.pastPeriod : colors.planned.highlight;
+                    },
+                    hoverBorderColor: function(context) {
+                        // Gray out January and February as past periods
+                        const index = context.dataIndex;
+                        return index <= 1 ? colors.pastPeriod : colors.planned.main;
+                    },
                     hoverBorderWidth: 2,
                     order: 2
                 },
                 {
                     label: '2025 Optimized Impressions',
                     data: optimizedImpressions2025,
-                    backgroundColor: colors.optimized.background,
-                    borderColor: colors.optimized.main,
+                    backgroundColor: function(context) {
+                        // Gray out January and February as past periods
+                        const index = context.dataIndex;
+                        return index <= 1 ? colors.pastPeriod : colors.optimized.background;
+                    },
+                    borderColor: function(context) {
+                        // Gray out January and February as past periods
+                        const index = context.dataIndex;
+                        return index <= 1 ? colors.pastPeriod : colors.optimized.main;
+                    },
                     borderWidth: 1,
                     borderRadius: 4,
-                    hoverBackgroundColor: colors.optimized.highlight,
-                    hoverBorderColor: colors.optimized.main,
+                    hoverBackgroundColor: function(context) {
+                        // Gray out January and February as past periods
+                        const index = context.dataIndex;
+                        return index <= 1 ? colors.pastPeriod : colors.optimized.highlight;
+                    },
+                    hoverBorderColor: function(context) {
+                        // Gray out January and February as past periods
+                        const index = context.dataIndex;
+                        return index <= 1 ? colors.pastPeriod : colors.optimized.main;
+                    },
                     hoverBorderWidth: 2,
                     order: 1
                 },
@@ -187,19 +244,21 @@ document.addEventListener('DOMContentLoaded', function() {
                     borderColor: colors.percentage.main,
                     borderWidth: 3,
                     pointRadius: 6,
-                    pointBackgroundColor: percentageDiffs.map(value => 
-                        value > 0 ? colors.percentage.positive : 
-                        value < 0 ? colors.percentage.negative : 
-                        colors.percentage.main
-                    ),
+                    pointBackgroundColor: percentageDiffs.map((value, index) => {
+                        if (index <= 1) return colors.pastPeriod; // Past periods
+                        return value > 0 ? colors.percentage.positive : 
+                               value < 0 ? colors.percentage.negative : 
+                               colors.percentage.main;
+                    }),
                     pointBorderColor: '#fff',
                     pointBorderWidth: 2,
                     pointHoverRadius: 8,
-                    pointHoverBackgroundColor: percentageDiffs.map(value => 
-                        value > 0 ? colors.percentage.positive : 
-                        value < 0 ? colors.percentage.negative : 
-                        colors.percentage.main
-                    ),
+                    pointHoverBackgroundColor: percentageDiffs.map((value, index) => {
+                        if (index <= 1) return colors.pastPeriod; // Past periods
+                        return value > 0 ? colors.percentage.positive : 
+                               value < 0 ? colors.percentage.negative : 
+                               colors.percentage.main;
+                    }),
                     pointHoverBorderColor: '#fff',
                     pointHoverBorderWidth: 2,
                     tension: 0.3,
@@ -221,12 +280,35 @@ document.addEventListener('DOMContentLoaded', function() {
                     position: 'top',
                     align: 'center',
                     labels: {
-                        color: colors.text,
+                        // Use white text for better visibility against dark background
+                        color: colors.text, // White text for all labels
                         padding: 20,
                         usePointStyle: true,
-                        pointStyle: 'circle',
-                        boxWidth: 10,
-                        boxHeight: 10,
+                        pointStyle: function(context) {
+                            // Use colored circles that match the dataset colors
+                            return 'circle';
+                        },
+                        pointStyleWidth: 15, // Make the color indicators larger
+                        boxWidth: 12,
+                        boxHeight: 12,
+                        // Use colored boxes that match the dataset colors
+                        generateLabels: function(chart) {
+                            const datasets = chart.data.datasets;
+                            const labels = Chart.defaults.plugins.legend.labels.generateLabels(chart);
+                            
+                            // Customize the style of each label
+                            labels.forEach((label, i) => {
+                                // Set the background color of the box based on the dataset
+                                if (i === 0) label.fillStyle = colors.planned.main; // Blue for Planned
+                                if (i === 1) label.fillStyle = colors.optimized.main; // Green for Optimized
+                                if (i === 2) label.fillStyle = colors.percentage.main; // Yellow for % Change
+                                
+                                // Set the border color to match the fill
+                                label.strokeStyle = label.fillStyle;
+                            });
+                            
+                            return labels;
+                        },
                         font: {
                             size: 13,
                             weight: '500'
@@ -235,7 +317,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 title: {
                     display: true,
-                    text: '2025 Media Impressions: Planned vs Optimized for Booking Window',
+                    text: '2025 Media Impressions: Planned vs Optimized (Mid-March Adjustment)',
                     color: colors.text,
                     font: {
                         size: 18,
@@ -249,7 +331,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 subtitle: {
                     display: true,
-                    text: 'Optimized to align with 44-day booking window and seasonal travel patterns',
+                    text: 'Jan-Feb are past periods. Redistribution focuses on enhancing Sep-Oct (+42-45%) and adding Mar (+10%).',
                     color: colors.text,
                     font: {
                         size: 14,
@@ -275,10 +357,18 @@ document.addEventListener('DOMContentLoaded', function() {
                         label: function(context) {
                             const label = context.dataset.label || '';
                             const value = context.raw || 0;
+                            const index = context.dataIndex;
                             
-                            if (context.datasetIndex === 2) { // Percentage change dataset
-                                const sign = value > 0 ? '+' : '';
-                                return `${label}: ${sign}${value.toFixed(1)}%`;
+                            // For January and February, add a note that these are past periods
+                            if (index <= 1 && context.datasetIndex !== 2) {
+                                return `${label}: ${formatNumber(value)} (PAST PERIOD)`;
+                            } else if (context.datasetIndex === 2) { // Percentage change dataset
+                                if (index <= 1) {
+                                    return `${label}: No longer applicable`;
+                                } else {
+                                    const sign = value > 0 ? '+' : '';
+                                    return `${label}: ${sign}${value.toFixed(1)}%`;
+                                }
                             } else {
                                 return `${label}: ${formatNumber(value)}`;
                             }
@@ -292,16 +382,21 @@ document.addEventListener('DOMContentLoaded', function() {
                         afterBody: function(context) {
                             if (context[0].datasetIndex === 2) {
                                 const index = context[0].dataIndex;
+                                
+                                if (index <= 1) {
+                                    return ['Past period - January-February optimization window has passed'];
+                                }
+                                
                                 const value = percentageDiffs[index];
                                 
-                                if (value > 30) {
-                                    return ['Significant increase to capture peak travel period'];
+                                if (value > 40) {
+                                    return ['Enhanced increase to capture peak travel period'];
                                 } else if (value > 0) {
                                     return ['Strategic increase to support booking window'];
-                                } else if (value < -30) {
-                                    return ['Major reduction from over-allocated period'];
+                                } else if (value < -15) {
+                                    return ['Moderate reduction to optimize distribution'];
                                 } else if (value < 0) {
-                                    return ['Tactical reduction to optimize distribution'];
+                                    return ['Slight reduction to optimize distribution'];
                                 } else {
                                     return ['Maintained at current level'];
                                 }
@@ -335,7 +430,11 @@ document.addEventListener('DOMContentLoaded', function() {
                         drawTicks: true
                     },
                     ticks: {
-                        color: colors.text,
+                        color: function(context) {
+                            // Gray out January and February as past periods
+                            const index = context.index;
+                            return index <= 1 ? colors.pastPeriod : colors.text;
+                        },
                         font: {
                             size: 12,
                             weight: '500'
@@ -451,10 +550,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add visual indicators for key months
     const addMonthIndicators = () => {
         const keyMonths = [
-            { month: 'Sep', label: 'Key month for Nov-Dec peak', color: colors.percentage.positive },
-            { month: 'Oct', label: 'Critical for peak season', color: colors.percentage.positive },
-            { month: 'Feb', label: 'Currently over-allocated', color: colors.percentage.negative },
-            { month: 'Dec', label: 'Too late for high-season', color: colors.percentage.negative }
+            { month: 'Sep', label: 'Enhanced increase for Nov-Dec peak (+45%)', color: colors.percentage.positive },
+            { month: 'Oct', label: 'Enhanced increase for peak season (+42%)', color: colors.percentage.positive },
+            { month: 'Mar', label: 'Added increase for current month (+10%)', color: colors.percentage.positive },
+            { month: 'Nov', label: 'New slight increase added (+5%)', color: colors.percentage.positive }
         ];
         
         // Implementation would go here if Chart.js supported dynamic annotations
@@ -477,5 +576,5 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     console.log("\nOptimization Insights:");
-    console.log("These optimizations maintain the same total annual impressions while strategically redistributing them to better align with the booking window and seasonal travel patterns. The key strategy is to increase impressions 44 days (the average booking window) before peak travel periods and reduce them during less effective periods.");
+    console.log("These mid-March adjustments acknowledge that January and February are past periods while strategically redistributing impressions to better align with the booking window and seasonal travel patterns. Key changes include enhancing September-October increases (to +45% and +42%), adding a new increase to March (+10%), and moderating reductions to April-May and December.");
 });

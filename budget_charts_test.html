@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Charts Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+            margin-bottom: 28px;
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            border: 1px solid #3d3d3d;
+        }
+    </style>
+</head>
+<body>
+    <h1>Budget Charts Test</h1>
+    
+    <div class="chart-container">
+        <canvas id="campaignBudgetChart"></canvas>
+    </div>
+    
+    <div class="chart-container">
+        <canvas id="campaignTypeDistributionChart"></canvas>
+    </div>
+    
+    <div class="chart-container">
+        <canvas id="budgetByMonthChart"></canvas>
+    </div>
+    
+    <script>
+        // Sample campaign data for testing
+        const campaignData = {
+            campaigns: [
+                { 
+                    name: 'Global Brand Ambassador Q1', 
+                    type: 'Strategic', 
+                    category: 'strategic',
+                    budget: 346457, 
+                    impressions: 215895343,
+                    engagements: 76085066
+                },
+                { 
+                    name: 'Global Brand Ambassador Q4', 
+                    type: 'Strategic', 
+                    category: 'strategic',
+                    budget: 1300910, 
+                    impressions: 910459081,
+                    engagements: 219229174
+                },
+                { 
+                    name: 'Summer', 
+                    type: 'Strategic', 
+                    category: 'strategic',
+                    budget: 2270012, 
+                    impressions: 3359323522,
+                    engagements: 382892889
+                },
+                { 
+                    name: 'Abu Dhabi Calendar Launch', 
+                    type: 'Strategic', 
+                    category: 'strategic',
+                    budget: 805099, 
+                    impressions: 2219075038,
+                    engagements: 354414755
+                },
+                { 
+                    name: 'Saadiyat Cultural District', 
+                    type: 'Culture', 
+                    category: 'culture',
+                    budget: 438552, 
+                    impressions: 483553385,
+                    engagements: 69231433
+                },
+                { 
+                    name: 'Ramadan', 
+                    type: 'Tactical', 
+                    category: 'tactical',
+                    budget: 542464, 
+                    impressions: 150409678,
+                    engagements: 31927423
+                }
+            ],
+            monthlyDistribution: {
+                months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                impressions: [
+                    308059995, 834140150, 1031750574, 2052809431, 2064921296, 
+                    865852843, 774169937, 774169937, 1377372477, 1961987179, 
+                    1491941387, 2101915441
+                ],
+                optimizedImpressions: [
+                    385074994, 542191098, 1031750574, 1744888016, 1651937037, 
+                    865852843, 890295428, 929003924, 1900774018, 2648682692, 
+                    1491941387, 1576436581
+                ]
+            }
+        };
+    </script>
+    
+    <script src="consolidated_budget_charts.js"></script>
+</body>
+</html>

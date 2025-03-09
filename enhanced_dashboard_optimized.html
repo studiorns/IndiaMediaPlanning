@@ -301,9 +301,6 @@
         
         /* Campaign Calendar styles */
         .calendar-container {
-            display: grid;
-            grid-template-columns: 200px repeat(12, 1fr);
-            gap: 4px;
             margin-bottom: 28px;
             overflow-x: auto;
         }
@@ -329,12 +326,12 @@
             border-radius: var(--radius-sm);
         }
         
-        .calendar-row {
+        .calendar-row-wrapper {
             display: contents;
         }
         
         .calendar-label {
-            padding: 10px 8px;
+            padding: 8px 6px;
             font-weight: 600;
             color: var(--gray-800);
             background-color: var(--gray-200);
@@ -342,6 +339,8 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            font-size: 0.85rem;
+            line-height: 1.2;
         }
         
         .calendar-cell {
@@ -350,6 +349,7 @@
             border-radius: var(--radius-sm);
             transition: var(--transition);
             position: relative;
+            min-width: 30px; /* Ensure minimum width for cells */
         }
         
         .calendar-cell.active {
@@ -366,14 +366,6 @@
         
         .calendar-cell.active-culture {
             background-color: var(--warning);
-        }
-        
-        .calendar-cell.active-brand-awareness {
-            background-color: var(--primary);
-        }
-        
-        .calendar-cell.active-strategic-leavers {
-            background-color: var(--secondary);
         }
         
         .calendar-cell .budget-percentage {
@@ -534,8 +526,8 @@
             
             <div class="filter-buttons">
                 <button class="filter-btn active" data-type="all">All Campaigns</button>
-                <button class="filter-btn" data-type="brand-awareness">Brand Awareness</button>
-                <button class="filter-btn" data-type="strategic-leavers">Strategic Leavers</button>
+                <button class="filter-btn" data-type="strategic">Strategic</button>
+                <button class="filter-btn" data-type="tactical">Tactical</button>
                 <button class="filter-btn" data-type="culture">Culture</button>
             </div>
             
@@ -562,11 +554,11 @@
             <div class="calendar-legend">
                 <div class="calendar-legend-item">
                     <div class="calendar-legend-dot dot-strategic"></div>
-                    Brand Awareness
+                    Strategic
                 </div>
                 <div class="calendar-legend-item">
                     <div class="calendar-legend-dot dot-tactical"></div>
-                    Strategic Leavers
+                    Tactical
                 </div>
                 <div class="calendar-legend-item">
                     <div class="calendar-legend-dot dot-culture"></div>
@@ -574,7 +566,7 @@
                 </div>
                 <div class="calendar-legend-item">
                     <span style="font-size: 0.8rem; margin-right: 5px;">8%</span>
-                    Budget % per Month
+                    % of Campaign Budget per Month
                 </div>
             </div>
             
@@ -590,7 +582,7 @@
             
             <div class="chart-row">
                 <div class="chart-column">
-                    <div class="chart-container chart-container-half tall">
+                    <div class="chart-container chart-container-half">
                         <canvas id="campaignBudgetChart"></canvas>
                     </div>
                 </div>
@@ -598,10 +590,11 @@
                     <div class="chart-container chart-container-half">
                         <canvas id="campaignTypeDistributionChart"></canvas>
                     </div>
-                    <div class="chart-container chart-container-half">
-                        <canvas id="budgetByMonthChart"></canvas>
-                    </div>
                 </div>
+            </div>
+            
+            <div class="chart-container">
+                <canvas id="budgetByMonthChart"></canvas>
             </div>
             
             <div class="insight-summary">
@@ -711,9 +704,81 @@
         </div>
     </div>
     
+    <!-- Console Output Display -->
+    <div class="dashboard-section">
+        <h2><i class="fas fa-terminal"></i> Debug Console</h2>
+        <div style="background-color: #000; color: #0f0; font-family: monospace; padding: 15px; border-radius: 5px; height: 300px; overflow-y: auto;" id="consoleOutput">
+            <div>Console output will appear here...</div>
+        </div>
+    </div>
+
     <div class="footer">
         <div class="container">
             <p>© 2025 Research & Insights Unit | Strategic Marketing & Communications | Department of Culture and Tourism – Abu Dhabi</p>
+        </div>
+    </div>
+
+    <script>
+        // Override console.log to display in our custom console
+        (function() {
+            const oldLog = console.log;
+            const oldError = console.error;
+            const consoleOutput = document.getElementById('consoleOutput');
+            
+            console.log = function(...args) {
+                oldLog.apply(console, args);
+                const message = args.map(arg => {
+                    if (typeof arg === 'object') {
+                        try {
+                            return JSON.stringify(arg, null, 2);
+                        } catch (e) {
+                            return String(arg);
+                        }
+                    } else {
+                        return String(arg);
+                    }
+                }).join(' ');
+                
+                const logElement = document.createElement('div');
+                logElement.textContent = message;
+                consoleOutput.appendChild(logElement);
+                consoleOutput.scrollTop = consoleOutput.scrollHeight;
+            };
+            
+            console.error = function(...args) {
+                oldError.apply(console, args);
+                const message = args.map(arg => {
+                    if (typeof arg === 'object') {
+                        try {
+                            return JSON.stringify(arg, null, 2);
+                        } catch (e) {
+                            return String(arg);
+                        }
+                    } else {
+                        return String(arg);
+                    }
+                }).join(' ');
+                
+                const logElement = document.createElement('div');
+                logElement.style.color = '#f44';
+                logElement.textContent = 'ERROR: ' + message;
+                consoleOutput.appendChild(logElement);
+                consoleOutput.scrollTop = consoleOutput.scrollHeight;
+            };
+        })();
+    </script>
+    
+    <!-- Brand Health Timeline Section -->
+    <div class="dashboard-section">
+        <h2><i class="fas fa-chart-line"></i> Brand Health Timeline</h2>
+        
+        <div class="chart-container">
+            <canvas id="brandHealthTimelineChartNew"></canvas>
+        </div>
+        
+        <div class="insight-summary">
+            <h3><i class="fas fa-chart-line"></i> Brand Health Insights</h3>
+            <p>India shows consistently strong brand health metrics with awareness at 94.5%, consideration at 74.4%, and intent at 64.6%. The trend shows steady improvement over the past year, with awareness increasing by 0.7 percentage points and intent by 1.6 percentage points. The high awareness level suggests that future campaigns should focus more on driving consideration and intent rather than awareness.</p>
         </div>
     </div>
     
@@ -723,9 +788,41 @@
         window.ChartDataLabels = window.ChartDataLabels || {};
     </script>
     <script src="enhanced_dashboard_data.js"></script>
-    <script src="optimized_impressions_chart.js"></script>
-    <script src="campaign_distribution_chart.js"></script>
-    <script src="campaign_performance_metrics.js"></script>
-    <script src="campaign_visualization.js"></script>
+    <script src="campaignTimingChart.js"></script>
+    <script src="consolidated_budget_charts.js"></script>
+    <script src="brand_health_timeline_chart.js"></script>
+    
+    <!-- Initialize charts in a specific order with proper delays -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load the main visualization scripts first
+            function loadScript(src, callback) {
+                const script = document.createElement('script');
+                script.src = src;
+                script.onload = callback;
+                document.head.appendChild(script);
+            }
+            
+            // Load the distribution and impression charts
+            loadScript('optimized_impressions_chart.js', function() {
+                loadScript('campaignDistributionChart.js', function() {
+                    // Then load the performance metrics
+                    loadScript('campaign_performance_metrics.js', function() {
+                        // Load the brand health timeline chart
+                        loadScript('brand_health_timeline_chart.js', function() {
+                            // Finally load the consolidated budget charts
+                            // Note: We're only loading consolidated_budget_charts.js which contains all budget charts
+                            // and avoiding loading campaign_budget_charts.js and monthly_budget_chart.js to prevent conflicts
+                            setTimeout(function() {
+                                loadScript('consolidated_budget_charts.js', function() {
+                                    console.log("All chart scripts loaded successfully");
+                                });
+                            }, 1000);
+                        });
+                    });
+                });
+            });
+        });
+    </script>
 </body>
 </html>

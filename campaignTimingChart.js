@@ -21,10 +21,19 @@ document.addEventListener('DOMContentLoaded', function() {
         'Search Always On': 'Search Always On'
     };
     
-    // Find the campaign type from the campaigns array
+    // Find the campaign type from the campaigns array and map it to the CSS class type
     const findCampaignType = (campaignName) => {
         const campaign = campaignData.campaigns.find(c => c.name === campaignName);
-        return campaign ? campaign.type : 'Unknown';
+        if (!campaign) return 'Unknown';
+        
+        // Map the campaign types from the data to the types used in CSS classes
+        const typeMap = {
+            'Brand Awareness': 'Strategic',
+            'Strategic Leavers': 'Tactical',
+            'Culture': 'Culture'
+        };
+        
+        return typeMap[campaign.type] || campaign.type;
     };
     
     // Process each campaign in the campaignCalendar array
@@ -37,7 +46,8 @@ document.addEventListener('DOMContentLoaded', function() {
             monthData.push({
                 month: monthNames[i],
                 active: campaign.months[i] === 1,
-                percentage: campaign.percentages ? campaign.percentages[i] : null
+                percentage: campaign.percentages ? campaign.percentages[i] : null,
+                status: campaign.status ? campaign.status[i] : ''
             });
         }
         
@@ -83,25 +93,55 @@ document.addEventListener('DOMContentLoaded', function() {
     function calculateOptimalMonthlyBudgetPercentages() {
         // Get optimized impressions data from enhanced_optimized_impressions_chart.js
         const optimizedImpressions = [
-            385074994,    // Jan: +25% to support March-April secondary peak
-            542191098,    // Feb: -35% reduction as currently over-allocated
-            1031750574,   // Mar: unchanged
-            1744888016,   // Apr: -15% reduction
-            1651937037,   // May: -20% reduction
+            308059995,    // Jan: PAST PERIOD - No longer applicable (using actual values)
+            834140150,    // Feb: PAST PERIOD - No longer applicable (using actual values)
+            1134925631,   // Mar: +10% increase for current month activities
+            1847528488,   // Apr: -10% reduction (adjusted from -15%)
+            1755183102,   // May: -15% reduction (adjusted from -20%)
             865852843,    // Jun: unchanged
             890295428,    // Jul: +15% increase for September shoulder season
             929003924,    // Aug: +20% increase for September shoulder season
-            1900774018,   // Sep: +38% increase to capture November-December peak
-            2648682692,   // Oct: +35% increase to capture November-December peak
-            1491941387,   // Nov: unchanged
-            1576436581    // Dec: -25% reduction as too late for high-season travel
+            1997190092,   // Sep: +45% enhanced increase to capture November-December peak
+            2786021794,   // Oct: +42% enhanced increase to capture November-December peak
+            1566538456,   // Nov: +5% slight increase to support peak season
+            1681532353    // Dec: -20% reduction (adjusted from -25%)
         ];
         
         // Calculate total impressions
         const totalImpressions = optimizedImpressions.reduce((sum, impressions) => sum + impressions, 0);
         
-        // Convert to percentages of total yearly impressions with 1 decimal point
-        return optimizedImpressions.map(impressions => parseFloat(((impressions / totalImpressions) * 100).toFixed(1)));
+        // First calculate the raw percentages based on impressions
+        const rawPercentages = optimizedImpressions.map(impressions => 
+            parseFloat(((impressions / totalImpressions) * 100).toFixed(1))
+        );
+        
+    // Now adjust for fixed January and February percentages
+    // Get the actual January and February percentages from totalMonthlyBudgetPercentages
+    const janActual = 2.0; // Fixed at 2%
+    const febActual = 6.4; // Fixed at 6.4%
+    const pastPeriodsTotal = janActual + febActual; // 8.4%
+        const remainingBudget = 100 - pastPeriodsTotal; // 91.6%
+        
+        // Calculate the sum of raw percentages for March-December
+        const rawMarDecSum = rawPercentages.slice(2).reduce((sum, p) => sum + p, 0);
+        
+        // Create the adjusted percentages array
+        const adjustedPercentages = [];
+        
+        // Keep January and February at their actual values
+        adjustedPercentages[0] = janActual;
+        adjustedPercentages[1] = febActual;
+        
+        // Redistribute the remaining budget (91.6%) proportionally for March-December
+        for (let i = 2; i < 12; i++) {
+            // Calculate the proportion of this month relative to all Mar-Dec months
+            const proportion = rawPercentages[i] / rawMarDecSum;
+            
+            // Allocate a portion of the remaining budget based on this proportion
+            adjustedPercentages[i] = parseFloat((proportion * remainingBudget).toFixed(1));
+        }
+        
+        return adjustedPercentages;
     }
     
     // Get optimal monthly budget percentages
@@ -113,12 +153,58 @@ document.addEventListener('DOMContentLoaded', function() {
         const calendarContainer = document.getElementById('campaignCalendar');
         calendarContainer.innerHTML = ''; // Clear existing content
 
+        // Add a note about mid-March adjustment
+        const adjustmentNote = document.createElement('div');
+        adjustmentNote.style.backgroundColor = 'rgba(66, 133, 244, 0.1)';
+        adjustmentNote.style.border = '1px solid #4285f4';
+        adjustmentNote.style.borderRadius = '8px';
+        adjustmentNote.style.padding = '12px 16px';
+        adjustmentNote.style.marginBottom = '16px';
+        adjustmentNote.style.color = '#e0e0e0';
+        adjustmentNote.style.fontSize = '14px';
+        adjustmentNote.innerHTML = '<strong style="color: #4285f4;">Mid-March 2025 Adjustment:</strong> Budget allocations have been optimized based on the fact that January (' + totalMonthlyBudgetPercentages[0] + '%) and February (' + totalMonthlyBudgetPercentages[1] + '%) are past periods with fixed allocations. The remaining ' + (100 - totalMonthlyBudgetPercentages[0] - totalMonthlyBudgetPercentages[1]).toFixed(1) + '% of the budget has been redistributed proportionally, focusing on enhancing September-October to capture the November-December peak travel period, while adding a 10% increase to March for immediate impact.';
+        calendarContainer.appendChild(adjustmentNote);
+
         // Create a grid container for the calendar
         const gridContainer = document.createElement('div');
         gridContainer.style.display = 'grid';
         gridContainer.style.gridTemplateColumns = '200px repeat(12, 1fr)';
         gridContainer.style.gap = '4px';
         gridContainer.style.marginBottom = '20px';
+
+        // Add month header with indicators for past/current months
+        const monthHeaderRow = document.createElement('div');
+        monthHeaderRow.style.display = 'contents';
+        
+        // Empty cell for the top-left corner
+        const emptyHeaderCell = document.createElement('div');
+        emptyHeaderCell.className = 'calendar-header-cell';
+        emptyHeaderCell.textContent = '';
+        monthHeaderRow.appendChild(emptyHeaderCell);
+        
+        // Month header cells
+        const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        monthNames.forEach((month, index) => {
+            const monthCell = document.createElement('div');
+            monthCell.className = 'calendar-header-cell';
+            
+            // Add past/current indicators
+            if (index === 0 || index === 1) {
+                monthCell.style.backgroundColor = 'rgba(150, 150, 150, 0.7)';
+                monthCell.style.color = '#e0e0e0';
+                monthCell.innerHTML = `${month}<br><span style="font-size: 9px; opacity: 0.8;">(PAST)</span>`;
+            } else if (index === 2) {
+                monthCell.style.backgroundColor = 'rgba(66, 133, 244, 0.7)';
+                monthCell.style.color = 'white';
+                monthCell.innerHTML = `${month}<br><span style="font-size: 9px; opacity: 0.8;">(CURRENT)</span>`;
+            } else {
+                monthCell.textContent = month;
+            }
+            
+            monthHeaderRow.appendChild(monthCell);
+        });
+        
+        gridContainer.appendChild(monthHeaderRow);
 
         // Add each campaign row
         filteredData.forEach(campaign => {
@@ -129,11 +215,58 @@ document.addEventListener('DOMContentLoaded', function() {
             gridContainer.appendChild(nameCell);
 
             // Month cells
-            campaign.months.forEach(monthData => {
+            campaign.months.forEach((monthData, index) => {
                 const cell = document.createElement('div');
                 cell.className = 'calendar-cell';
                 
-                if (monthData.active) {
+                // Add past/current month styling
+                if (index === 0 || index === 1) {
+                    cell.style.opacity = '0.6';
+                    cell.style.position = 'relative';
+                    
+                    if (monthData.active) {
+                        cell.classList.add(`active-${campaign.type.toLowerCase()}`);
+                        
+                        // Add "PAST" indicator for active cells in past months
+                        const pastIndicator = document.createElement('div');
+                        pastIndicator.style.position = 'absolute';
+                        pastIndicator.style.top = '0';
+                        pastIndicator.style.left = '0';
+                        pastIndicator.style.width = '100%';
+                        pastIndicator.style.height = '100%';
+                        pastIndicator.style.backgroundColor = 'rgba(150, 150, 150, 0.5)';
+                        pastIndicator.style.display = 'flex';
+                        pastIndicator.style.alignItems = 'center';
+                        pastIndicator.style.justifyContent = 'center';
+                        pastIndicator.style.fontSize = '10px';
+                        pastIndicator.style.fontWeight = 'bold';
+                        pastIndicator.style.color = 'white';
+                        pastIndicator.textContent = 'PAST';
+                        cell.appendChild(pastIndicator);
+                        
+                        // Add budget percentage behind the indicator
+                        const percentageSpan = document.createElement('span');
+                        percentageSpan.className = 'budget-percentage';
+                        percentageSpan.style.opacity = '0.5';
+                        percentageSpan.textContent = `${monthData.percentage}%`;
+                        percentageSpan.title = `${monthData.percentage}% of this campaign's budget was allocated to ${monthData.month} (past period)`;
+                        cell.appendChild(percentageSpan);
+                    }
+                } else if (index === 2) {
+                    // Current month (March) styling
+                    if (monthData.active) {
+                        cell.classList.add(`active-${campaign.type.toLowerCase()}`);
+                        cell.style.border = '2px solid white';
+                        cell.style.boxShadow = '0 0 5px rgba(255, 255, 255, 0.5)';
+                        
+                        // Add budget percentage
+                        const percentageSpan = document.createElement('span');
+                        percentageSpan.className = 'budget-percentage';
+                        percentageSpan.textContent = `${monthData.percentage}%`;
+                        percentageSpan.title = `${monthData.percentage}% of this campaign's budget is allocated to ${monthData.month} (current month)`;
+                        cell.appendChild(percentageSpan);
+                    }
+                } else if (monthData.active) {
                     cell.classList.add(`active-${campaign.type.toLowerCase()}`);
                     
                     // Add budget percentage
@@ -158,7 +291,6 @@ document.addEventListener('DOMContentLoaded', function() {
         gridContainer.appendChild(totalLabelCell);
 
         // Add total percentage cells for each month
-        const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         for (let i = 0; i < 12; i++) {
             const totalCell = document.createElement('div');
             totalCell.className = 'calendar-cell';

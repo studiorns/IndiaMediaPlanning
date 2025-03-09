@@ -4,8 +4,8 @@ const campaignData = {
     campaigns: [
         { 
             name: 'Global Brand Ambassador Q1', 
-            type: 'Strategic', 
-            category: 'strategic',
+            type: 'Brand Awareness', 
+            category: 'brand-awareness',
             budget: 346457, 
             impressions: 215895343,
             engagements: 76085066,
@@ -16,8 +16,8 @@ const campaignData = {
         },
         { 
             name: 'Global Brand Ambassador Q4', 
-            type: 'Strategic', 
-            category: 'strategic',
+            type: 'Brand Awareness', 
+            category: 'brand-awareness',
             budget: 1300910, 
             impressions: 910459081,
             engagements: 219229174,
@@ -28,8 +28,8 @@ const campaignData = {
         },
         { 
             name: 'Summer', 
-            type: 'Strategic', 
-            category: 'strategic',
+            type: 'Brand Awareness', 
+            category: 'brand-awareness',
             budget: 2270012, 
             impressions: 3359323522,
             engagements: 382892889,
@@ -40,8 +40,8 @@ const campaignData = {
         },
         { 
             name: 'Abu Dhabi Calendar Launch', 
-            type: 'Strategic', 
-            category: 'strategic',
+            type: 'Brand Awareness', 
+            category: 'brand-awareness',
             budget: 805099, 
             impressions: 2219075038,
             engagements: 354414755,
@@ -64,8 +64,8 @@ const campaignData = {
         },
         { 
             name: 'Ramadan', 
-            type: 'Tactical', 
-            category: 'tactical',
+            type: 'Strategic Leavers', 
+            category: 'strategic-leavers',
             budget: 542464, 
             impressions: 150409678,
             engagements: 31927423,
@@ -76,8 +76,8 @@ const campaignData = {
         },
         { 
             name: 'Diwali', 
-            type: 'Tactical', 
-            category: 'tactical',
+            type: 'Strategic Leavers', 
+            category: 'strategic-leavers',
             budget: 408785, 
             impressions: 789795506,
             engagements: 73580846,
@@ -88,8 +88,8 @@ const campaignData = {
         },
         { 
             name: 'Family Vacation with Ranveer Singh', 
-            type: 'Strategic', 
-            category: 'strategic',
+            type: 'Brand Awareness', 
+            category: 'brand-awareness',
             budget: 877197, 
             impressions: 2099968752,
             engagements: 140187698,
@@ -100,8 +100,8 @@ const campaignData = {
         },
         { 
             name: 'F1', 
-            type: 'Tactical', 
-            category: 'tactical',
+            type: 'Strategic Leavers', 
+            category: 'strategic-leavers',
             budget: 153678, 
             impressions: 869162940,
             engagements: 197013704,
@@ -112,8 +112,8 @@ const campaignData = {
         },
         { 
             name: 'Abu Dhabi Calendar Always On', 
-            type: 'Strategic', 
-            category: 'strategic',
+            type: 'Brand Awareness', 
+            category: 'brand-awareness',
             budget: 547514, 
             impressions: 1509099039,
             engagements: 241022478,
@@ -124,8 +124,8 @@ const campaignData = {
         },
         { 
             name: 'Visit Abu Dhabi Always On', 
-            type: 'Strategic', 
-            category: 'strategic',
+            type: 'Brand Awareness', 
+            category: 'brand-awareness',
             budget: 420514, 
             impressions: 1776916099,
             engagements: 422831167,
@@ -136,8 +136,8 @@ const campaignData = {
         },
         { 
             name: 'NBA', 
-            type: 'Tactical', 
-            category: 'tactical',
+            type: 'Strategic Leavers', 
+            category: 'strategic-leavers',
             budget: 115270, 
             impressions: 317715044,
             engagements: 50743169,
@@ -148,8 +148,8 @@ const campaignData = {
         },
         { 
             name: 'Comedy Week', 
-            type: 'Tactical', 
-            category: 'tactical',
+            type: 'Strategic Leavers', 
+            category: 'strategic-leavers',
             budget: 186668, 
             impressions: 514508691,
             engagements: 82173639,
@@ -160,8 +160,8 @@ const campaignData = {
         },
         { 
             name: 'Search Always On', 
-            type: 'Strategic', 
-            category: 'strategic',
+            type: 'Brand Awareness', 
+            category: 'brand-awareness',
             budget: 277449, 
             impressions: 423208526,
             engagements: 18671714,
@@ -172,91 +172,105 @@ const campaignData = {
         }
     ],
     
-    // Campaign calendar data
+    // Campaign calendar data - Updated for mid-March 2025
     campaignCalendar: [
         { 
             name: 'Global Brand Ambassador Q1', 
-            category: 'strategic',
+            category: 'brand-awareness',
             months: [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            percentages: [45, 28, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            percentages: [45, 28, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            status: ['past', 'past', '', '', '', '', '', '', '', '', '', '']
         },
         { 
             name: 'Global Brand Ambassador Q4', 
-            category: 'strategic',
+            category: 'brand-awareness',
             months: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
-            percentages: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 60, 40]
+            percentages: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 63, 32],
+            status: ['', '', '', '', '', '', '', '', '', '', '', '']
         },
         { 
             name: 'Summer', 
-            category: 'strategic',
+            category: 'brand-awareness',
             months: [0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0],
-            percentages: [0, 0, 0, 30, 25, 15, 15, 15, 0, 0, 0, 0]
+            percentages: [0, 0, 0, 27, 21.3, 15, 17.3, 18, 0, 0, 0, 0],
+            status: ['', '', '', '', '', '', '', '', '', '', '', '']
         },
         { 
             name: 'Abu Dhabi Calendar Launch', 
-            category: 'strategic',
+            category: 'brand-awareness',
             months: [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
-            percentages: [0, 0, 0, 0, 0, 0, 0, 0, 35, 30, 20, 15]
+            percentages: [0, 0, 0, 0, 0, 0, 0, 0, 50.8, 42.6, 21, 12],
+            status: ['', '', '', '', '', '', '', '', '', '', '', '']
         },
         { 
             name: 'Saadiyat Cultural District', 
             category: 'culture',
             months: [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            percentages: [0, 0, 4, 10, 10, 10, 7, 7, 10, 14, 14, 14]
+            percentages: [0, 0, 4.4, 9, 8.5, 10, 8.1, 8.4, 14.5, 19.9, 14.7, 11.2],
+            status: ['', '', 'current', '', '', '', '', '', '', '', '', '']
         },
         { 
             name: 'Ramadan', 
-            category: 'tactical',
+            category: 'strategic-leavers',
             months: [0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            percentages: [0, 40, 60, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            percentages: [0, 40, 60, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            status: ['', 'past', 'current', '', '', '', '', '', '', '', '', '']
         },
         { 
             name: 'Diwali', 
-            category: 'tactical',
+            category: 'strategic-leavers',
             months: [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0],
-            percentages: [0, 0, 0, 0, 0, 0, 0, 0, 40, 60, 0, 0]
+            percentages: [0, 0, 0, 0, 0, 0, 0, 0, 58, 42, 0, 0],
+            status: ['', '', '', '', '', '', '', '', '', '', '', '']
         },
         { 
             name: 'Family Vacation with Ranveer Singh', 
-            category: 'strategic',
+            category: 'brand-awareness',
             months: [0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
-            percentages: [0, 15, 28, 28, 28, 0, 0, 0, 0, 0, 0, 0]
+            percentages: [0, 15, 30.8, 25.2, 23.8, 0, 0, 0, 0, 0, 0, 0],
+            status: ['', 'past', 'current', '', '', '', '', '', '', '', '', '']
         },
         { 
             name: 'F1', 
-            category: 'tactical',
-            months: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            percentages: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 100]
+            category: 'strategic-leavers',
+            months: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+            percentages: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 80],
+            status: ['', '', '', '', '', '', '', '', '', '', '', '']
         },
         { 
             name: 'Abu Dhabi Calendar Always On', 
-            category: 'strategic',
+            category: 'brand-awareness',
             months: [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            percentages: [0, 13, 13, 7, 7, 7, 7, 7, 7, 12, 12, 12]
+            percentages: [0, 13, 14.3, 6.3, 6.0, 7, 8.1, 8.4, 10.2, 17, 12.6, 9.6],
+            status: ['', 'past', 'current', '', '', '', '', '', '', '', '', '']
         },
         { 
             name: 'Visit Abu Dhabi Always On', 
-            category: 'strategic',
+            category: 'brand-awareness',
             months: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            percentages: [4, 10, 10, 7, 7, 7, 7, 7, 7, 12, 12, 12]
+            percentages: [4, 10, 11, 6.3, 6.0, 7, 8.1, 8.4, 10.2, 17, 12.6, 9.6],
+            status: ['past', 'past', 'current', '', '', '', '', '', '', '', '', '']
         },
         { 
             name: 'NBA', 
-            category: 'tactical',
+            category: 'strategic-leavers',
             months: [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-            percentages: [0, 0, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0]
+            percentages: [0, 0, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0],
+            status: ['', '', '', '', '', '', '', '', '', '', '', '']
         },
         { 
             name: 'Comedy Week', 
-            category: 'tactical',
+            category: 'strategic-leavers',
             months: [0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
-            percentages: [0, 0, 0, 25, 60, 15, 0, 0, 0, 0, 0, 0]
+            percentages: [0, 0, 0, 22.5, 51, 15, 0, 0, 0, 0, 0, 0],
+            status: ['', '', '', '', '', '', '', '', '', '', '', '']
         },
         { 
             name: 'Search Always On', 
-            category: 'strategic',
+            category: 'brand-awareness',
             months: [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            percentages: [0, 0, 9, 8, 8, 8, 8, 8, 8, 13, 12, 20]
+            percentages: [0, 0, 9.9, 7.2, 6.8, 8, 9.2, 9.6, 11.6, 18.5, 12.6, 16],
+            status: ['', '', 'current', '', '', '', '', '', '', '', '', '']
         }
     ],
     

@@ -60,13 +60,13 @@ function initializeObjectivesByTypeCharts() {
     // Define the chart data
     const chartData = [
         {
-            type: 'Strategic',
+            type: 'Brand Awareness',
             color: '#4285f4',
             data: [4.8, 4.2, 3.5, 4.6],
             description: 'Focus on long-term brand building with high awareness and familiarity objectives'
         },
         {
-            type: 'Tactical',
+            type: 'Strategic Leavers',
             color: '#34a853',
             data: [3.8, 2.9, 4.7, 3.5],
             description: 'Drive immediate action with strong intent objectives'
@@ -137,7 +137,7 @@ function initializeObjectivesByTypeCharts() {
         canvasContainer.style.position = 'relative';
         
         const canvas = document.createElement('canvas');
-        canvas.id = `${chart.type.toLowerCase()}ObjectivesChart`;
+        canvas.id = `${chart.type.toLowerCase().replace(/\s+/g, '')}ObjectivesChart`;
         canvas.style.width = '100%';
         canvas.style.height = '100%';
         canvasContainer.appendChild(canvas);
@@ -229,7 +229,7 @@ function initializeObjectivesByTypeCharts() {
     // Create the radar charts after the DOM has been updated
     setTimeout(() => {
         chartData.forEach((chart, index) => {
-            createRadarChart(`${chart.type.toLowerCase()}ObjectivesChart`, chart);
+            createRadarChart(`${chart.type.toLowerCase().replace(/\s+/g, '')}ObjectivesChart`, chart);
         });
     }, 500);
 }

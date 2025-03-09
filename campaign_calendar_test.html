@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaign Calendar Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .calendar-container {
+            display: grid;
+            grid-template-columns: 200px repeat(12, 1fr);
+            gap: 4px;
+            margin-bottom: 28px;
+            overflow-x: auto;
+        }
+        
+        .calendar-header {
+            display: grid;
+            grid-template-columns: 200px repeat(12, 1fr);
+            gap: 4px;
+            margin-bottom: 8px;
+            position: sticky;
+            top: 0;
+            background-color: #181818;
+            z-index: 10;
+        }
+        
+        .calendar-header-cell {
+            text-align: center;
+            font-weight: 600;
+            padding: 8px 4px;
+            font-size: 0.9rem;
+            color: #e0e0e0;
+            background-color: #2d2d2d;
+            border-radius: 4px;
+        }
+        
+        .calendar-row {
+            display: contents;
+        }
+        
+        .calendar-label {
+            padding: 10px 8px;
+            font-weight: 600;
+            color: #e0e0e0;
+            background-color: #2d2d2d;
+            border-radius: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .calendar-cell {
+            height: 40px;
+            background-color: #3d3d3d;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .calendar-cell.active {
+            background-color: #4285f4;
+        }
+        
+        .calendar-cell.active-strategic {
+            background-color: #4285f4;
+        }
+        
+        .calendar-cell.active-tactical {
+            background-color: #34a853;
+        }
+        
+        .calendar-cell.active-culture {
+            background-color: #fbbc04;
+        }
+        
+        .calendar-cell .budget-percentage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            background-color: #3d3d3d;
+            color: #e0e0e0;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn.active {
+            background-color: #4285f4;
+            color: white;
+        }
+        
+        .filter-btn:hover:not(.active) {
+            background-color: #4d4d4d;
+        }
+    </style>
+</head>
+<body>
+    <h1>Campaign Calendar Test</h1>
+    
+    <div class="filter-buttons">
+        <button class="filter-btn active" data-type="all">All Campaigns</button>
+        <button class="filter-btn" data-type="strategic">Brand Awareness</button>
+        <button class="filter-btn" data-type="tactical">Strategic Leavers</button>
+        <button class="filter-btn" data-type="culture">Culture</button>
+    </div>
+    
+    <div class="calendar-header">
+        <div class="calendar-header-cell">Campaign</div>
+        <div class="calendar-header-cell">Jan</div>
+        <div class="calendar-header-cell">Feb</div>
+        <div class="calendar-header-cell">Mar</div>
+        <div class="calendar-header-cell">Apr</div>
+        <div class="calendar-header-cell">May</div>
+        <div class="calendar-header-cell">Jun</div>
+        <div class="calendar-header-cell">Jul</div>
+        <div class="calendar-header-cell">Aug</div>
+        <div class="calendar-header-cell">Sep</div>
+        <div class="calendar-header-cell">Oct</div>
+        <div class="calendar-header-cell">Nov</div>
+        <div class="calendar-header-cell">Dec</div>
+    </div>
+    
+    <div id="campaignCalendar" class="calendar-container">
+        <!-- Calendar will be populated by JavaScript -->
+    </div>
+    
+    <script>
+        // Log to check if script is running
+        console.log("Campaign calendar test script running");
+        
+        // Create a simple campaign data object for testing
+        const campaignData = {
+            // Campaign details
+            campaigns: [
+                { 
+                    name: 'Global Brand Ambassador Q1', 
+                    type: 'Strategic', 
+                    category: 'strategic',
+                    budget: 346457
+                },
+                { 
+                    name: 'Global Brand Ambassador Q4', 
+                    type: 'Strategic', 
+                    category: 'strategic',
+                    budget: 1300910
+                },
+                { 
+                    name: 'Summer', 
+                    type: 'Strategic', 
+                    category: 'strategic',
+                    budget: 2270012
+                },
+                { 
+                    name: 'Saadiyat Cultural District', 
+                    type: 'Culture', 
+                    category: 'culture',
+                    budget: 438552
+                },
+                { 
+                    name: 'Ramadan', 
+                    type: 'Tactical', 
+                    category: 'tactical',
+                    budget: 542464
+                }
+            ],
+            
+            // Campaign calendar data
+            campaignCalendar: [
+                { 
+                    name: 'Global Brand Ambassador Q1', 
+                    category: 'strategic',
+                    months: [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] 
+                },
+                { 
+                    name: 'Global Brand Ambassador Q4', 
+                    category: 'strategic',
+                    months: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1] 
+                },
+                { 
+                    name: 'Summer', 
+                    category: 'strategic',
+                    months: [0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0] 
+                },
+                { 
+                    name: 'Saadiyat Cultural District', 
+                    category: 'culture',
+                    months: [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] 
+                },
+                { 
+                    name: 'Ramadan', 
+                    category: 'tactical',
+                    months: [0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0] 
+                }
+            ]
+        };
+        
+        // Initialize the campaign calendar
+        function initializeCampaignCalendar() {
+            console.log("Initializing campaign calendar");
+            
+            const calendarContainer = document.getElementById('campaignCalendar');
+            if (!calendarContainer) {
+                console.error("campaignCalendar container not found");
+                return;
+            }
+            
+            // Clear any existing content
+            calendarContainer.innerHTML = '';
+            
+            // Create calendar rows for each campaign
+            campaignData.campaignCalendar.forEach(campaign => {
+                console.log("Creating row for campaign:", campaign.name);
+                
+                const row = document.createElement('div');
+                row.className = 'calendar-row';
+                row.dataset.category = campaign.category;
+                
+                // Add campaign name cell
+                const nameCell = document.createElement('div');
+                nameCell.className = 'calendar-label';
+                nameCell.textContent = campaign.name;
+                row.appendChild(nameCell);
+                
+                // Add month cells
+                campaign.months.forEach((active, index) => {
+                    const cell = document.createElement('div');
+                    cell.className = active ? `calendar-cell active active-${campaign.category}` : 'calendar-cell';
+                    
+                    // Add budget percentage if active
+                    if (active) {
+                        // Calculate budget percentage for this campaign and month
+                        const campaignObj = campaignData.campaigns.find(c => c.name === campaign.name);
+                        if (campaignObj) {
+                            const totalBudget = campaignData.campaigns.reduce((sum, c) => sum + c.budget, 0);
+                            const campaignBudgetPercentage = ((campaignObj.budget / totalBudget) * 100).toFixed(0);
+                            
+                            // Only show percentage if it's significant enough
+                            if (campaignBudgetPercentage > 3) {
+                                const budgetSpan = document.createElement('span');
+                                budgetSpan.className = 'budget-percentage';
+                                budgetSpan.textContent = campaignBudgetPercentage + '%';
+                                cell.appendChild(budgetSpan);
+                            }
+                        }
+                    }
+                    
+                    row.appendChild(cell);
+                });
+                
+                calendarContainer.appendChild(row);
+            });
+            
+            console.log("Campaign calendar initialized");
+        }
+        
+        // Set up filter buttons
+        function setupFilterButtons() {
+            console.log("Setting up filter buttons");
+            
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            if (filterButtons.length === 0) {
+                console.error("Filter buttons not found");
+                return;
+            }
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    // Get filter type
+                    const filterType = this.dataset.type;
+                    console.log("Filter selected:", filterType);
+                    
+                    // Filter calendar rows
+                    const rows = document.querySelectorAll('.calendar-row');
+                    rows.forEach(row => {
+                        if (filterType === 'all' || row.dataset.category === filterType) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+                });
+            });
+            
+            console.log("Filter buttons set up");
+        }
+        
+        // Initialize when the DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("DOM loaded, initializing calendar");
+            initializeCampaignCalendar();
+            setupFilterButtons();
+        });
+    </script>
+</body>
+</html>

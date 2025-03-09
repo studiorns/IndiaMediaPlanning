@@ -24,49 +24,49 @@ function createCampaignObjectivesChart() {
     const campaignData = [
         { 
             name: 'Summer', 
-            type: 'Strategic', 
+            type: 'Brand Awareness', 
             objectives: { awareness: 5, consideration: 5, intent: 4, familiarity: 5 },
             color: '#4285f4'
         },
         { 
             name: 'NBA', 
-            type: 'Tactical', 
+            type: 'Strategic Leavers', 
             objectives: { awareness: 3, consideration: 3, intent: 5, familiarity: 3 },
             color: '#34a853'
         },
         { 
             name: 'Visit Abu Dhabi Always On', 
-            type: 'Strategic', 
+            type: 'Brand Awareness', 
             objectives: { awareness: 5, consideration: 4, intent: 5, familiarity: 5 },
             color: '#4285f4'
         },
         { 
             name: 'Abu Dhabi Calendar Always On', 
-            type: 'Strategic', 
+            type: 'Brand Awareness', 
             objectives: { awareness: 5, consideration: 4, intent: 5, familiarity: 5 },
             color: '#4285f4'
         },
         { 
             name: 'F1', 
-            type: 'Tactical', 
+            type: 'Strategic Leavers', 
             objectives: { awareness: 4, consideration: 2, intent: 3, familiarity: 4 },
             color: '#34a853'
         },
         { 
             name: 'Family Vacation with Ranveer Singh', 
-            type: 'Strategic', 
+            type: 'Brand Awareness', 
             objectives: { awareness: 5, consideration: 2, intent: 5, familiarity: 5 },
             color: '#4285f4'
         },
         { 
             name: 'Diwali', 
-            type: 'Tactical', 
+            type: 'Strategic Leavers', 
             objectives: { awareness: 3, consideration: 2, intent: 5, familiarity: 4 },
             color: '#34a853'
         },
         { 
             name: 'Ramadan', 
-            type: 'Tactical', 
+            type: 'Strategic Leavers', 
             objectives: { awareness: 4, consideration: 4, intent: 4, familiarity: 5 },
             color: '#34a853'
         },
@@ -78,31 +78,31 @@ function createCampaignObjectivesChart() {
         },
         { 
             name: 'Abu Dhabi Calendar Launch', 
-            type: 'Strategic', 
+            type: 'Brand Awareness', 
             objectives: { awareness: 5, consideration: 4, intent: 5, familiarity: 5 },
             color: '#4285f4'
         },
         { 
             name: 'Global Brand Ambassador Q1', 
-            type: 'Strategic', 
+            type: 'Brand Awareness', 
             objectives: { awareness: 5, consideration: 4, intent: 2, familiarity: 4 },
             color: '#4285f4'
         },
         { 
             name: 'Search Always On', 
-            type: 'Strategic', 
+            type: 'Brand Awareness', 
             objectives: { awareness: 5, consideration: 4, intent: 5, familiarity: 5 },
             color: '#4285f4'
         },
         { 
             name: 'Global Brand Ambassador Q4', 
-            type: 'Strategic', 
+            type: 'Brand Awareness', 
             objectives: { awareness: 5, consideration: 4, intent: 2, familiarity: 4 },
             color: '#4285f4'
         },
         { 
             name: 'Comedy Week', 
-            type: 'Tactical', 
+            type: 'Strategic Leavers', 
             objectives: { awareness: 3, consideration: 3, intent: 5, familiarity: 3 },
             color: '#34a853'
         }
@@ -112,8 +112,8 @@ function createCampaignObjectivesChart() {
     const generateColors = (index, type) => {
         // Base colors by campaign type
         const baseColors = {
-            'Strategic': [66, 133, 244], // Blue
-            'Tactical': [52, 168, 83],   // Green
+            'Brand Awareness': [66, 133, 244], // Blue
+            'Strategic Leavers': [52, 168, 83],   // Green
             'Culture': [251, 188, 4]     // Yellow
         };
         
@@ -320,8 +320,8 @@ function addDimensionsLegend() {
     typeContainer.style.gap = '25px';
     
     const typeItems = [
-        { label: 'Strategic Campaigns', color: '#4285f4' },
-        { label: 'Tactical Campaigns', color: '#34a853' },
+        { label: 'Brand Awareness Campaigns', color: '#4285f4' },
+        { label: 'Strategic Leavers Campaigns', color: '#34a853' },
         { label: 'Culture Campaigns', color: '#fbbc04' }
     ];
     

@@ -53,7 +53,7 @@ function createBudgetAllocationChart() {
     });
     
     // Prepare data for chart with specific order to match campaignTypeChart
-    const orderedTypes = ['Strategic', 'Tactical', 'Culture']; // Ensure same order as campaignTypeChart
+    const orderedTypes = ['Brand Awareness', 'Strategic Leavers', 'Culture']; // Ensure same order as campaignTypeChart
     const budgets = orderedTypes.map(type => budgetByType[type] || 0);
     const totalBudget = budgets.reduce((sum, budget) => sum + budget, 0);
     const percentages = budgets.map(budget => ((budget / totalBudget) * 100).toFixed(0));

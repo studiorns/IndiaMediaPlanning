@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Insight Summary</title>
+    <style>
+        :root {
+            --primary: #4285f4;
+            --primary-light: #1a2233;
+            --primary-dark: #8ab4f8;
+            --gray-800: #e0e0e0;
+            --radius: 8px;
+            --bg-color: #000000;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--gray-800);
+            padding: 20px;
+        }
+        
+        .insight-summary {
+            background-color: var(--primary-light);
+            border-left: 4px solid var(--primary);
+            padding: 20px 24px;
+            margin-bottom: 28px;
+            border-radius: 0 var(--radius) var(--radius) 0;
+            position: relative;
+        }
+        
+        .insight-summary::before {
+            content: '\f0eb';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 20px;
+            right: 24px;
+            font-size: 1.5rem;
+            color: var(--primary);
+            opacity: 0.2;
+        }
+        
+        .insight-summary h3 {
+            color: var(--primary-dark);
+            margin-bottom: 12px;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .insight-summary p {
+            margin: 0;
+            color: var(--gray-800);
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="insight-summary">
+        <h3>Brand Health Insights</h3>
+        <p>India shows consistently strong brand health metrics with awareness at 94.5%, consideration at 74.4%, and intent at 64.6%. The trend shows steady improvement over the past year, with awareness increasing by 0.7 percentage points and intent by 1.6 percentage points. The high awareness level suggests that future campaigns should focus more on driving consideration and intent rather than awareness. Q4 2025 targets show minimal growth expectations: awareness remains at 94.5%, consideration increases to 75.0% (+0.64%), and intent to 65.17% (+0.57%).</p>
+    </div>
+</body>
+</html>

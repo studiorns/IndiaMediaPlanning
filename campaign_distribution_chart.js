@@ -3,20 +3,20 @@ document.addEventListener('DOMContentLoaded', function() {
     // Campaign data from detailed-campaign-planning-India.csv
     const detailedCampaignData = {
         campaigns: [
-            { name: 'Summer', type: 'Strategic', budget: 2270012, budgetFormatted: '$2,270,012' },
-            { name: 'NBA', type: 'Tactical', budget: 115270, budgetFormatted: '$115,270' },
-            { name: 'Visit Abu Dhabi Always On', type: 'Strategic', budget: 420514, budgetFormatted: '$420,514' },
-            { name: 'Abu Dhabi Calendar Always On', type: 'Strategic', budget: 547514, budgetFormatted: '$547,514' },
-            { name: 'F1', type: 'Tactical', budget: 153678, budgetFormatted: '$153,678' },
-            { name: 'Family Vacation with Ranveer Singh', type: 'Strategic', budget: 877197, budgetFormatted: '$877,197' },
-            { name: 'Diwali', type: 'Tactical', budget: 408785, budgetFormatted: '$408,785' },
-            { name: 'Ramadan', type: 'Tactical', budget: 542464, budgetFormatted: '$542,464' },
+            { name: 'Summer', type: 'Brand Awareness', budget: 2270012, budgetFormatted: '$2,270,012' },
+            { name: 'NBA', type: 'Strategic Leavers', budget: 115270, budgetFormatted: '$115,270' },
+            { name: 'Visit Abu Dhabi Always On', type: 'Brand Awareness', budget: 420514, budgetFormatted: '$420,514' },
+            { name: 'Abu Dhabi Calendar Always On', type: 'Brand Awareness', budget: 547514, budgetFormatted: '$547,514' },
+            { name: 'F1', type: 'Strategic Leavers', budget: 153678, budgetFormatted: '$153,678' },
+            { name: 'Family Vacation with Ranveer Singh', type: 'Brand Awareness', budget: 877197, budgetFormatted: '$877,197' },
+            { name: 'Diwali', type: 'Strategic Leavers', budget: 408785, budgetFormatted: '$408,785' },
+            { name: 'Ramadan', type: 'Strategic Leavers', budget: 542464, budgetFormatted: '$542,464' },
             { name: 'Saadiyat Cultural District', type: 'Culture', budget: 438552, budgetFormatted: '$438,552' },
-            { name: 'Abu Dhabi Calendar Launch', type: 'Strategic', budget: 805099, budgetFormatted: '$805,099' },
-            { name: 'Global Brand Ambassador Q1', type: 'Strategic', budget: 346457, budgetFormatted: '$346,457' },
-            { name: 'Search Always On', type: 'Strategic', budget: 277449, budgetFormatted: '$277,449' },
-            { name: 'Global Brand Ambassador Q4', type: 'Strategic', budget: 1300910, budgetFormatted: '$1,300,910' },
-            { name: 'Comedy Week', type: 'Tactical', budget: 186668, budgetFormatted: '$186,668' }
+            { name: 'Abu Dhabi Calendar Launch', type: 'Brand Awareness', budget: 805099, budgetFormatted: '$805,099' },
+            { name: 'Global Brand Ambassador Q1', type: 'Brand Awareness', budget: 346457, budgetFormatted: '$346,457' },
+            { name: 'Search Always On', type: 'Brand Awareness', budget: 277449, budgetFormatted: '$277,449' },
+            { name: 'Global Brand Ambassador Q4', type: 'Brand Awareness', budget: 1300910, budgetFormatted: '$1,300,910' },
+            { name: 'Comedy Week', type: 'Strategic Leavers', budget: 186668, budgetFormatted: '$186,668' }
         ]
     };
 
@@ -29,24 +29,24 @@ document.addEventListener('DOMContentLoaded', function() {
     // Calculate campaign counts by type
     const calculateCampaignCountsByType = () => {
         // Initialize counts
-        let strategicCount = 0;
-        let tacticalCount = 0;
+        let brandAwarenessCount = 0;
+        let strategicLeaversCount = 0;
         let cultureCount = 0;
         
         // Count campaigns by type
         detailedCampaignData.campaigns.forEach(campaign => {
-            if (campaign.type === 'Strategic') {
-                strategicCount++;
-            } else if (campaign.type === 'Tactical') {
-                tacticalCount++;
+            if (campaign.type === 'Brand Awareness') {
+                brandAwarenessCount++;
+            } else if (campaign.type === 'Strategic Leavers') {
+                strategicLeaversCount++;
             } else if (campaign.type === 'Culture') {
                 cultureCount++;
             }
         });
         
         const result = {
-            strategic: strategicCount,
-            tactical: tacticalCount,
+            "brand-awareness": brandAwarenessCount,
+            "strategic-leavers": strategicLeaversCount,
             culture: cultureCount
         };
         
@@ -59,26 +59,26 @@ document.addEventListener('DOMContentLoaded', function() {
     // Calculate budget by campaign type
     const calculateBudgetByType = () => {
         // Initialize budget totals
-        let strategicTotal = 0;
-        let tacticalTotal = 0;
+        let brandAwarenessTotal = 0;
+        let strategicLeaversTotal = 0;
         let cultureTotal = 0;
         
         // Calculate totals by type
         detailedCampaignData.campaigns.forEach(campaign => {
-            if (campaign.type === 'Strategic') {
-                strategicTotal += campaign.budget;
-            } else if (campaign.type === 'Tactical') {
-                tacticalTotal += campaign.budget;
+            if (campaign.type === 'Brand Awareness') {
+                brandAwarenessTotal += campaign.budget;
+            } else if (campaign.type === 'Strategic Leavers') {
+                strategicLeaversTotal += campaign.budget;
             } else if (campaign.type === 'Culture') {
                 cultureTotal += campaign.budget;
             }
         });
         
         const result = {
-            strategic: strategicTotal,
-            tactical: tacticalTotal,
+            "brand-awareness": brandAwarenessTotal,
+            "strategic-leavers": strategicLeaversTotal,
             culture: cultureTotal,
-            total: strategicTotal + tacticalTotal + cultureTotal
+            total: brandAwarenessTotal + strategicLeaversTotal + cultureTotal
         };
         
         // Log the budget totals to verify
@@ -113,19 +113,19 @@ document.addEventListener('DOMContentLoaded', function() {
     if (campaignTypeCtx) {
         // Log the chart data before creating the chart
         console.log("Chart Data:", {
-            strategic: campaignCountsByType.strategic,
-            tactical: campaignCountsByType.tactical,
+            "brand-awareness": campaignCountsByType["brand-awareness"],
+            "strategic-leavers": campaignCountsByType["strategic-leavers"],
             culture: campaignCountsByType.culture
         });
         
         new Chart(campaignTypeCtx, {
             type: 'pie',
             data: {
-                labels: ['Strategic', 'Tactical', 'Culture'],
+                labels: ['Brand Awareness', 'Strategic Leavers', 'Culture'],
                 datasets: [{
                     data: [
-                        campaignCountsByType.strategic,
-                        campaignCountsByType.tactical,
+                        campaignCountsByType["brand-awareness"],
+                        campaignCountsByType["strategic-leavers"],
                         campaignCountsByType.culture
                     ],
                     backgroundColor: ['#4285f4', '#34a853', '#fbbc04'],
@@ -325,8 +325,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     label: 'Budget (USD)',
                     data: sortedCampaigns.map(c => c.budget),
                     backgroundColor: sortedCampaigns.map(c => {
-                        if (c.type === 'Strategic') return '#4285f4';
-                        else if (c.type === 'Tactical') return '#34a853';
+                        if (c.type === 'Brand Awareness') return '#4285f4';
+                        else if (c.type === 'Strategic Leavers') return '#34a853';
                         else return '#fbbc04'; // Culture or other types
                     }),
                     borderWidth: 1

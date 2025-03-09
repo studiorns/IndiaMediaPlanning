@@ -45,8 +45,8 @@ function createCampaignBudgetChart() {
     // Get colors based on campaign type
     const getColorByType = (type) => {
         switch(type) {
-            case 'Strategic': return { bg: 'rgba(66, 133, 244, 0.7)', border: '#4285f4' };
-            case 'Tactical': return { bg: 'rgba(52, 168, 83, 0.7)', border: '#34a853' };
+            case 'Brand Awareness': return { bg: 'rgba(66, 133, 244, 0.7)', border: '#4285f4' };
+            case 'Strategic Leavers': return { bg: 'rgba(52, 168, 83, 0.7)', border: '#34a853' };
             case 'Culture': return { bg: 'rgba(251, 188, 4, 0.7)', border: '#fbbc04' };
             default: return { bg: 'rgba(234, 67, 53, 0.7)', border: '#ea4335' };
         }
@@ -163,8 +163,8 @@ function createBudgetAllocationChart() {
     // Get colors for each type
     const getColorByType = (type) => {
         switch(type) {
-            case 'Strategic': return { bg: 'rgba(66, 133, 244, 0.7)', border: '#4285f4' };
-            case 'Tactical': return { bg: 'rgba(52, 168, 83, 0.7)', border: '#34a853' };
+            case 'Brand Awareness': return { bg: 'rgba(66, 133, 244, 0.7)', border: '#4285f4' };
+            case 'Strategic Leavers': return { bg: 'rgba(52, 168, 83, 0.7)', border: '#34a853' };
             case 'Culture': return { bg: 'rgba(251, 188, 4, 0.7)', border: '#fbbc04' };
             default: return { bg: 'rgba(234, 67, 53, 0.7)', border: '#ea4335' };
         }
@@ -265,8 +265,8 @@ function createCampaignTypeDistributionChart() {
     // Get colors for each type
     const getColorByType = (type) => {
         switch(type) {
-            case 'Strategic': return { bg: 'rgba(66, 133, 244, 0.7)', border: '#4285f4' };
-            case 'Tactical': return { bg: 'rgba(52, 168, 83, 0.7)', border: '#34a853' };
+            case 'Brand Awareness': return { bg: 'rgba(66, 133, 244, 0.7)', border: '#4285f4' };
+            case 'Strategic Leavers': return { bg: 'rgba(52, 168, 83, 0.7)', border: '#34a853' };
             case 'Culture': return { bg: 'rgba(251, 188, 4, 0.7)', border: '#fbbc04' };
             default: return { bg: 'rgba(234, 67, 53, 0.7)', border: '#ea4335' };
         }
